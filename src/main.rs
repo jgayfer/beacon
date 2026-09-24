@@ -18,13 +18,10 @@ fn main() {
         .insert_resource(Gravity::ZERO)
         .insert_resource(LevelSelection::index(0))
         .register_ldtk_int_cell::<Wall>(1)
-        .register_ldtk_entity::<PlayerSpawn>("player")
-        .register_ldtk_entity::<TreeSpawn>("tree")
+        .register_ldtk_entity_scene("player", || bsn! { @Player })
+        .register_ldtk_entity_scene("tree", || bsn! { @Tree})
         .add_systems(Startup, scene.spawn())
-        .add_systems(
-            Update,
-            (move_player, spawn_player, spawn_trees, update_tree_count),
-        )
+        .add_systems(Update, (move_player, update_tree_count))
         .add_systems(
             PostUpdate,
             (follow_player.before(TransformSystems::Propagate),),
@@ -36,9 +33,6 @@ fn main() {
 #[expect(clippy::duplicated_attributes)]
 #[require(RigidBody::Static, Collider::rectangle(TILE, TILE))]
 struct Wall {}
-
-#[derive(Component, LdtkEntity)]
-struct PlayerSpawn {}
 
 #[derive(SceneComponent, Clone, Default)]
 #[require(
@@ -121,9 +115,6 @@ fn update_tree_count(
     text.0 = format!("Trees: {}", player.trees);
 }
 
-#[derive(Component, LdtkEntity)]
-struct TreeSpawn {}
-
 #[derive(SceneComponent, FromTemplate)]
 #[require(RigidBody::Static, Collider::circle(TILE / 2.0), CollisionEventsEnabled)]
 struct Tree;
@@ -135,23 +126,6 @@ impl Tree {
             MeshMaterial2d::<ColorMaterial>(asset_value(Color::srgb(0.0, 1.0, 0.0)))
             on(on_player_collision)
         }
-    }
-}
-
-fn spawn_trees(mut commands: Commands, tree_spawns: Query<&GlobalTransform, Added<TreeSpawn>>) {
-    for transform in tree_spawns {
-        commands.spawn_scene(bsn! { @Tree Transform { translation: { transform.translation() } } });
-    }
-}
-
-fn spawn_player(
-    mut commands: Commands,
-    new_player_spawns: Query<&GlobalTransform, Added<PlayerSpawn>>,
-) {
-    for player_spawn in new_player_spawns {
-        commands.spawn_scene(
-            bsn! { @Player Transform { translation: { player_spawn.translation() } } },
-        );
     }
 }
 

@@ -5,7 +5,7 @@ edition = "2024"
 
 [dependencies]
 bevy = { version = "0.19", features = ["dynamic_linking", "file_watcher"] }
-bevy_ecs_ldtk = "0.15"
+bevy_ecs_ldtk = { git = "https://github.com/jgayfer/bevy_ecs_ldtk", branch="scenes", features = ["scene"] }
 avian2d = "0.7"
 
 [profile.dev]
