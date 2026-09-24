@@ -19,8 +19,9 @@ fn main() {
         .insert_resource(LevelSelection::index(0))
         .register_ldtk_int_cell::<Wall>(1)
         .register_ldtk_entity::<PlayerSpawn>("player")
+        .register_ldtk_entity::<TreeSpawn>("tree")
         .add_systems(Startup, scene.spawn())
-        .add_systems(Update, (move_player, spawn_player))
+        .add_systems(Update, (move_player, spawn_player, spawn_trees))
         .add_systems(
             PostUpdate,
             (follow_player.before(TransformSystems::Propagate),),
@@ -74,6 +75,29 @@ fn map() -> impl Scene {
         LevelSet
         Transform
         Visibility
+    }
+}
+
+#[derive(Component, LdtkEntity)]
+struct TreeSpawn {}
+
+#[derive(SceneComponent, FromTemplate)]
+#[expect(clippy::duplicated_attributes)]
+#[require(RigidBody::Static, Collider::circle(TILE / 2.0))]
+struct Tree;
+
+impl Tree {
+    fn scene() -> impl Scene {
+        bsn! {
+            Mesh2d(asset_value(Circle::new(4.0)))
+            MeshMaterial2d::<ColorMaterial>(asset_value(Color::srgb(0.0, 1.0, 0.0)))
+        }
+    }
+}
+
+fn spawn_trees(mut commands: Commands, tree_spawns: Query<&GlobalTransform, Added<TreeSpawn>>) {
+    for transform in tree_spawns {
+        commands.spawn_scene(bsn! { @Tree Transform { translation: { transform.translation() } } });
     }
 }
 
