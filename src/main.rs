@@ -20,15 +20,10 @@ fn main() {
         .register_ldtk_int_cell::<Wall>(1)
         .register_ldtk_entity::<PlayerSpawn>("player")
         .add_systems(Startup, scene.spawn())
-        .add_systems(Update, move_player)
+        .add_systems(Update, (move_player, spawn_player))
         .add_systems(
             PostUpdate,
-            (
-                follow_player.before(TransformSystems::Propagate),
-                spawn_player
-                    .after(TransformSystems::Propagate)
-                    .run_if(not(any_with_component::<Player>)),
-            ),
+            (follow_player.before(TransformSystems::Propagate),),
         )
         .run();
 }
@@ -84,13 +79,13 @@ fn map() -> impl Scene {
 
 fn spawn_player(
     mut commands: Commands,
-    spawns: Query<&GlobalTransform, With<PlayerSpawn>>,
-    player: Option<Single<(), With<Player>>>,
+    new_player_spawns: Query<&GlobalTransform, Added<PlayerSpawn>>,
 ) {
-    let (None, Some(spawn)) = (player, spawns.iter().next()) else {
-        return;
-    };
-    commands.spawn_scene(bsn! { @Player Transform { translation: { spawn.translation() } } });
+    for player_spawn in new_player_spawns {
+        commands.spawn_scene(
+            bsn! { @Player Transform { translation: { player_spawn.translation() } } },
+        );
+    }
 }
 
 fn move_player(keys: Res<ButtonInput<KeyCode>>, mut q: Query<&mut LinearVelocity, With<Player>>) {
