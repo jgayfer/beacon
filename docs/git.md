@@ -18,7 +18,7 @@ this repository.
 - Select "URL"
 - Use `https://github.com/jgayfer/beacon` as the URL, and click "Clone"
 
-## Making changes
+## Git overview
 
 Git uses a system of "branches" and "commits". A branch consists of a linear history
 of commits, each representing a snapshot of the project.
@@ -31,7 +31,7 @@ When we request a branch be merged back into `main`, we create a "pull request"
 (PR for short). Really these are "merge requests", but GitHub calls them pull
 requests, so that's what we'll use.
 
-### Submit a pull request
+## Submit a pull request
 
 In GitHub Desktop, you can see your current branch (`main`) at the top.
 
