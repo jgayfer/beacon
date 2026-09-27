@@ -7,6 +7,7 @@ edition = "2024"
 bevy = { version = "0.19", features = ["dynamic_linking", "file_watcher"] }
 bevy_ecs_ldtk = { git = "https://github.com/jgayfer/bevy_ecs_ldtk", branch="scenes", features = ["scene"] }
 avian2d = "0.7"
+bevy_aseprite_ultra = { git = "https://github.com/Lommix/bevy_aseprite_ultra", branch = "master" }
 
 [profile.dev]
 opt-level = 1

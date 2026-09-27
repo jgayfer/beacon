@@ -1,16 +1,22 @@
 use avian2d::prelude::*;
 use bevy::{asset::asset_value, prelude::*};
+use bevy_aseprite_ultra::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
 
 const TILE: f32 = 16.0;
 const SPEED: f32 = 100.0;
 const PLAYER_RADIUS: f32 = 6.0;
 
+/// Animation tags defined in `Soldier.aseprite`.
+const SOLDIER_IDLE: &str = "Idle";
+const SOLDIER_WALK: &str = "Walk";
+
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
         .add_plugins(LdtkPlugin)
         .add_plugins(PhysicsPlugins::default())
+        .add_plugins(AsepriteUltraPlugin)
         .insert_resource(LdtkSettings {
             int_grid_rendering: IntGridRendering::Invisible,
             ..default()
@@ -21,7 +27,10 @@ fn main() {
         .register_ldtk_entity_scene("player", || bsn! { @Player })
         .register_ldtk_entity_scene("tree", || bsn! { @Tree})
         .add_systems(Startup, scene.spawn())
-        .add_systems(Update, (move_player, update_tree_count))
+        .add_systems(
+            Update,
+            ((move_player, animate_player).chain(), update_tree_count),
+        )
         .add_systems(
             PostUpdate,
             (follow_player.before(TransformSystems::Propagate),),
@@ -48,8 +57,12 @@ struct Player {
 impl Player {
     fn scene() -> impl Scene {
         bsn! {
-            Mesh2d(asset_value(Circle::new(PLAYER_RADIUS)))
-            MeshMaterial2d::<ColorMaterial>(asset_value(Color::srgb(1.0, 0.0, 0.0)))
+            // The render target. `AseAnimation` fills in the image and atlas.
+            Sprite
+            AseAnimation {
+                aseprite: "Soldier.aseprite",
+                animation: Animation::tag(SOLDIER_IDLE),
+            }
         }
     }
 }
@@ -145,6 +158,22 @@ fn move_player(keys: Res<ButtonInput<KeyCode>>, mut q: Query<&mut LinearVelocity
     }
     for mut v in &mut q {
         v.0 = dir.normalize_or_zero() * SPEED;
+    }
+}
+
+/// Plays the walk animation while the player is moving, and faces the direction of travel.
+fn animate_player(mut q: Query<(&LinearVelocity, &mut AseAnimation, &mut Sprite), With<Player>>) {
+    for (velocity, mut animation, mut sprite) in &mut q {
+        let moving = velocity.0 != Vec2::ZERO;
+
+        let target = if moving { SOLDIER_WALK } else { SOLDIER_IDLE };
+        if animation.animation.tag.as_deref() != Some(target) {
+            animation.animation.play_loop(target);
+        }
+
+        if velocity.0.x != 0.0 {
+            sprite.flip_x = velocity.0.x < 0.0;
+        }
     }
 }
 
