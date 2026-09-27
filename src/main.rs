@@ -3,6 +3,10 @@ use bevy::{asset::asset_value, prelude::*};
 use bevy_aseprite_ultra::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
 
+use crate::woodcutting::WoodcuttingPlugin;
+
+mod woodcutting;
+
 const TILE: f32 = 16.0;
 const SPEED: f32 = 100.0;
 const PLAYER_RADIUS: f32 = 6.0;
@@ -15,8 +19,9 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
         .add_plugins(LdtkPlugin)
-        .add_plugins(PhysicsPlugins::default())
+        .add_plugins((PhysicsPlugins::default(), PhysicsDebugPlugin))
         .add_plugins(AsepriteUltraPlugin)
+        .add_plugins(WoodcuttingPlugin)
         .insert_resource(LdtkSettings {
             int_grid_rendering: IntGridRendering::Invisible,
             ..default()
