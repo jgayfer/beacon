@@ -99,8 +99,9 @@ struct Tree {
 impl Tree {
     fn scene() -> impl Scene {
         bsn! {
-            Mesh2d(asset_value(Circle::new(4.0)))
-            MeshMaterial2d::<ColorMaterial>(asset_value(Color::srgb(0.0, 1.0, 0.0)))
+            Sprite {
+                image: "arbutus.png",
+            }
         }
     }
 }
