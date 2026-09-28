@@ -30,7 +30,7 @@ fn main() {
         .insert_resource(LevelSelection::index(0))
         .register_ldtk_int_cell::<Wall>(1)
         .register_ldtk_entity_scene("player", || bsn! { @Player })
-        .register_ldtk_entity_scene("tree", || bsn! { @Tree})
+        .register_ldtk_entity_scene("tree", || bsn! { @Tree { health: 3 }})
         .add_systems(Startup, scene.spawn())
         .add_systems(Update, (move_player, animate_player).chain())
         .add_systems(
@@ -92,7 +92,9 @@ fn map() -> impl Scene {
 
 #[derive(SceneComponent, FromTemplate)]
 #[require(RigidBody::Static, Collider::circle(TILE / 2.0) )]
-struct Tree;
+struct Tree {
+    pub health: usize,
+}
 
 impl Tree {
     fn scene() -> impl Scene {

@@ -10,8 +10,9 @@ pub struct WoodcuttingPlugin;
 
 impl Plugin for WoodcuttingPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (tick_hitboxes, chop))
-            .add_observer(on_hitbox_hit);
+        app.add_systems(Update, (tick_hitboxes, chop, check_tree_health))
+            .add_observer(on_hitbox_hit)
+            .add_observer(on_tree_hit);
     }
 }
 
@@ -21,6 +22,9 @@ pub struct Hitbox {
     pub timer: Timer,
 }
 
+#[derive(EntityEvent)]
+pub struct TreeHit(Entity);
+
 fn on_hitbox_hit(
     event: On<CollisionStart>,
     hitbox_query: Query<(), With<Hitbox>>,
@@ -29,7 +33,24 @@ fn on_hitbox_hit(
 ) {
     let (hitbox, other) = (event.collider1, event.collider2);
     if hitbox_query.contains(hitbox) && tree_query.contains(other) {
-        commands.entity(other).despawn();
+        commands.trigger(TreeHit(other));
+    }
+}
+
+fn on_tree_hit(event: On<TreeHit>, query: Query<(Entity, &mut Tree)>) {
+    info!("Tree hit");
+    for (entity, mut tree) in query {
+        if entity == event.0 {
+            tree.health -= 1;
+        }
+    }
+}
+
+fn check_tree_health(mut commands: Commands, query: Query<(Entity, &Tree), Changed<Tree>>) {
+    for (entity, tree) in query {
+        if tree.health <= 0 {
+            commands.entity(entity).despawn();
+        }
     }
 }
 
