@@ -1,20 +1,36 @@
-use avian2d::collision::collider::{Collider, Sensor};
+use avian2d::collision::{
+    collider::{Collider, Sensor},
+    collision_events::{CollisionEventsEnabled, CollisionStart},
+};
 use bevy::prelude::*;
 
-use crate::Player;
+use crate::{Player, Tree};
 
 pub struct WoodcuttingPlugin;
 
 impl Plugin for WoodcuttingPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (tick_hitboxes, chop));
+        app.add_systems(Update, (tick_hitboxes, chop))
+            .add_observer(on_hitbox_hit);
     }
 }
 
 #[derive(Component, Default, Clone)]
-#[require(Collider::rectangle(16.0, 16.0), Sensor)]
+#[require(Collider::rectangle(16.0, 16.0), Sensor, CollisionEventsEnabled)]
 pub struct Hitbox {
     pub timer: Timer,
+}
+
+fn on_hitbox_hit(
+    event: On<CollisionStart>,
+    hitbox_query: Query<(), With<Hitbox>>,
+    tree_query: Query<(), With<Tree>>,
+    mut commands: Commands,
+) {
+    let (hitbox, other) = (event.collider1, event.collider2);
+    if hitbox_query.contains(hitbox) && tree_query.contains(other) {
+        commands.entity(other).despawn();
+    }
 }
 
 fn tick_hitboxes(mut commands: Commands, time: Res<Time>, hitboxes: Query<(Entity, &mut Hitbox)>) {
@@ -28,13 +44,6 @@ fn tick_hitboxes(mut commands: Commands, time: Res<Time>, hitboxes: Query<(Entit
     }
 }
 
-fn chop_hitbox(x: f32) -> impl Scene {
-    bsn! {
-        Hitbox { timer: Timer::from_seconds(0.5, TimerMode::Once) }
-        Transform { translation: Vec3 { x } }
-    }
-}
-
 fn chop(
     mut commands: Commands,
     keys: Res<ButtonInput<KeyCode>>,
@@ -43,7 +52,12 @@ fn chop(
     if keys.just_pressed(KeyCode::Space) {
         for (entity, sprite) in player_query {
             let x = if sprite.flip_x { -16.0 } else { 16.0 };
-            commands.spawn_scene(chop_hitbox(x)).insert(ChildOf(entity));
+            commands.entity(entity).with_child((
+                Hitbox {
+                    timer: Timer::from_seconds(0.5, TimerMode::Once),
+                },
+                Transform::from_xyz(x, 0.0, 0.0),
+            ));
         }
     }
 }

@@ -32,10 +32,7 @@ fn main() {
         .register_ldtk_entity_scene("player", || bsn! { @Player })
         .register_ldtk_entity_scene("tree", || bsn! { @Tree})
         .add_systems(Startup, scene.spawn())
-        .add_systems(
-            Update,
-            ((move_player, animate_player).chain(), update_tree_count),
-        )
+        .add_systems(Update, (move_player, animate_player).chain())
         .add_systems(
             PostUpdate,
             (follow_player.before(TransformSystems::Propagate),),
@@ -55,9 +52,7 @@ struct Wall {}
     LockedAxes::ROTATION_LOCKED,
     LinearVelocity
 )]
-struct Player {
-    pub trees: usize,
-}
+struct Player;
 
 impl Player {
     fn scene() -> impl Scene {
@@ -83,18 +78,7 @@ fn camera() -> impl Scene {
 }
 
 fn scene() -> impl SceneList {
-    bsn_list![camera(), map(), @TreeCount]
-}
-
-fn on_player_collision(
-    event: On<CollisionStart>,
-    mut players: Query<&mut Player>,
-    mut commands: Commands,
-) {
-    if let Ok(mut player) = players.get_mut(event.collider2) {
-        player.trees += 1;
-        commands.entity(event.collider1).despawn();
-    }
+    bsn_list![camera(), map()]
 }
 
 fn map() -> impl Scene {
@@ -106,35 +90,8 @@ fn map() -> impl Scene {
     }
 }
 
-#[derive(SceneComponent, Default, Clone)]
-struct TreeCount;
-
-impl TreeCount {
-    fn scene() -> impl Scene {
-        bsn! {
-            Text("Trees: 0")
-            Node {
-                position_type: PositionType::Absolute,
-                top: px(8),
-                left: px(8)
-            }
-        }
-    }
-}
-
-fn update_tree_count(
-    player: Query<&Player, Changed<Player>>,
-    mut text: Query<&mut Text, With<TreeCount>>,
-) {
-    let (Ok(player), Ok(mut text)) = (player.single(), text.single_mut()) else {
-        return;
-    };
-
-    text.0 = format!("Trees: {}", player.trees);
-}
-
 #[derive(SceneComponent, FromTemplate)]
-#[require(RigidBody::Static, Collider::circle(TILE / 2.0), CollisionEventsEnabled)]
+#[require(RigidBody::Static, Collider::circle(TILE / 2.0) )]
 struct Tree;
 
 impl Tree {
@@ -142,7 +99,6 @@ impl Tree {
         bsn! {
             Mesh2d(asset_value(Circle::new(4.0)))
             MeshMaterial2d::<ColorMaterial>(asset_value(Color::srgb(0.0, 1.0, 0.0)))
-            on(on_player_collision)
         }
     }
 }
