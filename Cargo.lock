@@ -451,6 +451,7 @@ dependencies = [
  "bevy",
  "bevy_aseprite_ultra",
  "bevy_ecs_ldtk",
+ "bevy_light_2d",
 ]
 
 [[package]]
@@ -1219,6 +1220,16 @@ dependencies = [
  "smallvec",
  "tracing",
  "wgpu-types",
+]
+
+[[package]]
+name = "bevy_light_2d"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "70937848c579813b681e6680b8fbfa51f5bab0e9a4cd7dcd9fa98e41f4c436c6"
+dependencies = [
+ "bevy",
+ "smallvec",
 ]
 
 [[package]]

@@ -1,7 +1,11 @@
 use avian2d::prelude::*;
-use bevy::prelude::*;
+use bevy::{color::palettes::css::WHITE, prelude::*};
 use bevy_aseprite_ultra::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
+use bevy_light_2d::{
+    light::{AmbientLight2d, Light2d, PointLight2d},
+    plugin::Light2dPlugin,
+};
 
 use crate::woodcutting::WoodcuttingPlugin;
 
@@ -22,6 +26,7 @@ fn main() {
         .add_plugins((PhysicsPlugins::default(), PhysicsDebugPlugin))
         .add_plugins(AsepriteUltraPlugin)
         .add_plugins(WoodcuttingPlugin)
+        .add_plugins(Light2dPlugin)
         .insert_resource(LdtkSettings {
             int_grid_rendering: IntGridRendering::Invisible,
             ..default()
@@ -31,6 +36,10 @@ fn main() {
         .register_ldtk_int_cell::<Wall>(1)
         .register_ldtk_entity_scene("player", || bsn! { @Player })
         .register_ldtk_entity_scene("tree", || bsn! { @Tree { health: 3 }})
+        .register_ldtk_entity_scene(
+            "beacon",
+            || bsn! { PointLight2d { radius: 150.0, color: WHITE } },
+        )
         .add_systems(Startup, scene.spawn())
         .add_systems(Update, (move_player, animate_player).chain())
         .add_systems(
@@ -70,6 +79,9 @@ impl Player {
 fn camera() -> impl Scene {
     bsn! {
         Camera2d
+        template(|_| Ok(Light2d {
+            ambient_light: AmbientLight2d { brightness: 0.2, ..default() },
+        }))
         Projection::from(OrthographicProjection {
             scale: 0.33,
             ..OrthographicProjection::default_2d()
