@@ -1,4 +1,8 @@
 use avian2d::prelude::*;
+use beacon::{
+    Player, SOLDIER_IDLE, SOLDIER_WALK, TILE, Tree, inventory::InventoryPlugin,
+    woodcutting::WoodcuttingPlugin,
+};
 use bevy::{color::palettes::css::WHITE, prelude::*};
 use bevy_aseprite_ultra::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
@@ -7,18 +11,7 @@ use bevy_light_2d::{
     plugin::Light2dPlugin,
 };
 
-use crate::{inventory::InventoryPlugin, woodcutting::WoodcuttingPlugin};
-
-mod inventory;
-mod woodcutting;
-
-const TILE: f32 = 16.0;
 const SPEED: f32 = 100.0;
-const PLAYER_RADIUS: f32 = 6.0;
-
-/// Animation tags defined in `Soldier.aseprite`.
-const SOLDIER_IDLE: &str = "Idle";
-const SOLDIER_WALK: &str = "Walk";
 
 fn main() {
     App::new()
@@ -56,28 +49,6 @@ fn main() {
 #[require(RigidBody::Static, Collider::rectangle(TILE, TILE))]
 struct Wall {}
 
-#[derive(SceneComponent, Clone, Default)]
-#[require(
-    RigidBody::Dynamic,
-    Collider::circle(PLAYER_RADIUS),
-    LockedAxes::ROTATION_LOCKED,
-    LinearVelocity
-)]
-struct Player;
-
-impl Player {
-    fn scene() -> impl Scene {
-        bsn! {
-            // The render target. `AseAnimation` fills in the image and atlas.
-            Sprite
-            AseAnimation {
-                aseprite: "Soldier.aseprite",
-                animation: Animation::tag(SOLDIER_IDLE),
-            }
-        }
-    }
-}
-
 fn camera() -> impl Scene {
     bsn! {
         Camera2d
@@ -101,22 +72,6 @@ fn map() -> impl Scene {
         LevelSet
         Transform
         Visibility
-    }
-}
-
-#[derive(SceneComponent, FromTemplate)]
-#[require(RigidBody::Static, Collider::circle(TILE / 2.0) )]
-struct Tree {
-    pub health: usize,
-}
-
-impl Tree {
-    fn scene() -> impl Scene {
-        bsn! {
-            Sprite {
-                image: "arbutus.png",
-            }
-        }
     }
 }
 
