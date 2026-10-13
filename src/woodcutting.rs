@@ -4,7 +4,10 @@ use avian2d::collision::{
 };
 use bevy::prelude::*;
 
-use crate::{Player, Tree};
+use crate::{
+    Player, Tree,
+    inventory::{GroundItem, Item},
+};
 
 pub struct WoodcuttingPlugin;
 
@@ -46,10 +49,20 @@ fn on_tree_hit(event: On<TreeHit>, query: Query<(Entity, &mut Tree)>) {
     }
 }
 
-fn check_tree_health(mut commands: Commands, query: Query<(Entity, &Tree), Changed<Tree>>) {
-    for (entity, tree) in query {
+fn check_tree_health(
+    mut commands: Commands,
+    query: Query<(Entity, &Tree, &GlobalTransform), Changed<Tree>>,
+) {
+    for (entity, tree, tree_transform) in query {
         if tree.health <= 0 {
             commands.entity(entity).despawn();
+            commands.spawn_scene(bsn! {
+                GroundItem(Item::Wood)
+                Transform { translation: {tree_transform.translation()} }
+                Sprite {
+                    image: "log.png",
+                }
+            });
         }
     }
 }

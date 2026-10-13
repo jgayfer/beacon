@@ -7,8 +7,9 @@ use bevy_light_2d::{
     plugin::Light2dPlugin,
 };
 
-use crate::woodcutting::WoodcuttingPlugin;
+use crate::{inventory::InventoryPlugin, woodcutting::WoodcuttingPlugin};
 
+mod inventory;
 mod woodcutting;
 
 const TILE: f32 = 16.0;
@@ -26,6 +27,7 @@ fn main() {
         .add_plugins((PhysicsPlugins::default(), PhysicsDebugPlugin))
         .add_plugins(AsepriteUltraPlugin)
         .add_plugins(WoodcuttingPlugin)
+        .add_plugins(InventoryPlugin)
         .add_plugins(Light2dPlugin)
         .insert_resource(LdtkSettings {
             int_grid_rendering: IntGridRendering::Invisible,
