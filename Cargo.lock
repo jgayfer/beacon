@@ -449,6 +449,7 @@ version = "0.1.0"
 dependencies = [
  "avian2d",
  "beacon_core",
+ "beacon_engine",
  "beacon_game",
  "beacon_scene",
  "bevy",
@@ -462,12 +463,16 @@ name = "beacon_core"
 version = "0.1.0"
 dependencies = [
  "avian2d",
+ "beacon_engine",
  "bevy",
 ]
 
 [[package]]
 name = "beacon_engine"
 version = "0.1.0"
+dependencies = [
+ "bevy",
+]
 
 [[package]]
 name = "beacon_game"

@@ -1,4 +1,5 @@
 use avian2d::prelude::*;
+use beacon_engine::camera::CameraTarget;
 use bevy::prelude::*;
 
 const PLAYER_RADIUS: f32 = 6.0;
@@ -10,7 +11,8 @@ const PLAYER_RADIUS: f32 = 6.0;
     LockedAxes::ROTATION_LOCKED,
     LinearVelocity,
     Facing,
-    Action
+    Action,
+    CameraTarget
 )]
 pub struct Player;
 

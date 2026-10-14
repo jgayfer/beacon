@@ -1,6 +1,7 @@
 use avian2d::prelude::*;
 use beacon::{TILE, Tree, woodcutting::WoodcuttingPlugin};
 use beacon_core::player::{Action, Facing, Player};
+use beacon_engine::camera::CameraFollowPlugin;
 use beacon_game::GroundItemPlugin;
 use beacon_scene::player::{PlayerScenePlugin, player_scene};
 use bevy::{color::palettes::css::WHITE, prelude::*};
@@ -23,6 +24,7 @@ fn main() {
         .add_plugins(GroundItemPlugin)
         .add_plugins(PlayerScenePlugin)
         .add_plugins(Light2dPlugin)
+        .add_plugins(CameraFollowPlugin)
         .insert_resource(LdtkSettings {
             int_grid_rendering: IntGridRendering::Invisible,
             ..default()
@@ -37,11 +39,7 @@ fn main() {
             || bsn! { PointLight2d { radius: 150.0, color: WHITE } },
         )
         .add_systems(Startup, scene.spawn())
-        .add_systems(Update, (move_player).chain())
-        .add_systems(
-            PostUpdate,
-            (follow_player.before(TransformSystems::Propagate),),
-        )
+        .add_systems(Update, move_player)
         .run();
 }
 
@@ -108,15 +106,4 @@ fn move_player(
             facing.set_if_neq(Facing::Right);
         }
     }
-}
-
-fn follow_player(
-    player: Query<&Transform, With<Player>>,
-    mut camera: Query<&mut Transform, (With<Camera2d>, Without<Player>)>,
-) {
-    let (Ok(p), Ok(mut c)) = (player.single(), camera.single_mut()) else {
-        return;
-    };
-    c.translation.x = p.translation.x;
-    c.translation.y = p.translation.y;
 }
