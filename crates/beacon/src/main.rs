@@ -1,7 +1,7 @@
 use avian2d::prelude::*;
 use beacon::{TILE, Tree, woodcutting::WoodcuttingPlugin};
 use beacon_core::player::{Action, Facing, Player};
-use beacon_engine::camera::CameraFollowPlugin;
+use beacon_engine::{camera::CameraFollowPlugin, hitbox::HitboxPlugin};
 use beacon_game::GroundItemPlugin;
 use beacon_scene::player::{PlayerScenePlugin, player_scene};
 use bevy::{color::palettes::css::WHITE, prelude::*};
@@ -25,6 +25,7 @@ fn main() {
         .add_plugins(PlayerScenePlugin)
         .add_plugins(Light2dPlugin)
         .add_plugins(CameraFollowPlugin)
+        .add_plugins(HitboxPlugin)
         .insert_resource(LdtkSettings {
             int_grid_rendering: IntGridRendering::Invisible,
             ..default()
