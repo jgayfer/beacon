@@ -1,18 +1,20 @@
 use avian2d::collision::collision_events::CollisionStart;
-use beacon_core::item::{GroundItem, GroundItemTouched};
+use beacon_core::{
+    item::{GroundItem, GroundItemTouched},
+    player::Player,
+};
 use bevy::prelude::*;
 
-use crate::Player;
+pub struct GroundItemPlugin;
 
-pub struct InventoryPlugin;
-
-impl Plugin for InventoryPlugin {
+impl Plugin for GroundItemPlugin {
     fn build(&self, app: &mut App) {
-        app.add_observer(on_item_contact).add_observer(on_pickup);
+        app.add_observer(detect_ground_item_contact)
+            .add_observer(on_ground_item_touched);
     }
 }
 
-fn on_item_contact(
+fn detect_ground_item_contact(
     event: On<CollisionStart>,
     ground_item_query: Query<(), With<GroundItem>>,
     player_query: Query<(), With<Player>>,
@@ -24,7 +26,6 @@ fn on_item_contact(
     }
 }
 
-fn on_pickup(event: On<GroundItemTouched>, mut commands: Commands) {
-    info!("Item touched");
+fn on_ground_item_touched(event: On<GroundItemTouched>, mut commands: Commands) {
     commands.entity(event.0).despawn();
 }

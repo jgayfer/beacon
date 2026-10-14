@@ -2,10 +2,13 @@ use avian2d::collision::{
     collider::{Collider, Sensor},
     collision_events::{CollisionEventsEnabled, CollisionStart},
 };
-use beacon_core::item::{GroundItem, Item};
+use beacon_core::{
+    item::{GroundItem, Item},
+    player::Player,
+};
 use bevy::prelude::*;
 
-use crate::{Player, Tree};
+use crate::Tree;
 
 pub struct WoodcuttingPlugin;
 
@@ -68,11 +71,10 @@ fn check_tree_health(
 fn tick_hitboxes(mut commands: Commands, time: Res<Time>, hitboxes: Query<(Entity, &mut Hitbox)>) {
     for (entity, mut hitbox) in hitboxes {
         hitbox.timer.tick(time.delta());
-        if hitbox.timer.just_finished() {
-            if let Ok(mut hitbox_entity) = commands.get_spawned_entity(entity) {
+        if hitbox.timer.just_finished()
+            && let Ok(mut hitbox_entity) = commands.get_spawned_entity(entity) {
                 hitbox_entity.despawn();
             }
-        }
     }
 }
 

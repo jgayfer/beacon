@@ -1,8 +1,8 @@
 use avian2d::prelude::*;
-use beacon::{
-    Player, SOLDIER_IDLE, SOLDIER_WALK, TILE, Tree, inventory::InventoryPlugin,
-    woodcutting::WoodcuttingPlugin,
-};
+use beacon::{TILE, Tree, woodcutting::WoodcuttingPlugin};
+use beacon_core::player::{Action, Facing, Player};
+use beacon_game::GroundItemPlugin;
+use beacon_scene::player::{PlayerScenePlugin, player_scene};
 use bevy::{color::palettes::css::WHITE, prelude::*};
 use bevy_aseprite_ultra::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
@@ -20,7 +20,8 @@ fn main() {
         .add_plugins((PhysicsPlugins::default(), PhysicsDebugPlugin))
         .add_plugins(AsepriteUltraPlugin)
         .add_plugins(WoodcuttingPlugin)
-        .add_plugins(InventoryPlugin)
+        .add_plugins(GroundItemPlugin)
+        .add_plugins(PlayerScenePlugin)
         .add_plugins(Light2dPlugin)
         .insert_resource(LdtkSettings {
             int_grid_rendering: IntGridRendering::Invisible,
@@ -29,14 +30,14 @@ fn main() {
         .insert_resource(Gravity::ZERO)
         .insert_resource(LevelSelection::index(0))
         .register_ldtk_int_cell::<Wall>(1)
-        .register_ldtk_entity_scene("player", || bsn! { @Player })
+        .register_ldtk_entity_scene("player", player_scene)
         .register_ldtk_entity_scene("tree", || bsn! { @Tree { health: 3 }})
         .register_ldtk_entity_scene(
             "beacon",
             || bsn! { PointLight2d { radius: 150.0, color: WHITE } },
         )
         .add_systems(Startup, scene.spawn())
-        .add_systems(Update, (move_player, animate_player).chain())
+        .add_systems(Update, (move_player).chain())
         .add_systems(
             PostUpdate,
             (follow_player.before(TransformSystems::Propagate),),
@@ -75,7 +76,10 @@ fn map() -> impl Scene {
     }
 }
 
-fn move_player(keys: Res<ButtonInput<KeyCode>>, mut q: Query<&mut LinearVelocity, With<Player>>) {
+fn move_player(
+    keys: Res<ButtonInput<KeyCode>>,
+    mut q: Query<(&mut LinearVelocity, &mut Facing, &mut Action), With<Player>>,
+) {
     let mut dir = Vec2::ZERO;
     if keys.pressed(KeyCode::ArrowLeft) {
         dir.x -= 1.0;
@@ -89,23 +93,19 @@ fn move_player(keys: Res<ButtonInput<KeyCode>>, mut q: Query<&mut LinearVelocity
     if keys.pressed(KeyCode::ArrowDown) {
         dir.y -= 1.0;
     }
-    for mut v in &mut q {
-        v.0 = dir.normalize_or_zero() * SPEED;
-    }
-}
+    for (mut velocity, mut facing, mut action) in &mut q {
+        velocity.0 = dir.normalize_or_zero() * SPEED;
 
-/// Plays the walk animation while the player is moving, and faces the direction of travel.
-fn animate_player(mut q: Query<(&LinearVelocity, &mut AseAnimation, &mut Sprite), With<Player>>) {
-    for (velocity, mut animation, mut sprite) in &mut q {
-        let moving = velocity.0 != Vec2::ZERO;
+        action.set_if_neq(if dir == Vec2::ZERO {
+            Action::Idle
+        } else {
+            Action::Walking
+        });
 
-        let target = if moving { SOLDIER_WALK } else { SOLDIER_IDLE };
-        if animation.animation.tag.as_deref() != Some(target) {
-            animation.animation.play_loop(target);
-        }
-
-        if velocity.0.x != 0.0 {
-            sprite.flip_x = velocity.0.x < 0.0;
+        if dir.x < 0.0 {
+            facing.set_if_neq(Facing::Left);
+        } else if dir.x > 0.0 {
+            facing.set_if_neq(Facing::Right);
         }
     }
 }
