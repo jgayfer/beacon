@@ -1,5 +1,6 @@
 use avian2d::collision::collision_events::CollisionStart;
 use beacon_core::{
+    inventory::Inventory,
     item::{GroundItem, GroundItemTouched},
     player::Player,
 };
@@ -26,6 +27,22 @@ fn detect_ground_item_contact(
     }
 }
 
-fn on_ground_item_touched(event: On<GroundItemTouched>, mut commands: Commands) {
-    commands.entity(event.0).despawn();
+fn on_ground_item_touched(
+    event: On<GroundItemTouched>,
+    mut commands: Commands,
+    mut ground_items: Query<&mut GroundItem>,
+    mut inventory: Single<&mut Inventory, With<Player>>,
+) {
+    let Ok(mut ground_item) = ground_items.get_mut(event.0) else {
+        return;
+    };
+
+    match inventory.insert(ground_item.to_owned().0) {
+        None => {
+            commands.entity(event.0).despawn();
+        }
+        Some(leftover) => {
+            ground_item.0 = leftover;
+        }
+    }
 }

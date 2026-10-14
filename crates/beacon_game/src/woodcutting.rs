@@ -1,4 +1,4 @@
-use beacon_core::item::{GroundItem, Item};
+use beacon_core::item::{GroundItem, ItemId, ItemStack};
 use beacon_engine::hitbox::Hit;
 use bevy::prelude::*;
 
@@ -28,7 +28,7 @@ fn check_tree_health(
         if tree.health == 0 {
             commands.entity(entity).despawn();
             commands.spawn_scene(bsn! {
-                GroundItem(Item::Wood)
+                GroundItem(ItemStack { id: ItemId::Wood, count: 1 })
                 Transform { translation: {tree_transform.translation()} }
                 Sprite {
                     image: "log.png",
