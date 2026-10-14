@@ -6,7 +6,7 @@ use beacon_core::{
 use beacon_engine::hitbox::{Hit, Hitbox};
 use bevy::prelude::*;
 
-use crate::Tree;
+use beacon_core::tree::Tree;
 
 pub struct WoodcuttingPlugin;
 

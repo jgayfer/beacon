@@ -481,6 +481,7 @@ version = "0.1.0"
 dependencies = [
  "avian2d",
  "beacon_core",
+ "beacon_engine",
  "bevy",
 ]
 

@@ -1,9 +1,14 @@
 use avian2d::prelude::*;
-use beacon::{TILE, Tree, woodcutting::WoodcuttingPlugin};
-use beacon_core::player::{Action, Facing, Player};
+use beacon_core::{
+    TILE,
+    player::{Action, Facing, Player},
+};
 use beacon_engine::{camera::CameraFollowPlugin, hitbox::HitboxPlugin};
-use beacon_game::GroundItemPlugin;
-use beacon_scene::player::{PlayerScenePlugin, player_scene};
+use beacon_game::{GroundItemPlugin, WoodcuttingPlugin};
+use beacon_scene::{
+    player::{PlayerScenePlugin, player_scene},
+    tree::tree_scene,
+};
 use bevy::{color::palettes::css::WHITE, prelude::*};
 use bevy_aseprite_ultra::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
@@ -34,7 +39,7 @@ fn main() {
         .insert_resource(LevelSelection::index(0))
         .register_ldtk_int_cell::<Wall>(1)
         .register_ldtk_entity_scene("player", player_scene)
-        .register_ldtk_entity_scene("tree", || bsn! { @Tree { health: 3 }})
+        .register_ldtk_entity_scene("tree", tree_scene)
         .register_ldtk_entity_scene(
             "beacon",
             || bsn! { PointLight2d { radius: 150.0, color: WHITE } },
