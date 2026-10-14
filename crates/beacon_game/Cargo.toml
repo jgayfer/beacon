@@ -1,0 +1,6 @@
+[package]
+name = "beacon_game"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

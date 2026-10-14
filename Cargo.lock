@@ -455,6 +455,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "beacon_core"
+version = "0.1.0"
+
+[[package]]
+name = "beacon_engine"
+version = "0.1.0"
+
+[[package]]
+name = "beacon_game"
+version = "0.1.0"
+
+[[package]]
 name = "bevy"
 version = "0.19.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
