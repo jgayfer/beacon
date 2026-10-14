@@ -1,10 +1,7 @@
 use avian2d::prelude::*;
-use beacon_core::{
-    TILE,
-    player::{Action, Facing, Player},
-};
+use beacon_core::TILE;
 use beacon_engine::{camera::CameraFollowPlugin, hitbox::HitboxPlugin};
-use beacon_game::{GroundItemPlugin, WoodcuttingPlugin};
+use beacon_game::{GroundItemPlugin, PlayerPlugin, WoodcuttingPlugin};
 use beacon_scene::{
     player::{PlayerScenePlugin, player_scene},
     tree::tree_scene,
@@ -17,8 +14,6 @@ use bevy_light_2d::{
     plugin::Light2dPlugin,
 };
 
-const SPEED: f32 = 100.0;
-
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
@@ -26,6 +21,7 @@ fn main() {
         .add_plugins((PhysicsPlugins::default(), PhysicsDebugPlugin))
         .add_plugins(AsepriteUltraPlugin)
         .add_plugins(WoodcuttingPlugin)
+        .add_plugins(PlayerPlugin)
         .add_plugins(GroundItemPlugin)
         .add_plugins(PlayerScenePlugin)
         .add_plugins(Light2dPlugin)
@@ -45,7 +41,6 @@ fn main() {
             || bsn! { PointLight2d { radius: 150.0, color: WHITE } },
         )
         .add_systems(Startup, scene.spawn())
-        .add_systems(Update, move_player)
         .run();
 }
 
@@ -77,39 +72,5 @@ fn map() -> impl Scene {
         LevelSet
         Transform
         Visibility
-    }
-}
-
-fn move_player(
-    keys: Res<ButtonInput<KeyCode>>,
-    mut q: Query<(&mut LinearVelocity, &mut Facing, &mut Action), With<Player>>,
-) {
-    let mut dir = Vec2::ZERO;
-    if keys.pressed(KeyCode::ArrowLeft) {
-        dir.x -= 1.0;
-    }
-    if keys.pressed(KeyCode::ArrowRight) {
-        dir.x += 1.0;
-    }
-    if keys.pressed(KeyCode::ArrowUp) {
-        dir.y += 1.0;
-    }
-    if keys.pressed(KeyCode::ArrowDown) {
-        dir.y -= 1.0;
-    }
-    for (mut velocity, mut facing, mut action) in &mut q {
-        velocity.0 = dir.normalize_or_zero() * SPEED;
-
-        action.set_if_neq(if dir == Vec2::ZERO {
-            Action::Idle
-        } else {
-            Action::Walking
-        });
-
-        if dir.x < 0.0 {
-            facing.set_if_neq(Facing::Left);
-        } else if dir.x > 0.0 {
-            facing.set_if_neq(Facing::Right);
-        }
     }
 }
