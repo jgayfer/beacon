@@ -452,7 +452,6 @@ dependencies = [
  "beacon_game",
  "beacon_scene",
  "bevy",
- "bevy_aseprite_ultra",
  "bevy_light_2d",
 ]
 

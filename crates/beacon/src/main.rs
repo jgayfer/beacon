@@ -1,27 +1,15 @@
-use avian2d::prelude::*;
-use beacon_engine::{camera::CameraFollowPlugin, hitbox::HitboxPlugin};
-use beacon_game::{GroundItemPlugin, PlayerPlugin, WoodcuttingPlugin};
-use beacon_scene::{
-    map::{MapPlugin, map_scene},
-    player::PlayerScenePlugin,
-};
+use avian2d::prelude::PhysicsDebugPlugin;
+use beacon_engine::EnginePlugin;
+use beacon_game::GamePlugin;
+use beacon_scene::{ScenesPlugin, map::map_scene};
 use bevy::prelude::*;
-use bevy_aseprite_ultra::prelude::*;
-use bevy_light_2d::{
-    light::{AmbientLight2d, Light2d},
-    plugin::Light2dPlugin,
-};
+use bevy_light_2d::light::{AmbientLight2d, Light2d};
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
-        .add_plugins((PhysicsPlugins::default(), PhysicsDebugPlugin))
-        .add_plugins(AsepriteUltraPlugin)
-        .add_plugins(Light2dPlugin)
-        .add_plugins((CameraFollowPlugin, HitboxPlugin))
-        .add_plugins((PlayerPlugin, WoodcuttingPlugin, GroundItemPlugin))
-        .add_plugins((MapPlugin, PlayerScenePlugin))
-        .insert_resource(Gravity::ZERO)
+        .add_plugins((EnginePlugin, GamePlugin, ScenesPlugin))
+        .add_plugins(PhysicsDebugPlugin)
         .add_systems(Startup, scene.spawn())
         .run();
 }
