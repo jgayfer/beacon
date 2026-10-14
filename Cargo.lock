@@ -448,13 +448,11 @@ name = "beacon"
 version = "0.1.0"
 dependencies = [
  "avian2d",
- "beacon_core",
  "beacon_engine",
  "beacon_game",
  "beacon_scene",
  "bevy",
  "bevy_aseprite_ultra",
- "bevy_ecs_ldtk",
  "bevy_light_2d",
 ]
 
@@ -492,6 +490,8 @@ dependencies = [
  "beacon_core",
  "bevy",
  "bevy_aseprite_ultra",
+ "bevy_ecs_ldtk",
+ "bevy_light_2d",
 ]
 
 [[package]]
