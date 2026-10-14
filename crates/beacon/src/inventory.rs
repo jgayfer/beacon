@@ -1,12 +1,8 @@
-use avian2d::collision::{
-    collider::{Collider, Sensor},
-    collision_events::{CollisionEventsEnabled, CollisionStart},
-};
+use avian2d::collision::collision_events::CollisionStart;
+use beacon_core::item::{GroundItem, GroundItemTouched};
 use bevy::prelude::*;
 
 use crate::Player;
-
-const INVENTORY_SIZE: usize = 9;
 
 pub struct InventoryPlugin;
 
@@ -15,9 +11,6 @@ impl Plugin for InventoryPlugin {
         app.add_observer(on_item_contact).add_observer(on_pickup);
     }
 }
-
-#[derive(EntityEvent)]
-pub struct GroundItemTouched(Entity);
 
 fn on_item_contact(
     event: On<CollisionStart>,
@@ -35,16 +28,3 @@ fn on_pickup(event: On<GroundItemTouched>, mut commands: Commands) {
     info!("Item touched");
     commands.entity(event.0).despawn();
 }
-
-#[derive(Component, Clone, Default)]
-#[require(Transform, Collider::circle(8.0), Sensor, CollisionEventsEnabled)]
-pub struct GroundItem(pub Item);
-
-#[derive(Clone, Default)]
-pub enum Item {
-    #[default]
-    Wood,
-}
-
-#[derive(Component, Clone)]
-pub struct Inventory([Item; INVENTORY_SIZE]);

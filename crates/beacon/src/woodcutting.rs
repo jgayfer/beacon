@@ -2,12 +2,10 @@ use avian2d::collision::{
     collider::{Collider, Sensor},
     collision_events::{CollisionEventsEnabled, CollisionStart},
 };
+use beacon_core::item::{GroundItem, Item};
 use bevy::prelude::*;
 
-use crate::{
-    Player, Tree,
-    inventory::{GroundItem, Item},
-};
+use crate::{Player, Tree};
 
 pub struct WoodcuttingPlugin;
 
