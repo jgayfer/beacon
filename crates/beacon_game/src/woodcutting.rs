@@ -28,7 +28,7 @@ fn check_tree_health(
         if tree.health == 0 {
             commands.entity(entity).despawn();
             commands.spawn_scene(bsn! {
-                GroundItem(ItemStack { id: ItemId::Wood, count: 1 })
+                GroundItem(ItemStack { id: ItemId::Wood, count: 48 })
                 Transform { translation: {tree_transform.translation()} }
                 Sprite {
                     image: "log.png",

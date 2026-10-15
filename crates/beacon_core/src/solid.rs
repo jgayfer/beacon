@@ -4,7 +4,8 @@ use bevy::prelude::*;
 use crate::TILE;
 
 /// A tile that blocks movement.
-#[derive(Component, Default, Clone)]
+#[derive(Component, Default, Clone, Reflect)]
+#[reflect(Component)]
 #[require(RigidBody::Static, Collider = tile_collider())]
 pub struct Solid;
 

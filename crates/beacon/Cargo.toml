@@ -9,3 +9,4 @@ beacon_game.workspace = true
 beacon_scene.workspace = true
 bevy.workspace = true
 avian2d.workspace = true
+bevy-inspector-egui.workspace = true

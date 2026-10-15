@@ -2,7 +2,8 @@ use bevy::prelude::*;
 
 use crate::item::ItemStack;
 
-#[derive(Component, Default, Clone)]
+#[derive(Component, Default, Clone, Reflect)]
+#[reflect(Component)]
 pub struct Inventory {
     slots: Vec<Option<ItemStack>>,
 }

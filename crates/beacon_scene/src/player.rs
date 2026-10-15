@@ -7,6 +7,7 @@ pub const SOLDIER_WALK: &str = "Walk";
 
 pub fn player_scene() -> impl Scene {
     bsn! {
+        #Player
         Player
         Sprite
         AseAnimation {

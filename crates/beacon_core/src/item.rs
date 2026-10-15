@@ -2,10 +2,7 @@ use avian2d::collision::{
     collider::{Collider, Sensor},
     collision_events::CollisionEventsEnabled,
 };
-use bevy::{
-    ecs::{component::Component, entity::Entity, event::EntityEvent},
-    transform::components::Transform,
-};
+use bevy::prelude::*;
 
 #[derive(Component, Clone, Default)]
 #[require(Transform, Collider::circle(8.0), Sensor, CollisionEventsEnabled)]
@@ -14,7 +11,7 @@ pub struct GroundItem(pub ItemStack);
 #[derive(EntityEvent)]
 pub struct GroundItemTouched(pub Entity);
 
-#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, Default)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, Default, Reflect)]
 pub enum ItemId {
     #[default]
     Wood,
@@ -38,7 +35,7 @@ pub struct ItemDef {
     pub max_stack: u16,
 }
 
-#[derive(Clone, Default, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Default, Copy, Debug, Eq, Hash, PartialEq, Reflect)]
 pub struct ItemStack {
     pub id: ItemId,
     pub count: u16,
