@@ -2,7 +2,7 @@ use beacon_core::solid::Solid;
 use bevy::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
 
-use crate::{beacon::beacon_scene, player::player_scene, tree::tree_scene};
+use crate::{player::player_scene, tree::tree_scene};
 
 pub struct MapPlugin;
 
@@ -16,8 +16,7 @@ impl Plugin for MapPlugin {
             .insert_resource(LevelSelection::index(0))
             .register_ldtk_int_cell::<SolidCell>(1)
             .register_ldtk_entity_scene("player", player_scene)
-            .register_ldtk_entity_scene("tree", tree_scene)
-            .register_ldtk_entity_scene("beacon", beacon_scene);
+            .register_ldtk_entity_scene("tree", tree_scene);
     }
 }
 
