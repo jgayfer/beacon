@@ -1,7 +1,7 @@
 use avian2d::prelude::PhysicsDebugPlugin;
 use beacon_engine::EnginePlugin;
 use beacon_game::GamePlugin;
-use beacon_scene::{ScenesPlugin, map::map_scene};
+use beacon_scene::{ScenesPlugin, hotbar::hotbar_scene, map::map_scene};
 use bevy::prelude::*;
 use bevy_inspector_egui::{bevy_egui::EguiPlugin, quick::WorldInspectorPlugin};
 
@@ -17,7 +17,7 @@ fn main() {
 }
 
 fn scene() -> impl SceneList {
-    bsn_list![camera(), map_scene()]
+    bsn_list![camera(), map_scene(), hotbar_scene()]
 }
 
 fn camera() -> impl Scene {
