@@ -6,5 +6,6 @@ edition.workspace = true
 [dependencies]
 beacon_core.workspace = true
 beacon_engine.workspace = true
+beacon_scene.workspace = true
 bevy.workspace = true
 avian2d.workspace = true

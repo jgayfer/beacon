@@ -1,4 +1,5 @@
 pub mod balefire;
+pub mod ground_item;
 pub mod hotbar;
 pub mod map;
 pub mod player;

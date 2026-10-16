@@ -482,6 +482,7 @@ dependencies = [
  "avian2d",
  "beacon_core",
  "beacon_engine",
+ "beacon_scene",
  "bevy",
 ]
 
