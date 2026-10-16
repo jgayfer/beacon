@@ -1,9 +1,11 @@
+mod balefire;
 mod ground_item;
 mod inventory;
 mod player;
 mod woodcutting;
 
 use bevy::prelude::*;
+pub use balefire::BalefirePlugin;
 pub use ground_item::GroundItemPlugin;
 pub use inventory::InventoryPlugin;
 pub use player::PlayerPlugin;
@@ -18,6 +20,7 @@ impl Plugin for GamePlugin {
             WoodcuttingPlugin,
             GroundItemPlugin,
             InventoryPlugin,
+            BalefirePlugin,
         ));
     }
 }

@@ -22,6 +22,9 @@ const INVENTORY_SIZE: usize = 9;
 )]
 pub struct Player;
 
+#[derive(EntityEvent)]
+pub struct PlayerInteracted(pub Entity);
+
 #[derive(Component, Clone, Default, Copy, PartialEq, Reflect)]
 #[reflect(Component)]
 pub enum Facing {

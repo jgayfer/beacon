@@ -218,7 +218,7 @@
 			"fieldDefs": []
 		},
 		{
-			"identifier": "beacon",
+			"identifier": "balefire",
 			"uid": 10,
 			"tags": [],
 			"exportToToc": false,
@@ -409,7 +409,7 @@
 							"__worldY": 48
 						},
 						{
-							"__identifier": "beacon",
+							"__identifier": "balefire",
 							"__grid": [7,8],
 							"__pivot": [0,0],
 							"__tags": [],

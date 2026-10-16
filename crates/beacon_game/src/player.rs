@@ -1,5 +1,5 @@
 use avian2d::prelude::*;
-use beacon_core::player::{Action, Facing, Player};
+use beacon_core::player::{Action, Facing, Player, PlayerInteracted};
 use beacon_engine::hitbox::Hitbox;
 use bevy::prelude::*;
 
@@ -9,7 +9,7 @@ pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (move_player, start_swing));
+        app.add_systems(Update, (move_player, start_swing, interact));
     }
 }
 
@@ -66,5 +66,11 @@ fn start_swing(
                 Transform::from_xyz(x, 0.0, 0.0),
             ));
         }
+    }
+}
+
+fn interact(mut commands: Commands, keys: Res<ButtonInput<KeyCode>>, player: Single<Entity, With<Player>>) {
+    if keys.just_pressed(KeyCode::KeyE) {
+        commands.trigger(PlayerInteracted(*player));
     }
 }
