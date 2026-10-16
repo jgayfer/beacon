@@ -31,7 +31,7 @@ fn check_tree_health(
                 GroundItem(ItemStack { id: ItemId::Wood, count: 48 })
                 Transform { translation: {tree_transform.translation()} }
                 Sprite {
-                    image: "log.png",
+                    image: {ItemId::Wood.def().sprite},
                 }
             });
         }

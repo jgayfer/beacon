@@ -28,11 +28,13 @@ impl ItemId {
 static WOOD: ItemDef = ItemDef {
     name: "wood",
     max_stack: 64,
+    sprite: "log.png",
 };
 
 pub struct ItemDef {
     pub name: &'static str,
     pub max_stack: u16,
+    pub sprite: &'static str,
 }
 
 #[derive(Clone, Default, Copy, Debug, Eq, Hash, PartialEq, Reflect)]
