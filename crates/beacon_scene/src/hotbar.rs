@@ -1,11 +1,14 @@
-use beacon_core::{inventory::Inventory, player::Player};
-use bevy::{image::TRANSPARENT_IMAGE_HANDLE, prelude::*};
+use beacon_core::{
+    inventory::{Inventory, SelectedSlot},
+    player::Player,
+};
+use bevy::{color::palettes::css::YELLOW, image::TRANSPARENT_IMAGE_HANDLE, prelude::*};
 
 pub struct HotbarPlugin;
 
 impl Plugin for HotbarPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, update_hotbar);
+        app.add_systems(Update, (update_hotbar, highlight_selected));
     }
 }
 
@@ -68,5 +71,18 @@ fn update_hotbar(
             .get(count.0)
             .map(|s| s.count.to_string())
             .unwrap_or_default();
+    }
+}
+
+fn highlight_selected(
+    selected: Single<&SelectedSlot, (With<Player>, Changed<SelectedSlot>)>,
+    mut slots: Query<(&HotbarSlot, &mut BorderColor)>,
+) {
+    for (slot, mut border) in &mut slots {
+        *border = BorderColor::all(if slot.0 == selected.0 {
+            YELLOW.into()
+        } else {
+            Color::WHITE
+        });
     }
 }

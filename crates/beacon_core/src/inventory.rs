@@ -2,6 +2,10 @@ use bevy::prelude::*;
 
 use crate::item::ItemStack;
 
+#[derive(Component, Default, Clone, Copy, PartialEq, Eq, Reflect)]
+#[reflect(Component)]
+pub struct SelectedSlot(pub usize);
+
 #[derive(Component, Default, Clone, Reflect)]
 #[reflect(Component)]
 pub struct Inventory {
@@ -43,6 +47,11 @@ impl Inventory {
     pub fn get(&self, index: usize) -> Option<&ItemStack> {
         self.slots.get(index)?.as_ref()
     }
+
+    /// Remove and return the [`ItemStack`] at the given index, if one exists.
+    pub fn take(&mut self, index: usize) -> Option<ItemStack> {
+        self.slots.get_mut(index)?.take()
+    }
 }
 
 #[cfg(test)]
@@ -82,6 +91,17 @@ mod tests {
         assert_eq!(leftover, None);
         assert_eq!(inventory.get(0), Some(&wood(wood_max_stack())));
         assert_eq!(inventory.get(1), Some(&wood(5)));
+    }
+
+    #[test]
+    fn take_empties_the_slot() {
+        let mut inventory = Inventory::new(2);
+        inventory.insert(wood(3));
+
+        assert_eq!(inventory.take(0), Some(wood(3)));
+        assert_eq!(inventory.get(0), None);
+        assert_eq!(inventory.take(0), None);
+        assert_eq!(inventory.take(5), None);
     }
 
     #[test]

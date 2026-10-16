@@ -2,7 +2,7 @@ use avian2d::prelude::*;
 use beacon_engine::camera::CameraTarget;
 use bevy::prelude::*;
 
-use crate::inventory::Inventory;
+use crate::inventory::{Inventory, SelectedSlot};
 
 const PLAYER_RADIUS: f32 = 6.0;
 const INVENTORY_SIZE: usize = 9;
@@ -17,7 +17,8 @@ const INVENTORY_SIZE: usize = 9;
     Facing,
     Action,
     CameraTarget,
-    Inventory = Inventory::new(INVENTORY_SIZE)
+    Inventory = Inventory::new(INVENTORY_SIZE),
+    SelectedSlot
 )]
 pub struct Player;
 
