@@ -1,5 +1,9 @@
 use avian2d::prelude::*;
-use beacon_core::player::{Action, Facing, Player, PlayerInteracted};
+use beacon_core::{
+    inventory::{Inventory, SelectedSlot},
+    item::{ItemKind, ItemUsed},
+    player::{Action, Facing, Player, PlayerInteracted},
+};
 use beacon_engine::hitbox::Hitbox;
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
@@ -14,7 +18,8 @@ pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (move_player, start_swing, interact));
+        app.add_systems(Update, (move_player, interact, use_item))
+            .add_observer(spawn_tool_hitbox);
     }
 }
 
@@ -52,29 +57,51 @@ fn move_player(
     }
 }
 
-fn start_swing(
-    mut commands: Commands,
-    keys: Res<ButtonInput<KeyCode>>,
-    player_query: Query<(Entity, &Facing), With<Player>>,
-) {
-    if keys.just_pressed(KeyCode::Space) {
-        for (entity, facing) in player_query {
-            let x = match facing {
-                Facing::Left => -16.0,
-                Facing::Right => 16.0,
-            };
-            commands.entity(entity).with_child((
-                Hitbox {
-                    timer: Timer::from_seconds(0.5, TimerMode::Once),
-                },
-                Collider::rectangle(16.0, 16.0),
-                Transform::from_xyz(x, 0.0, 0.0),
-            ));
-        }
+fn spawn_tool_hitbox(event: On<ItemUsed>, mut commands: Commands, facing: Query<&Facing>) {
+    if matches!(event.item.id.def().kind, ItemKind::Tool) {
+        let Ok(facing) = facing.get(event.player) else {
+            return;
+        };
+
+        let x = match facing {
+            Facing::Left => -16.0,
+            Facing::Right => 16.0,
+        };
+
+        commands.entity(event.player).with_child((
+            Hitbox {
+                timer: Timer::from_seconds(0.5, TimerMode::Once),
+            },
+            Collider::rectangle(16.0, 16.0),
+            Transform::from_xyz(x, 0.0, 0.0),
+        ));
     }
 }
 
-fn interact(mut commands: Commands, keys: Res<ButtonInput<KeyCode>>, player: Single<Entity, With<Player>>) {
+fn use_item(
+    mut commands: Commands,
+    keys: Res<ButtonInput<KeyCode>>,
+    player: Single<Entity, With<Player>>,
+    selected: Single<&SelectedSlot, With<Player>>,
+    inventory: Single<&Inventory, With<Player>>,
+) {
+    if keys.just_pressed(KeyCode::Space) {
+        let Some(selected_item) = inventory.get(selected.0) else {
+            return;
+        };
+
+        commands.trigger(ItemUsed {
+            player: player.entity(),
+            item: *selected_item,
+        });
+    }
+}
+
+fn interact(
+    mut commands: Commands,
+    keys: Res<ButtonInput<KeyCode>>,
+    player: Single<Entity, With<Player>>,
+) {
     if keys.just_pressed(KeyCode::KeyE) {
         commands.trigger(PlayerInteracted(*player));
     }

@@ -1,5 +1,8 @@
-use beacon_core::solid::Solid;
-use beacon_scene::{balefire::balefire_scene, player::player_scene, tree::tree_scene};
+use beacon_core::{item::ItemId, solid::Solid};
+use beacon_scene::{
+    balefire::balefire_scene, ground_item::ground_item_scene, player::player_scene,
+    tree::tree_scene,
+};
 use bevy::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
 
@@ -16,8 +19,16 @@ impl Plugin for LevelPlugin {
             .register_ldtk_int_cell::<SolidCell>(1)
             .register_ldtk_entity_scene("player", player_scene)
             .register_ldtk_entity_scene("tree", tree_scene)
+            .register_ldtk_entity_scene("axe", axe_scene)
             .register_ldtk_entity_scene("balefire", balefire_scene);
     }
+}
+
+fn axe_scene() -> impl Scene {
+    ground_item_scene(beacon_core::item::ItemStack {
+        id: ItemId::Axe,
+        count: 1,
+    })
 }
 
 #[derive(Bundle, LdtkIntCell, Default)]

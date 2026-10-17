@@ -13,16 +13,25 @@ pub struct GroundItem(pub ItemStack);
 #[derive(EntityEvent)]
 pub struct GroundItemTouched(pub Entity);
 
+#[derive(EntityEvent)]
+pub struct ItemUsed {
+    #[event_target]
+    pub player: Entity,
+    pub item: ItemStack,
+}
+
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, Default, Reflect)]
 pub enum ItemId {
     #[default]
     Wood,
+    Axe,
 }
 
 impl ItemId {
     pub fn def(self) -> &'static ItemDef {
         match self {
             ItemId::Wood => &WOOD,
+            ItemId::Axe => &AXE,
         }
     }
 }
@@ -32,6 +41,13 @@ static WOOD: ItemDef = ItemDef {
     max_stack: 64,
     sprite: "log.png",
     kind: ItemKind::Resource,
+};
+
+static AXE: ItemDef = ItemDef {
+    name: "axe",
+    max_stack: 1,
+    sprite: "axe.png",
+    kind: ItemKind::Tool,
 };
 
 pub struct ItemDef {
