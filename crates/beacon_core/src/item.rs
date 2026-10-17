@@ -31,12 +31,19 @@ static WOOD: ItemDef = ItemDef {
     name: "wood",
     max_stack: 64,
     sprite: "log.png",
+    kind: ItemKind::Resource,
 };
 
 pub struct ItemDef {
     pub name: &'static str,
     pub max_stack: u16,
     pub sprite: &'static str,
+    pub kind: ItemKind,
+}
+
+pub enum ItemKind {
+    Resource,
+    Tool,
 }
 
 #[derive(Clone, Default, Copy, Debug, Eq, Hash, PartialEq, Reflect)]
