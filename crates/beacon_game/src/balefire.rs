@@ -1,11 +1,10 @@
 use std::time::Duration;
 
-use avian2d::prelude::CollidingEntities;
 use beacon_core::{
     balefire::Balefire,
+    interaction::Interaction,
     inventory::{Inventory, SelectedSlot},
     item::ItemId,
-    player::PlayerInteracted,
 };
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
@@ -18,7 +17,7 @@ pub struct BalefirePlugin;
 impl Plugin for BalefirePlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Update, decay.run_if(on_timer(Duration::from_secs(1))))
-            .add_observer(on_player_interacted);
+            .add_observer(on_interaction);
     }
 }
 
@@ -28,25 +27,20 @@ fn decay(mut balefires: Query<&mut Balefire>) {
     }
 }
 
-fn on_player_interacted(
-    event: On<PlayerInteracted>,
-    player: Single<(&mut Inventory, &SelectedSlot)>,
-    balefire: Single<(&mut Balefire, &CollidingEntities)>,
+fn on_interaction(
+    event: On<Interaction>,
+    mut balefires: Query<&mut Balefire>,
+    mut players: Query<(&mut Inventory, &SelectedSlot)>,
 ) {
-    let (mut inventory, selected) = player.into_inner();
-    let (mut balefire, near) = balefire.into_inner();
-
-    if !near.contains(&event.0) {
+    if event.item.is_none_or(|stack| stack.id != ItemId::Wood) {
         return;
     }
-
-    if inventory
-        .get(selected.0)
-        .is_none_or(|stack| stack.id != ItemId::Wood)
-    {
+    let Ok(mut balefire) = balefires.get_mut(event.target) else {
         return;
-    }
-
+    };
+    let Ok((mut inventory, selected)) = players.get_mut(event.player) else {
+        return;
+    };
     let Some(stack) = inventory.take(selected.0) else {
         return;
     };

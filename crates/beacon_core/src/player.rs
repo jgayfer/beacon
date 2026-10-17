@@ -13,6 +13,7 @@ const INVENTORY_SIZE: usize = 9;
 #[require(
     RigidBody::Dynamic,
     Collider::circle(PLAYER_RADIUS),
+    CollidingEntities,
     LockedAxes::ROTATION_LOCKED,
     LinearVelocity,
     Facing,
@@ -22,9 +23,6 @@ const INVENTORY_SIZE: usize = 9;
     SelectedSlot
 )]
 pub struct Player;
-
-#[derive(EntityEvent)]
-pub struct PlayerInteracted(pub Entity);
 
 #[derive(Component, Clone, Default, Copy, PartialEq, Reflect)]
 #[reflect(Component)]

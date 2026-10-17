@@ -1,8 +1,9 @@
 use avian2d::prelude::*;
 use beacon_core::{
+    interaction::{Interactable, Interaction},
     inventory::{Inventory, SelectedSlot},
     item::{ItemKind, ItemUsed},
-    player::{Action, Facing, Player, PlayerInteracted},
+    player::{Action, Facing, Player},
 };
 use beacon_engine::hitbox::Hitbox;
 use bevy_app::prelude::*;
@@ -100,9 +101,26 @@ fn use_item(
 fn interact(
     mut commands: Commands,
     keys: Res<ButtonInput<KeyCode>>,
-    player: Single<Entity, With<Player>>,
+    player: Single<(Entity, &CollidingEntities, &Inventory, &SelectedSlot), With<Player>>,
+    interactables: Query<(), With<Interactable>>,
 ) {
-    if keys.just_pressed(KeyCode::KeyE) {
-        commands.trigger(PlayerInteracted(*player));
+    if !keys.just_pressed(KeyCode::KeyE) {
+        return;
     }
+
+    let (player, colliding, inventory, selected) = player.into_inner();
+
+    let Some(target) = colliding
+        .iter()
+        .copied()
+        .find(|&entity| interactables.contains(entity))
+    else {
+        return;
+    };
+
+    commands.trigger(Interaction {
+        target,
+        player,
+        item: inventory.get(selected.0).copied(),
+    });
 }
