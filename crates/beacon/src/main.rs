@@ -1,7 +1,8 @@
 use avian2d::prelude::PhysicsDebugPlugin;
 use beacon_engine::EnginePlugin;
 use beacon_game::GamePlugin;
-use beacon_scene::{ScenesPlugin, hotbar::hotbar_scene, map::map_scene};
+use beacon_level::{LevelPlugin, map_scene};
+use beacon_scene::{ScenesPlugin, hotbar::hotbar_scene};
 use bevy::prelude::*;
 use bevy_inspector_egui::{bevy_egui::EguiPlugin, quick::WorldInspectorPlugin};
 
@@ -10,7 +11,7 @@ fn main() {
         .add_plugins(DefaultPlugins.set(ImagePlugin::default_nearest()))
         .add_plugins(EguiPlugin::default())
         .add_plugins(WorldInspectorPlugin::new())
-        .add_plugins((EnginePlugin, GamePlugin, ScenesPlugin))
+        .add_plugins((EnginePlugin, GamePlugin, ScenesPlugin, LevelPlugin))
         .add_plugins(PhysicsDebugPlugin)
         .add_systems(Startup, scene.spawn())
         .run();

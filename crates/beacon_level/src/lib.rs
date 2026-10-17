@@ -1,12 +1,11 @@
 use beacon_core::solid::Solid;
+use beacon_scene::{balefire::balefire_scene, player::player_scene, tree::tree_scene};
 use bevy::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
 
-use crate::{balefire::balefire_scene, player::player_scene, tree::tree_scene};
+pub struct LevelPlugin;
 
-pub struct MapPlugin;
-
-impl Plugin for MapPlugin {
+impl Plugin for LevelPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins(LdtkPlugin)
             .insert_resource(LdtkSettings {

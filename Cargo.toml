@@ -10,6 +10,7 @@ edition = "2024"
 beacon_core = { path = "crates/beacon_core" }
 beacon_engine = { path = "crates/beacon_engine" }
 beacon_game = { path = "crates/beacon_game" }
+beacon_level = { path = "crates/beacon_level" }
 beacon_scene = { path = "crates/beacon_scene" }
 
 bevy = { version = "0.19", features = ["dynamic_linking", "file_watcher"] }

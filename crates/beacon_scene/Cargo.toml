@@ -7,4 +7,3 @@ edition.workspace = true
 beacon_core.workspace = true
 bevy.workspace = true
 bevy_aseprite_ultra.workspace = true
-bevy_ecs_ldtk.workspace = true
