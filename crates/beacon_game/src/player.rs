@@ -1,7 +1,12 @@
 use avian2d::prelude::*;
 use beacon_core::player::{Action, Facing, Player, PlayerInteracted};
 use beacon_engine::hitbox::Hitbox;
-use bevy::prelude::*;
+use bevy_app::prelude::*;
+use bevy_ecs::prelude::*;
+use bevy_input::prelude::*;
+use bevy_math::prelude::*;
+use bevy_time::prelude::*;
+use bevy_transform::prelude::*;
 
 const SPEED: f32 = 100.0;
 

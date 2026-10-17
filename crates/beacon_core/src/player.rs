@@ -1,6 +1,7 @@
 use avian2d::prelude::*;
 use beacon_engine::camera::CameraTarget;
-use bevy::prelude::*;
+use bevy_ecs::prelude::*;
+use bevy_reflect::prelude::*;
 
 use crate::inventory::{Inventory, SelectedSlot};
 

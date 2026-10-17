@@ -4,7 +4,8 @@ use beacon_core::{
     item::{GroundItem, GroundItemTouched},
     player::Player,
 };
-use bevy::prelude::*;
+use bevy_app::prelude::*;
+use bevy_ecs::prelude::*;
 
 pub struct GroundItemPlugin;
 

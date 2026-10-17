@@ -1,7 +1,11 @@
 use beacon_core::item::{ItemId, ItemStack};
 use beacon_engine::hitbox::Hit;
 use beacon_scene::ground_item::ground_item_scene;
-use bevy::prelude::*;
+use bevy_app::prelude::*;
+use bevy_ecs::prelude::*;
+use bevy_log::prelude::*;
+use bevy_scene::prelude::*;
+use bevy_transform::prelude::*;
 
 use beacon_core::tree::Tree;
 

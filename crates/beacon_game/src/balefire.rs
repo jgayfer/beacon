@@ -7,7 +7,9 @@ use beacon_core::{
     item::ItemId,
     player::PlayerInteracted,
 };
-use bevy::{prelude::*, time::common_conditions::on_timer};
+use bevy_app::prelude::*;
+use bevy_ecs::prelude::*;
+use bevy_time::common_conditions::on_timer;
 
 const MAX_INTENSITY: u8 = 100;
 

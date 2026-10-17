@@ -464,7 +464,9 @@ version = "0.1.0"
 dependencies = [
  "avian2d",
  "beacon_engine",
- "bevy",
+ "bevy_ecs",
+ "bevy_reflect",
+ "bevy_transform",
 ]
 
 [[package]]
@@ -483,7 +485,14 @@ dependencies = [
  "beacon_core",
  "beacon_engine",
  "beacon_scene",
- "bevy",
+ "bevy_app",
+ "bevy_ecs",
+ "bevy_input",
+ "bevy_log",
+ "bevy_math",
+ "bevy_scene",
+ "bevy_time",
+ "bevy_transform",
 ]
 
 [[package]]

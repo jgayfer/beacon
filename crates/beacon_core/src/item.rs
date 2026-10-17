@@ -2,7 +2,9 @@ use avian2d::collision::{
     collider::{Collider, Sensor},
     collision_events::CollisionEventsEnabled,
 };
-use bevy::prelude::*;
+use bevy_ecs::prelude::*;
+use bevy_reflect::prelude::*;
+use bevy_transform::prelude::*;
 
 #[derive(Component, Clone, Default)]
 #[require(Transform, Collider::circle(8.0), Sensor, CollisionEventsEnabled)]

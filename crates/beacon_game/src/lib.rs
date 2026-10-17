@@ -4,7 +4,7 @@ mod inventory;
 mod player;
 mod woodcutting;
 
-use bevy::prelude::*;
+use bevy_app::prelude::*;
 pub use balefire::BalefirePlugin;
 pub use ground_item::GroundItemPlugin;
 pub use inventory::InventoryPlugin;
