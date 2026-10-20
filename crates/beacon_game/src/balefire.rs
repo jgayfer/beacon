@@ -35,7 +35,7 @@ fn on_interaction(
     if event.item.is_none_or(|stack| stack.id != ItemId::Wood) {
         return;
     }
-    let Ok(mut balefire) = balefires.get_mut(event.target) else {
+    let Ok(mut balefire) = balefires.get_mut(event.interactable) else {
         return;
     };
     let Ok((mut inventory, selected)) = players.get_mut(event.player) else {

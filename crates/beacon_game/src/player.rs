@@ -1,6 +1,6 @@
 use avian2d::prelude::*;
 use beacon_core::{
-    interaction::{Interactable, Interaction},
+    interaction::{Interactable, Interaction, InteractionZone},
     inventory::{Inventory, SelectedSlot},
     item::{ItemKind, ItemUsed},
     player::{Action, Facing, Player},
@@ -102,7 +102,7 @@ fn interact(
     mut commands: Commands,
     keys: Res<ButtonInput<KeyCode>>,
     player: Single<(Entity, &CollidingEntities, &Inventory, &SelectedSlot), With<Player>>,
-    interactables: Query<(), With<Interactable>>,
+    interaction_zones: Query<&ChildOf, With<InteractionZone>>,
 ) {
     if !keys.just_pressed(KeyCode::KeyE) {
         return;
@@ -110,16 +110,17 @@ fn interact(
 
     let (player, colliding, inventory, selected) = player.into_inner();
 
-    let Some(target) = colliding
-        .iter()
-        .copied()
-        .find(|&entity| interactables.contains(entity))
-    else {
+    let Some(interactable) = colliding.iter().copied().find_map(|colliding_entity| {
+        interaction_zones
+            .get(colliding_entity)
+            .ok()
+            .map(ChildOf::parent)
+    }) else {
         return;
     };
 
     commands.trigger(Interaction {
-        target,
+        interactable,
         player,
         item: inventory.get(selected.0).copied(),
     });

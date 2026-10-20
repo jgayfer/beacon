@@ -466,6 +466,7 @@ dependencies = [
  "avian2d",
  "beacon_engine",
  "bevy_ecs",
+ "bevy_math",
  "bevy_reflect",
  "bevy_transform",
 ]
