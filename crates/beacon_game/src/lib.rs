@@ -1,11 +1,13 @@
 mod balefire;
 mod door;
+mod flame_sprite;
 mod ground_item;
 mod inventory;
 mod player;
 mod woodcutting;
 
 pub use balefire::BalefirePlugin;
+pub use flame_sprite::FlameSpritePlugin;
 use bevy_app::prelude::*;
 pub use ground_item::GroundItemPlugin;
 pub use inventory::InventoryPlugin;
@@ -25,6 +27,7 @@ impl Plugin for GamePlugin {
             InventoryPlugin,
             BalefirePlugin,
             DoorPlugin,
+            FlameSpritePlugin,
         ));
     }
 }

@@ -2,8 +2,8 @@ mod door;
 
 use beacon_core::{item::ItemId, solid::Solid};
 use beacon_scene::{
-    balefire::balefire_scene, ground_item::ground_item_scene, player::player_scene,
-    tree::tree_scene,
+    balefire::balefire_scene, flame_sprite::flame_sprite_scene, ground_item::ground_item_scene,
+    player::player_scene, tree::tree_scene,
 };
 use bevy::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
@@ -26,6 +26,7 @@ impl Plugin for LevelPlugin {
             .register_ldtk_entity_scene("player", worldly_player_scene)
             .register_ldtk_entity_scene("tree", tree_scene)
             .register_ldtk_entity_scene("axe", axe_scene)
+            .register_ldtk_entity_scene("flame_sprite", flame_sprite_scene)
             .register_ldtk_entity_scene("balefire", balefire_scene);
     }
 }
