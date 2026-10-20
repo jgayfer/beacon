@@ -6,6 +6,10 @@ members = ["crates/*"]
 version = "0.1.0"
 edition = "2024"
 
+[workspace.lints.clippy]
+# Bevy queries trip this constantly.
+type_complexity = "allow"
+
 [workspace.dependencies]
 beacon_core = { path = "crates/beacon_core" }
 beacon_engine = { path = "crates/beacon_engine" }
@@ -14,7 +18,7 @@ beacon_level = { path = "crates/beacon_level" }
 beacon_scene = { path = "crates/beacon_scene" }
 
 bevy = { version = "0.19", features = ["dynamic_linking", "file_watcher"] }
-bevy_ecs_ldtk = { git = "https://github.com/jgayfer/bevy_ecs_ldtk", branch="scenes", features = ["scene"] }
+bevy_ecs_ldtk = { git = "https://github.com/Trouv/bevy_ecs_ldtk", branch="main", features = ["scene"] }
 avian2d = "0.7"
 bevy_aseprite_ultra = { git = "https://github.com/Lommix/bevy_aseprite_ultra", branch = "master" }
 bevy-inspector-egui = "0.37"

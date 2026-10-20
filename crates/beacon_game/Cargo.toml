@@ -16,3 +16,6 @@ bevy_scene.workspace = true
 bevy_time.workspace = true
 bevy_transform.workspace = true
 avian2d.workspace = true
+
+[lints]
+workspace = true

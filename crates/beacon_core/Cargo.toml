@@ -9,3 +9,6 @@ beacon_engine.workspace = true
 bevy_ecs.workspace = true
 bevy_reflect.workspace = true
 bevy_transform.workspace = true
+
+[lints]
+workspace = true

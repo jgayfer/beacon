@@ -4,8 +4,8 @@ pub mod hotbar;
 pub mod player;
 pub mod tree;
 
-use bevy::prelude::*;
 use balefire::BalefireScenePlugin;
+use bevy::prelude::*;
 use bevy_aseprite_ultra::prelude::AsepriteUltraPlugin;
 use hotbar::HotbarPlugin;
 use player::PlayerScenePlugin;

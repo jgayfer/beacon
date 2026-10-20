@@ -11,7 +11,10 @@ impl Plugin for InventoryPlugin {
     }
 }
 
-fn select_slot(keys: Res<ButtonInput<KeyCode>>, mut selected: Single<&mut SelectedSlot, With<Player>>) {
+fn select_slot(
+    keys: Res<ButtonInput<KeyCode>>,
+    mut selected: Single<&mut SelectedSlot, With<Player>>,
+) {
     use KeyCode::*;
     const DIGITS: [KeyCode; 9] = [
         Digit1, Digit2, Digit3, Digit4, Digit5, Digit6, Digit7, Digit8, Digit9,

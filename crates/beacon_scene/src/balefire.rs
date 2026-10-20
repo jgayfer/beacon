@@ -1,4 +1,4 @@
-use beacon_core::balefire::{Balefire, BALEFIRE_RADIUS};
+use beacon_core::balefire::{BALEFIRE_RADIUS, Balefire};
 use bevy::{
     color::palettes::css::{GREEN, ORANGE, RED, YELLOW},
     prelude::*,

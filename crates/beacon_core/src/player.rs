@@ -20,7 +20,7 @@ const INVENTORY_SIZE: usize = 9;
     Action,
     CameraTarget,
     Inventory = Inventory::new(INVENTORY_SIZE),
-    SelectedSlot
+    SelectedSlot,
 )]
 pub struct Player;
 

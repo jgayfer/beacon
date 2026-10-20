@@ -6,3 +6,6 @@ edition.workspace = true
 [dependencies]
 avian2d.workspace = true
 bevy.workspace = true
+
+[lints]
+workspace = true
