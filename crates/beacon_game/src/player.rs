@@ -1,6 +1,6 @@
 use avian2d::prelude::*;
 use beacon_core::{
-    interaction::{Interactable, Interaction, InteractionZone},
+    interaction::{Interaction, InteractionZone},
     inventory::{Inventory, SelectedSlot},
     item::{ItemKind, ItemUsed},
     player::{Action, Facing, Player},

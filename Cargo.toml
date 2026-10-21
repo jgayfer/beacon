@@ -22,9 +22,11 @@ bevy_ecs_ldtk = { git = "https://github.com/Trouv/bevy_ecs_ldtk", branch="main",
 avian2d = "0.7"
 bevy_aseprite_ultra = { git = "https://github.com/Lommix/bevy_aseprite_ultra", branch = "master" }
 bevy-inspector-egui = "0.37"
+bevy_replique = "0.2"
 
 # Bevy sub-crates, for crates that should only see part of the engine
 bevy_app = "0.19"
+bevy_asset = "0.19"
 bevy_ecs = "0.19"
 bevy_input = "0.19"
 bevy_log = "0.19"

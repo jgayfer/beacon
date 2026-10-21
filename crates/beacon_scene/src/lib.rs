@@ -1,4 +1,5 @@
 pub mod balefire;
+pub mod dialogue_box;
 pub mod flame_sprite;
 pub mod ground_item;
 pub mod hotbar;
@@ -8,6 +9,7 @@ pub mod tree;
 use balefire::BalefireScenePlugin;
 use bevy::prelude::*;
 use bevy_aseprite_ultra::prelude::AsepriteUltraPlugin;
+use dialogue_box::DialogueBoxPlugin;
 use hotbar::HotbarPlugin;
 use player::PlayerScenePlugin;
 
@@ -20,6 +22,7 @@ impl Plugin for ScenesPlugin {
             PlayerScenePlugin,
             HotbarPlugin,
             BalefireScenePlugin,
+            DialogueBoxPlugin,
         ));
     }
 }

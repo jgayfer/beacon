@@ -8,6 +8,7 @@ beacon_core.workspace = true
 beacon_engine.workspace = true
 beacon_scene.workspace = true
 bevy_app.workspace = true
+bevy_asset.workspace = true
 bevy_ecs.workspace = true
 bevy_input.workspace = true
 bevy_log.workspace = true
@@ -16,6 +17,7 @@ bevy_scene.workspace = true
 bevy_time.workspace = true
 bevy_transform.workspace = true
 avian2d.workspace = true
+bevy_replique.workspace = true
 
 [lints]
 workspace = true

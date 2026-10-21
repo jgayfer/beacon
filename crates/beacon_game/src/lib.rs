@@ -1,4 +1,5 @@
 mod balefire;
+mod dialogue;
 mod door;
 mod flame_sprite;
 mod ground_item;
@@ -7,6 +8,8 @@ mod player;
 mod woodcutting;
 
 pub use balefire::BalefirePlugin;
+use beacon_core::progression::Progression;
+pub use dialogue::DialoguePlugin;
 pub use flame_sprite::FlameSpritePlugin;
 use bevy_app::prelude::*;
 pub use ground_item::GroundItemPlugin;
@@ -20,7 +23,7 @@ pub struct GamePlugin;
 
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins((
+        app.init_resource::<Progression>().add_plugins((
             PlayerPlugin,
             WoodcuttingPlugin,
             GroundItemPlugin,
@@ -28,6 +31,7 @@ impl Plugin for GamePlugin {
             BalefirePlugin,
             DoorPlugin,
             FlameSpritePlugin,
+            DialoguePlugin,
         ));
     }
 }
