@@ -22,6 +22,7 @@ bevy = { version = "0.19", features = ["dynamic_linking", "file_watcher"] }
 bevy_ecs_ldtk = { git = "https://github.com/Trouv/bevy_ecs_ldtk", branch="main", features = ["scene"] }
 avian2d = "0.7"
 bevy_aseprite_ultra = { git = "https://github.com/Lommix/bevy_aseprite_ultra", branch = "master" }
+asefile = "0.3.8"
 bevy-inspector-egui = "0.37"
 bevy_replique = "0.2"
 ron = "0.12"

@@ -11,7 +11,7 @@ pub fn player_scene() -> impl Scene {
         Player
         Sprite
         AseAnimation {
-            aseprite: "Soldier.aseprite",
+            aseprite: "soldier.aseprite",
             animation: Animation::tag(SOLDIER_IDLE),
         }
     }

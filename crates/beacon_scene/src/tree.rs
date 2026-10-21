@@ -5,7 +5,7 @@ pub fn tree_scene() -> impl Scene {
     bsn! {
         Tree { health: 3 }
         Sprite {
-            image: "arbutus.png",
+            image: "arbutus.aseprite",
         }
     }
 }

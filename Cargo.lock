@@ -224,7 +224,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0348a1c054491f4bfe6ab86a7b6ab1e44e45d899005de92f58b3df180b36ddaf"
 dependencies = [
  "clipboard-win",
- "image",
+ "image 0.25.10",
  "log",
  "objc2 0.6.4",
  "objc2-app-kit 0.3.2",
@@ -255,6 +255,20 @@ name = "as-raw-xcb-connection"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "175571dd1d178ced59193a6fc02dde1b972eb0bc56c892cde9beeceac5bf0f6b"
+
+[[package]]
+name = "asefile"
+version = "0.3.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "556cab74f613f2bcf3ab5dc5bbd2220fe2e1a4e7380fbaff96c5333a117066b4"
+dependencies = [
+ "bitflags 2.13.2",
+ "byteorder",
+ "flate2",
+ "image 0.24.9",
+ "log",
+ "nohash",
+]
 
 [[package]]
 name = "aseprite-loader"
@@ -531,6 +545,7 @@ dependencies = [
 name = "beacon_scene"
 version = "0.1.0"
 dependencies = [
+ "asefile",
  "beacon_core",
  "bevy",
  "bevy_aseprite_ultra",
@@ -579,7 +594,7 @@ dependencies = [
  "disqualified",
  "egui",
  "fuzzy-matcher",
- "image",
+ "image 0.25.10",
  "opener",
  "smallvec",
  "uuid",
@@ -1072,7 +1087,7 @@ dependencies = [
  "egui",
  "encase",
  "getrandom 0.4.3",
- "image",
+ "image 0.25.10",
  "itertools 0.14.0",
  "js-sys",
  "smithay-clipboard",
@@ -1271,7 +1286,7 @@ dependencies = [
  "futures-lite",
  "guillotiere",
  "half",
- "image",
+ "image 0.25.10",
  "ktx2",
  "rectangle-pack",
  "ruzstd",
@@ -1717,7 +1732,7 @@ dependencies = [
  "downcast-rs 2.0.2",
  "encase",
  "glam",
- "image",
+ "image 0.25.10",
  "indexmap",
  "itertools 0.14.0",
  "js-sys",
@@ -2506,6 +2521,12 @@ checksum = "2ec7c5eb7a16992b1904d76c517d170ab353b0e0b3d5a0c81a8a0cd1037893cf"
 dependencies = [
  "bytemuck",
 ]
+
+[[package]]
+name = "color_quant"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3d7b894f5411737b7867f4827955924d7c254fc9f4d91a6aad6b097804b1018b"
 
 [[package]]
 name = "combine"
@@ -3771,6 +3792,18 @@ checksum = "ae293c039020f9ec10710af98d29ce6aa2051486638b49c9a6409f3b4a9e98ad"
 
 [[package]]
 name = "image"
+version = "0.24.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5690139d2f55868e080017335e4b94cb7414274c74f1669c84fb5feba2c9f69d"
+dependencies = [
+ "bytemuck",
+ "byteorder",
+ "color_quant",
+ "num-traits",
+]
+
+[[package]]
+name = "image"
 version = "0.25.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "85ab80394333c02fe689eaf900ab500fbd0c2213da414687ebf995a65d5a6104"
@@ -4331,6 +4364,12 @@ dependencies = [
  "cfg_aliases",
  "libc",
 ]
+
+[[package]]
+name = "nohash"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a0f889fb66f7acdf83442c35775764b51fed3c606ab9cee51500dbde2cf528ca"
 
 [[package]]
 name = "nohash-hasher"

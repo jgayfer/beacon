@@ -39,14 +39,14 @@ impl ItemId {
 static WOOD: ItemDef = ItemDef {
     name: "wood",
     max_stack: 64,
-    sprite: "log.png",
+    sprite: "log.aseprite",
     kind: ItemKind::Resource,
 };
 
 static AXE: ItemDef = ItemDef {
     name: "axe",
     max_stack: 1,
-    sprite: "axe.png",
+    sprite: "axe.aseprite",
     kind: ItemKind::Tool,
 };
 

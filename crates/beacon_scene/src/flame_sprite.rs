@@ -5,7 +5,7 @@ pub fn flame_sprite_scene() -> impl Scene {
     bsn! {
         FlameSprite
         Sprite {
-            image: "flame_sprite.png",
+            image: "flame_sprite.aseprite",
         }
     }
 }

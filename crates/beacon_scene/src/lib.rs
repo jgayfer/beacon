@@ -1,3 +1,4 @@
+mod aseprite;
 pub mod balefire;
 pub mod dialogue_box;
 pub mod flame_sprite;
@@ -6,6 +7,7 @@ pub mod hotbar;
 pub mod player;
 pub mod tree;
 
+use aseprite::AsepriteImageLoader;
 use balefire::BalefireScenePlugin;
 use bevy::prelude::*;
 use bevy_aseprite_ultra::prelude::AsepriteUltraPlugin;
@@ -17,7 +19,7 @@ pub struct ScenesPlugin;
 
 impl Plugin for ScenesPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins((
+        app.register_asset_loader(AsepriteImageLoader).add_plugins((
             AsepriteUltraPlugin,
             PlayerScenePlugin,
             HotbarPlugin,
