@@ -1,8 +1,16 @@
 (
     story: {
-        Prologue(Start): (file: "flame_sprite/prologue.rep", node: "first_meeting"),
+        Prologue(Start): [
+            (file: "flame_sprite/prologue.rep", node: "first_meeting"),
+        ],
+        Prologue(MetSprite): [
+            (file: "flame_sprite/prologue.rep", node: "needs_help_1"),
+            (file: "flame_sprite/prologue.rep", node: "needs_help_2"),
+        ],
     },
     chatter: {
-        SpriteLevel(1): (file: "flame_sprite/chatter.rep", node: "chatter_1"),
+        SpriteLevel(1): [
+            (file: "flame_sprite/chatter.rep", node: "chatter_1"),
+        ],
     },
 )

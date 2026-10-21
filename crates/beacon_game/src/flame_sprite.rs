@@ -24,15 +24,22 @@ impl Plugin for FlameSpritePlugin {
 
 #[derive(Asset, TypePath, Deserialize, Debug)]
 struct FlameSpriteRoutes {
-    story: BTreeMap<MainStory, Route>,
-    chatter: BTreeMap<SpriteLevel, Route>,
+    story: BTreeMap<MainStory, Vec<Route>>,
+    chatter: BTreeMap<SpriteLevel, Vec<Route>>,
 }
 
 impl NpcRoutes for FlameSpriteRoutes {
-    fn pick(&self, progression: &Progression) -> Option<&Route> {
-        self.story
+    fn pick(&self, progression: &Progression, last: Option<&Route>) -> Option<&Route> {
+        let routes = self
+            .story
             .get(&progression.main_story)
-            .or_else(|| self.chatter.get(&progression.sprite_level))
+            .or_else(|| self.chatter.get(&progression.sprite_level))?;
+
+        let next = last
+            .and_then(|last| routes.iter().position(|route| route == last))
+            .map_or(0, |i| (i + 1) % routes.len());
+
+        routes.get(next)
     }
 }
 

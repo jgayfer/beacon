@@ -3,3 +3,9 @@ Flame Sprite: So cold...
 Flame Sprite: The flame...?
 >> update_main_story("Prologue(MetSprite)")
 ---
+:= needs_help_1
+Flame Sprite: Can you help me...?
+---
+:= needs_help_2
+Flame Sprite: The flame... Need heat.
+---
