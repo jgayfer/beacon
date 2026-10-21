@@ -34,7 +34,9 @@ impl From<Prologue> for MainStory {
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Reflect, Deserialize)]
-pub enum Act1 {}
+pub enum Act1 {
+    Start,
+}
 
 impl From<Act1> for MainStory {
     fn from(beat: Act1) -> Self {
