@@ -1,5 +1,6 @@
 use avian2d::prelude::*;
 use beacon_core::{
+    dialogue::DialogueContinued,
     interaction::{Interaction, InteractionZone},
     inventory::{Inventory, SelectedSlot},
     item::{ItemKind, ItemUsed},
@@ -19,7 +20,7 @@ pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (move_player, interact, use_item))
+        app.add_systems(Update, (move_player, interact, use_item, continue_dialogue))
             .add_observer(spawn_tool_hitbox);
     }
 }
@@ -96,6 +97,16 @@ fn use_item(
             item: *selected_item,
         });
     }
+}
+
+fn continue_dialogue(
+    keys: Res<ButtonInput<KeyCode>>,
+    mut continued: MessageWriter<DialogueContinued>,
+) {
+    if !keys.just_pressed(KeyCode::Space) {
+        return;
+    }
+    continued.write(DialogueContinued);
 }
 
 fn interact(

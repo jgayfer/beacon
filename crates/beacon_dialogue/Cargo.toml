@@ -8,7 +8,6 @@ beacon_core.workspace = true
 bevy_app.workspace = true
 bevy_asset.workspace = true
 bevy_ecs.workspace = true
-bevy_input.workspace = true
 bevy_reflect.workspace = true
 bevy_replique.workspace = true
 ron.workspace = true

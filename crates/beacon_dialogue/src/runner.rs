@@ -1,7 +1,6 @@
-use beacon_core::dialogue::{DialogueEnded, LineShown};
+use beacon_core::dialogue::{DialogueContinued, DialogueEnded, LineShown};
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
-use bevy_input::prelude::*;
 use bevy_replique::prelude::*;
 
 pub struct RunnerPlugin;
@@ -11,11 +10,15 @@ impl Plugin for RunnerPlugin {
         app.add_plugins(RepliquePlugin)
             .add_message::<LineShown>()
             .add_message::<DialogueEnded>()
+            .add_message::<DialogueContinued>()
             .init_resource::<CurrentLine>()
             .add_systems(Update, next_line)
             .add_systems(
                 PostUpdate,
-                (show_line, end_finished).after(DialogueSystem::Runner),
+                (
+                    next_line.before(DialogueSystem::Runner),
+                    (show_line, end_finished).after(DialogueSystem::Runner),
+                ),
             );
     }
 }
@@ -38,11 +41,11 @@ fn show_line(
 }
 
 fn next_line(
-    keys: Res<ButtonInput<KeyCode>>,
+    mut continued: MessageReader<DialogueContinued>,
     mut current: ResMut<CurrentLine>,
     mut resume: MessageWriter<ResumeDialogue>,
 ) {
-    if keys.any_just_pressed([KeyCode::Space, KeyCode::Enter])
+    if continued.read().count() > 0
         && let Some(token) = current.0.take()
     {
         resume.write(ResumeDialogue {
