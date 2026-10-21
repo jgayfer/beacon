@@ -6,6 +6,7 @@ use beacon_core::{
     item::{ItemKind, ItemUsed},
     player::{Action, Facing, Player},
 };
+use beacon_dialogue::in_conversation;
 use beacon_engine::hitbox::Hitbox;
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
@@ -20,8 +21,14 @@ pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (move_player, interact, use_item, continue_dialogue))
-            .add_observer(spawn_tool_hitbox);
+        app.add_systems(
+            Update,
+            (
+                (move_player, interact, use_item).run_if(not(in_conversation)),
+                (halt_player, continue_dialogue).run_if(in_conversation),
+            ),
+        )
+        .add_observer(spawn_tool_hitbox);
     }
 }
 
@@ -56,6 +63,13 @@ fn move_player(
         } else if dir.x > 0.0 {
             facing.set_if_neq(Facing::Right);
         }
+    }
+}
+
+fn halt_player(mut q: Query<(&mut LinearVelocity, &mut Action), With<Player>>) {
+    for (mut velocity, mut action) in &mut q {
+        velocity.set_if_neq(LinearVelocity::ZERO);
+        action.set_if_neq(Action::Idle);
     }
 }
 

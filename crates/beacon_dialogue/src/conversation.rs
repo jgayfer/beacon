@@ -4,6 +4,10 @@ use bevy_replique::prelude::*;
 
 use crate::{DIALOGUE_DIR, Route};
 
+pub fn in_conversation(runners: Query<(), With<DialogueRunner>>) -> bool {
+    !runners.is_empty()
+}
+
 #[derive(SystemParam)]
 pub struct Conversation<'w, 's> {
     runners: Query<'w, 's, (), With<DialogueRunner>>,
