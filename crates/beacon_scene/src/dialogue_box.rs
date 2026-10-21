@@ -1,5 +1,5 @@
+use beacon_core::dialogue::{DialogueEnded, LineShown};
 use bevy::prelude::*;
-use bevy_replique::prelude::*;
 
 pub struct DialogueBoxPlugin;
 
@@ -37,7 +37,7 @@ pub fn dialogue_box_scene() -> impl Scene {
 }
 
 fn show_line(
-    mut lines: MessageReader<DialogueLine>,
+    mut lines: MessageReader<LineShown>,
     mut visibility: Single<&mut Visibility, With<DialogueBox>>,
     mut text: Single<&mut Text, With<DialogueText>>,
 ) {
@@ -51,7 +51,7 @@ fn show_line(
 }
 
 fn hide_on_finish(
-    mut finished: MessageReader<DialogueFinished>,
+    mut finished: MessageReader<DialogueEnded>,
     mut visibility: Single<&mut Visibility, With<DialogueBox>>,
 ) {
     for _ in finished.read() {

@@ -1,8 +1,0 @@
-:= flame_sprite
-[if main_story() == "Start"]
-    Flame Sprite: So cold...
-    Flame Sprite: The flame...?
-    >> met_flame_sprite()
-[else]
-    Flame Sprite: You're still here..?
----

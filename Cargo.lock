@@ -469,6 +469,22 @@ dependencies = [
  "bevy_math",
  "bevy_reflect",
  "bevy_transform",
+ "serde",
+]
+
+[[package]]
+name = "beacon_dialogue"
+version = "0.1.0"
+dependencies = [
+ "beacon_core",
+ "bevy_app",
+ "bevy_asset",
+ "bevy_ecs",
+ "bevy_input",
+ "bevy_reflect",
+ "bevy_replique",
+ "ron",
+ "serde",
 ]
 
 [[package]]
@@ -485,6 +501,7 @@ version = "0.1.0"
 dependencies = [
  "avian2d",
  "beacon_core",
+ "beacon_dialogue",
  "beacon_engine",
  "beacon_scene",
  "bevy_app",
@@ -493,10 +510,11 @@ dependencies = [
  "bevy_input",
  "bevy_log",
  "bevy_math",
- "bevy_replique",
+ "bevy_reflect",
  "bevy_scene",
  "bevy_time",
  "bevy_transform",
+ "serde",
 ]
 
 [[package]]
@@ -516,7 +534,6 @@ dependencies = [
  "beacon_core",
  "bevy",
  "bevy_aseprite_ultra",
- "bevy_replique",
 ]
 
 [[package]]

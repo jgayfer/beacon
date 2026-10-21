@@ -5,6 +5,7 @@ edition.workspace = true
 
 [dependencies]
 beacon_core.workspace = true
+beacon_dialogue.workspace = true
 beacon_engine.workspace = true
 beacon_scene.workspace = true
 bevy_app.workspace = true
@@ -17,7 +18,8 @@ bevy_scene.workspace = true
 bevy_time.workspace = true
 bevy_transform.workspace = true
 avian2d.workspace = true
-bevy_replique.workspace = true
+bevy_reflect.workspace = true
+serde.workspace = true
 
 [lints]
 workspace = true

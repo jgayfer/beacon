@@ -1,37 +1,49 @@
-use beacon_core::{interaction::Interaction, npc::FlameSprite};
+use std::collections::BTreeMap;
+
+use beacon_core::{
+    dialogue::TalkedTo,
+    interaction::Interaction,
+    npc::FlameSprite,
+    progression::{MainStory, Progression, SpriteLevel},
+};
+use beacon_dialogue::{AddNpcDialogue, NpcRoutes, Route};
 use bevy_app::prelude::*;
-use bevy_asset::AssetServer;
+use bevy_asset::Asset;
 use bevy_ecs::prelude::*;
-use bevy_replique::prelude::*;
+use bevy_reflect::TypePath;
+use serde::Deserialize;
 
 pub struct FlameSpritePlugin;
 
 impl Plugin for FlameSpritePlugin {
     fn build(&self, app: &mut App) {
-        app.add_observer(on_interaction);
+        app.add_npc_dialogue::<FlameSprite, FlameSpriteRoutes>("flame_sprite/routes.ron")
+            .add_observer(on_interaction);
+    }
+}
+
+#[derive(Asset, TypePath, Deserialize, Debug)]
+struct FlameSpriteRoutes {
+    story: BTreeMap<MainStory, Route>,
+    chatter: BTreeMap<SpriteLevel, Route>,
+}
+
+impl NpcRoutes for FlameSpriteRoutes {
+    fn pick(&self, progression: &Progression) -> Option<&Route> {
+        self.story
+            .get(&progression.main_story)
+            .or_else(|| self.chatter.get(&progression.sprite_level))
     }
 }
 
 fn on_interaction(
     event: On<Interaction>,
     flame_sprites: Query<(), With<FlameSprite>>,
-    runners: Query<(), With<DialogueRunner>>,
-    asset_server: Res<AssetServer>,
     mut commands: Commands,
-    mut start: MessageWriter<StartDialogue>,
 ) {
-    if !flame_sprites.contains(event.interactable) || !runners.is_empty() {
-        return;
+    if flame_sprites.contains(event.interactable) {
+        commands.trigger(TalkedTo {
+            npc: event.interactable,
+        });
     }
-
-    let runner = commands
-        .spawn(DialogueRunner::new(
-            asset_server.load("dialogue/flame_sprite.rep"),
-        ))
-        .id();
-
-    start.write(StartDialogue {
-        runner,
-        node: "flame_sprite".into(),
-    });
 }

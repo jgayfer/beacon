@@ -1,5 +1,4 @@
 mod balefire;
-mod dialogue;
 mod door;
 mod flame_sprite;
 mod ground_item;
@@ -9,9 +8,9 @@ mod woodcutting;
 
 pub use balefire::BalefirePlugin;
 use beacon_core::progression::Progression;
-pub use dialogue::DialoguePlugin;
-pub use flame_sprite::FlameSpritePlugin;
+use beacon_dialogue::DialoguePlugin;
 use bevy_app::prelude::*;
+pub use flame_sprite::FlameSpritePlugin;
 pub use ground_item::GroundItemPlugin;
 pub use inventory::InventoryPlugin;
 pub use player::PlayerPlugin;

@@ -1,0 +1,4 @@
+speakers = ["Flame Sprite"]
+
+[commands]
+update_main_story = 1

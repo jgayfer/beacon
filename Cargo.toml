@@ -12,6 +12,7 @@ type_complexity = "allow"
 
 [workspace.dependencies]
 beacon_core = { path = "crates/beacon_core" }
+beacon_dialogue = { path = "crates/beacon_dialogue" }
 beacon_engine = { path = "crates/beacon_engine" }
 beacon_game = { path = "crates/beacon_game" }
 beacon_level = { path = "crates/beacon_level" }
@@ -23,6 +24,8 @@ avian2d = "0.7"
 bevy_aseprite_ultra = { git = "https://github.com/Lommix/bevy_aseprite_ultra", branch = "master" }
 bevy-inspector-egui = "0.37"
 bevy_replique = "0.2"
+ron = "0.12"
+serde = { version = "1", features = ["derive"] }
 
 # Bevy sub-crates, for crates that should only see part of the engine
 bevy_app = "0.19"

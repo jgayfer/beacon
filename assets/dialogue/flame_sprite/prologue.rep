@@ -1,0 +1,5 @@
+:= first_meeting
+Flame Sprite: So cold...
+Flame Sprite: The flame...?
+>> update_main_story("Prologue(MetSprite)")
+---
