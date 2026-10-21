@@ -1,3 +1,6 @@
+// Dialogue map for the flame sprite.
+//
+// If no entry is found for the current story step, falls back to chatter.
 (
     story: {
         Prologue(Start): [
