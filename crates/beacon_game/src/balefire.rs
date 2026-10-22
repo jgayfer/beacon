@@ -4,7 +4,6 @@ use beacon_core::{
     balefire::Balefire,
     interaction::Interaction,
     inventory::{Inventory, SelectedSlot},
-    item::ItemId,
 };
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
@@ -32,7 +31,11 @@ fn on_interaction(
     mut balefires: Query<&mut Balefire>,
     mut players: Query<(&mut Inventory, &SelectedSlot)>,
 ) {
-    if event.item.is_none_or(|stack| stack.id != ItemId::Wood) {
+    if event
+        .item
+        .as_ref()
+        .is_none_or(|stack| stack.def.id != "wood")
+    {
         return;
     }
     let Ok(mut balefire) = balefires.get_mut(event.interactable) else {

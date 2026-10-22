@@ -58,17 +58,19 @@ impl Inventory {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::item::ItemId;
+    use crate::item::ItemDef;
 
     fn wood(count: u16) -> ItemStack {
-        ItemStack {
-            id: ItemId::Wood,
-            count,
-        }
+        let def = ItemDef {
+            id: "wood".to_owned(),
+            max_stack: wood_max_stack(),
+            ..Default::default()
+        };
+        ItemStack { def, count }
     }
 
     fn wood_max_stack() -> u16 {
-        ItemId::Wood.def().max_stack
+        64
     }
 
     #[test]

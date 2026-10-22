@@ -1,9 +1,9 @@
 mod door;
 
-use beacon_core::{item::ItemId, solid::Solid};
+use beacon_core::{item::ItemSpawn, solid::Solid};
 use beacon_scene::{
-    balefire::balefire_scene, flame_sprite::flame_sprite_scene, ground_item::ground_item_scene,
-    player::player_scene, tree::tree_scene,
+    balefire::balefire_scene, flame_sprite::flame_sprite_scene, player::player_scene,
+    tree::tree_scene,
 };
 use bevy::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
@@ -39,10 +39,12 @@ fn worldly_player_scene() -> impl Scene {
 }
 
 fn axe_scene() -> impl Scene {
-    ground_item_scene(beacon_core::item::ItemStack {
-        id: ItemId::Axe,
-        count: 1,
-    })
+    bsn! {
+        ItemSpawn {
+            id: "axe",
+            count: 1,
+        }
+    }
 }
 
 #[derive(Bundle, LdtkIntCell, Default)]

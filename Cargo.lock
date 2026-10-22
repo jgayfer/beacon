@@ -465,6 +465,7 @@ name = "beacon"
 version = "0.1.0"
 dependencies = [
  "avian2d",
+ "beacon_assets",
  "beacon_core",
  "beacon_engine",
  "beacon_game",
@@ -475,14 +476,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "beacon_assets"
+version = "0.1.0"
+dependencies = [
+ "beacon_core",
+ "bevy",
+ "bevy_asset_loader",
+ "bevy_common_assets",
+ "serde",
+]
+
+[[package]]
 name = "beacon_core"
 version = "0.1.0"
 dependencies = [
  "avian2d",
  "beacon_engine",
+ "bevy_camera",
  "bevy_ecs",
  "bevy_math",
  "bevy_reflect",
+ "bevy_state",
  "bevy_transform",
  "serde",
 ]
@@ -497,7 +511,7 @@ dependencies = [
  "bevy_ecs",
  "bevy_reflect",
  "bevy_replique",
- "ron",
+ "ron 0.12.2",
  "serde",
 ]
 
@@ -514,6 +528,7 @@ name = "beacon_game"
 version = "0.1.0"
 dependencies = [
  "avian2d",
+ "beacon_assets",
  "beacon_core",
  "beacon_dialogue",
  "beacon_engine",
@@ -526,6 +541,7 @@ dependencies = [
  "bevy_math",
  "bevy_reflect",
  "bevy_scene",
+ "bevy_state",
  "bevy_time",
  "bevy_transform",
  "serde",
@@ -546,6 +562,7 @@ name = "beacon_scene"
 version = "0.1.0"
 dependencies = [
  "asefile",
+ "beacon_assets",
  "beacon_core",
  "bevy",
  "bevy_aseprite_ultra",
@@ -658,7 +675,7 @@ dependencies = [
  "downcast-rs 2.0.2",
  "either",
  "petgraph",
- "ron",
+ "ron 0.12.2",
  "serde",
  "smallvec",
  "thiserror 2.0.20",
@@ -768,7 +785,7 @@ dependencies = [
  "futures-util",
  "js-sys",
  "notify-debouncer-full",
- "ron",
+ "ron 0.12.2",
  "serde",
  "stackfuture",
  "thiserror 2.0.20",
@@ -777,6 +794,36 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
+]
+
+[[package]]
+name = "bevy_asset_loader"
+version = "0.27.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1ef4cba5fb56abd9842dece351e61f9c4f6beaa08a9e92760e5cd9472c43e14d"
+dependencies = [
+ "anyhow",
+ "bevy_app",
+ "bevy_asset",
+ "bevy_asset_loader_derive",
+ "bevy_ecs",
+ "bevy_log",
+ "bevy_platform",
+ "bevy_reflect",
+ "bevy_state",
+ "bevy_utils",
+ "path-slash",
+]
+
+[[package]]
+name = "bevy_asset_loader_derive"
+version = "0.27.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4c0596de511aeb25cd2d9e0680a67a9e51ce37962806a1c7aaa4b9ad2c6fd4ff"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.119",
 ]
 
 [[package]]
@@ -863,6 +910,21 @@ dependencies = [
  "serde",
  "thiserror 2.0.20",
  "wgpu-types",
+]
+
+[[package]]
+name = "bevy_common_assets"
+version = "0.17.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7b9a9509ff29e5db89e1697c047fbbdc55208c8c3d07a494b013cc96814fcddb"
+dependencies = [
+ "anyhow",
+ "bevy_app",
+ "bevy_asset",
+ "bevy_reflect",
+ "ron 0.11.0",
+ "serde",
+ "thiserror 2.0.20",
 ]
 
 [[package]]
@@ -2189,7 +2251,7 @@ dependencies = [
  "bevy_transform",
  "bevy_utils",
  "derive_more",
- "ron",
+ "ron 0.12.2",
  "serde",
  "thiserror 2.0.20",
  "uuid",
@@ -5122,6 +5184,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
 
 [[package]]
+name = "path-slash"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1e91099d4268b0e11973f036e885d652fb0b21fedcf69738c627f94db6a44f42"
+
+[[package]]
 name = "peniko"
 version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5615,6 +5683,19 @@ dependencies = [
  "num-rational",
  "thiserror 2.0.20",
  "tracing",
+]
+
+[[package]]
+name = "ron"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "db09040cc89e461f1a265139777a2bde7f8d8c67c4936f700c63ce3e2904d468"
+dependencies = [
+ "base64",
+ "bitflags 2.13.2",
+ "serde",
+ "serde_derive",
+ "unicode-ident",
 ]
 
 [[package]]

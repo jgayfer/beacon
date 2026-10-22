@@ -1,19 +1,41 @@
 use avian2d::collision::collision_events::CollisionStart;
 use beacon_core::{
     inventory::Inventory,
-    item::{GroundItem, GroundItemTouched},
+    item::{GroundItem, GroundItemTouched, ItemSpawn, Items},
     player::Player,
 };
+use beacon_scene::ground_item::ground_item_scene;
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
+use bevy_log::prelude::*;
+use bevy_scene::prelude::*;
 
 pub struct GroundItemPlugin;
 
 impl Plugin for GroundItemPlugin {
     fn build(&self, app: &mut App) {
-        app.add_observer(detect_ground_item_contact)
+        app.add_observer(spawn_ground_item)
+            .add_observer(detect_ground_item_contact)
             .add_observer(on_ground_item_touched);
     }
+}
+
+fn spawn_ground_item(
+    event: On<Add, ItemSpawn>,
+    mut commands: Commands,
+    spawns: Query<&ItemSpawn>,
+    items: Res<Items>,
+) {
+    let Ok(spawn) = spawns.get(event.entity) else {
+        return;
+    };
+    let Some(stack) = items.stack(&spawn.id, spawn.count) else {
+        warn!("items.ron doesn't define {:?}", spawn.id);
+        return;
+    };
+    commands
+        .entity(event.entity)
+        .queue_spawn_related_scenes::<Children>(bsn_list![ground_item_scene(stack)]);
 }
 
 fn detect_ground_item_contact(

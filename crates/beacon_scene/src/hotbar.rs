@@ -62,7 +62,7 @@ fn update_hotbar(
 ) {
     for (slot, mut image) in &mut slots {
         image.image = match inventory.get(slot.0) {
-            Some(stack) => asset_server.load(stack.id.def().sprite),
+            Some(stack) => asset_server.load(&stack.def.sprite),
             None => TRANSPARENT_IMAGE_HANDLE,
         };
     }

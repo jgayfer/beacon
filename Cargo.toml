@@ -11,6 +11,7 @@ edition = "2024"
 type_complexity = "allow"
 
 [workspace.dependencies]
+beacon_assets = { path = "crates/beacon_assets" }
 beacon_core = { path = "crates/beacon_core" }
 beacon_dialogue = { path = "crates/beacon_dialogue" }
 beacon_engine = { path = "crates/beacon_engine" }
@@ -27,16 +28,20 @@ bevy-inspector-egui = "0.37"
 bevy_replique = "0.2"
 ron = "0.12"
 serde = { version = "1", features = ["derive"] }
+bevy_common_assets = { version = "0.17", features = ["ron"] }
+bevy_asset_loader = "0.27"
 
 # Bevy sub-crates, for crates that should only see part of the engine
 bevy_app = "0.19"
 bevy_asset = "0.19"
+bevy_camera = "0.19"
 bevy_ecs = "0.19"
 bevy_input = "0.19"
 bevy_log = "0.19"
 bevy_math = "0.19"
 bevy_reflect = "0.19"
 bevy_scene = "0.19"
+bevy_state = "0.19"
 bevy_time = "0.19"
 bevy_transform = "0.19"
 

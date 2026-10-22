@@ -28,6 +28,6 @@ impl<T: Asset + DeserializeOwned> AssetLoader for RoutesLoader<T> {
     }
 
     fn extensions(&self) -> &[&str] {
-        &["ron"]
+        &[]
     }
 }

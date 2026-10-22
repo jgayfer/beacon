@@ -1,10 +1,14 @@
+use std::collections::HashMap;
+
 use avian2d::collision::{
     collider::{Collider, Sensor},
     collision_events::CollisionEventsEnabled,
 };
+use bevy_camera::visibility::Visibility;
 use bevy_ecs::prelude::*;
 use bevy_reflect::prelude::*;
 use bevy_transform::prelude::*;
+use serde::Deserialize;
 
 #[derive(Component, Clone, Default)]
 #[require(Transform, Collider::circle(8.0), Sensor, CollisionEventsEnabled)]
@@ -20,61 +24,59 @@ pub struct ItemUsed {
     pub item: ItemStack,
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, Default, Reflect)]
-pub enum ItemId {
-    #[default]
-    Wood,
-    Axe,
+#[derive(Component, Clone, Default, Reflect)]
+#[reflect(Component)]
+#[require(Visibility)]
+pub struct ItemSpawn {
+    pub id: String,
+    pub count: u16,
 }
 
-impl ItemId {
-    pub fn def(self) -> &'static ItemDef {
-        match self {
-            ItemId::Wood => &WOOD,
-            ItemId::Axe => &AXE,
-        }
+#[derive(Resource, Deserialize, Default)]
+#[serde(from = "Vec<ItemDef>")]
+pub struct Items(HashMap<String, ItemDef>);
+
+impl From<Vec<ItemDef>> for Items {
+    fn from(defs: Vec<ItemDef>) -> Self {
+        Self(defs.into_iter().map(|def| (def.id.clone(), def)).collect())
     }
 }
 
-static WOOD: ItemDef = ItemDef {
-    name: "wood",
-    max_stack: 64,
-    sprite: "log.aseprite",
-    kind: ItemKind::Resource,
-};
+impl Items {
+    pub fn stack(&self, id: &str, count: u16) -> Option<ItemStack> {
+        let def = self.0.get(id)?.clone();
+        Some(ItemStack { def, count })
+    }
+}
 
-static AXE: ItemDef = ItemDef {
-    name: "axe",
-    max_stack: 1,
-    sprite: "axe.aseprite",
-    kind: ItemKind::Tool,
-};
-
+#[derive(Deserialize, Clone, Debug, Default, PartialEq, Eq, Reflect)]
 pub struct ItemDef {
-    pub name: &'static str,
+    pub id: String,
     pub max_stack: u16,
-    pub sprite: &'static str,
+    pub sprite: String,
     pub kind: ItemKind,
 }
 
+#[derive(Deserialize, Clone, Debug, Default, PartialEq, Eq, Reflect)]
 pub enum ItemKind {
+    #[default]
     Resource,
     Tool,
 }
 
-#[derive(Clone, Default, Copy, Debug, Eq, Hash, PartialEq, Reflect)]
+#[derive(Clone, Default, Debug, Eq, PartialEq, Reflect)]
 pub struct ItemStack {
-    pub id: ItemId,
+    pub def: ItemDef,
     pub count: u16,
 }
 
 impl ItemStack {
     fn remaining_capacity(&self) -> u16 {
-        self.id.def().max_stack - self.count
+        self.def.max_stack - self.count
     }
 
     pub fn merge(&mut self, mut other: ItemStack) -> Result<Option<ItemStack>, ItemStack> {
-        if self.id != other.id {
+        if self.def.id != other.def.id {
             return Err(other);
         }
         let amount = other.count.min(self.remaining_capacity());

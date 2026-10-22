@@ -74,7 +74,7 @@ fn halt_player(mut q: Query<(&mut LinearVelocity, &mut Action), With<Player>>) {
 }
 
 fn spawn_tool_hitbox(event: On<ItemUsed>, mut commands: Commands, facing: Query<&Facing>) {
-    if matches!(event.item.id.def().kind, ItemKind::Tool) {
+    if matches!(event.item.def.kind, ItemKind::Tool) {
         let Ok(facing) = facing.get(event.player) else {
             return;
         };
@@ -108,7 +108,7 @@ fn use_item(
 
         commands.trigger(ItemUsed {
             player: player.entity(),
-            item: *selected_item,
+            item: selected_item.clone(),
         });
     }
 }
@@ -147,6 +147,6 @@ fn interact(
     commands.trigger(Interaction {
         interactable,
         player,
-        item: inventory.get(selected.0).copied(),
+        item: inventory.get(selected.0).cloned(),
     });
 }
