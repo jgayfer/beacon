@@ -12,6 +12,7 @@ use balefire::BalefireScenePlugin;
 use bevy::prelude::*;
 use bevy_aseprite_ultra::prelude::AsepriteUltraPlugin;
 use dialogue_box::DialogueBoxPlugin;
+use ground_item::GroundItemScenePlugin;
 use hotbar::HotbarPlugin;
 use player::PlayerScenePlugin;
 
@@ -23,6 +24,7 @@ impl Plugin for ScenesPlugin {
             AsepriteUltraPlugin,
             PlayerScenePlugin,
             HotbarPlugin,
+            GroundItemScenePlugin,
             BalefireScenePlugin,
             DialogueBoxPlugin,
         ));

@@ -53,7 +53,6 @@ impl Items {
 pub struct ItemDef {
     pub id: String,
     pub max_stack: u16,
-    pub sprite: String,
     pub kind: ItemKind,
 }
 

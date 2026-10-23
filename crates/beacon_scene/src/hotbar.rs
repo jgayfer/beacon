@@ -1,3 +1,4 @@
+use beacon_assets::ItemImages;
 use beacon_core::{
     inventory::{Inventory, SelectedSlot},
     player::Player,
@@ -58,13 +59,13 @@ fn update_hotbar(
     inventory: Single<&Inventory, (With<Player>, Changed<Inventory>)>,
     mut slots: Query<(&HotbarSlot, &mut ImageNode)>,
     mut counts: Query<(&HotbarCount, &mut Text)>,
-    asset_server: Res<AssetServer>,
+    images: Res<ItemImages>,
 ) {
     for (slot, mut image) in &mut slots {
-        image.image = match inventory.get(slot.0) {
-            Some(stack) => asset_server.load(&stack.def.sprite),
-            None => TRANSPARENT_IMAGE_HANDLE,
-        };
+        image.image = inventory
+            .get(slot.0)
+            .and_then(|stack| images.get(&stack.def.id))
+            .unwrap_or(TRANSPARENT_IMAGE_HANDLE);
     }
     for (count, mut text) in &mut counts {
         text.0 = inventory

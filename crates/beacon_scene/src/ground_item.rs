@@ -1,12 +1,33 @@
+use beacon_assets::ItemImages;
 use beacon_core::item::{GroundItem, ItemStack};
-use bevy::prelude::*;
+use bevy::{image::TRANSPARENT_IMAGE_HANDLE, prelude::*};
+
+pub struct GroundItemScenePlugin;
+
+impl Plugin for GroundItemScenePlugin {
+    fn build(&self, app: &mut App) {
+        app.add_observer(insert_ground_item_sprite);
+    }
+}
 
 pub fn ground_item_scene(stack: ItemStack) -> impl Scene {
-    let sprite = stack.def.sprite.clone();
     bsn! {
         GroundItem({stack})
-        Sprite {
-            image: {sprite},
-        }
+    }
+}
+
+fn insert_ground_item_sprite(
+    event: On<Add, GroundItem>,
+    mut commands: Commands,
+    ground_items: Query<&GroundItem>,
+    images: Res<ItemImages>,
+) {
+    if let Ok(ground_item) = ground_items.get(event.entity) {
+        let image = images
+            .get(&ground_item.0.def.id)
+            .unwrap_or(TRANSPARENT_IMAGE_HANDLE);
+        commands
+            .entity(event.entity)
+            .insert(Sprite::from_image(image));
     }
 }

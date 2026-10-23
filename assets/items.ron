@@ -1,4 +1,4 @@
 [
-    (id: "wood", max_stack: 64, sprite: "log.aseprite", kind: Resource),
-    (id: "axe", max_stack: 1, sprite: "axe.aseprite", kind: Tool),
+    (id: "wood", max_stack: 64, kind: Resource),
+    (id: "axe", max_stack: 1, kind: Tool),
 ]

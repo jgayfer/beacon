@@ -1,14 +1,17 @@
-use beacon_core::{item::Items, state::GameState};
+mod item;
+
+use beacon_core::state::GameState;
 use bevy::prelude::*;
 use bevy_asset_loader::prelude::*;
-use bevy_common_assets::ron::RonAssetPlugin;
-use serde::Deserialize;
+pub use item::ItemImages;
+use item::{ItemAssets, ItemsAsset, ItemsLoader, insert_items};
 
 pub struct AssetsPlugin;
 
 impl Plugin for AssetsPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins(RonAssetPlugin::<ItemsAsset>::new(&["ron"]))
+        app.init_asset::<ItemsAsset>()
+            .register_asset_loader(ItemsLoader)
             .init_state::<GameState>()
             .add_loading_state(
                 LoadingState::new(GameState::Loading)
@@ -17,25 +20,4 @@ impl Plugin for AssetsPlugin {
             )
             .add_systems(OnExit(GameState::Loading), insert_items);
     }
-}
-
-#[derive(Asset, TypePath, Deserialize)]
-#[serde(transparent)]
-struct ItemsAsset(Items);
-
-#[derive(AssetCollection, Resource)]
-struct ItemAssets {
-    #[asset(path = "items.ron")]
-    items: Handle<ItemsAsset>,
-}
-
-fn insert_items(
-    mut commands: Commands,
-    item_assets: Res<ItemAssets>,
-    mut assets: ResMut<Assets<ItemsAsset>>,
-) {
-    let ItemsAsset(items) = assets
-        .remove(&item_assets.items)
-        .expect("items.ron is loaded by the loading state");
-    commands.insert_resource(items);
 }
