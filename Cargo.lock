@@ -479,6 +479,7 @@ dependencies = [
 name = "beacon_assets"
 version = "0.1.0"
 dependencies = [
+ "asefile",
  "beacon_core",
  "bevy",
  "bevy_asset_loader",
@@ -560,7 +561,6 @@ dependencies = [
 name = "beacon_scene"
 version = "0.1.0"
 dependencies = [
- "asefile",
  "beacon_assets",
  "beacon_core",
  "bevy",

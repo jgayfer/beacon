@@ -8,6 +8,7 @@ beacon_core.workspace = true
 bevy.workspace = true
 bevy_asset_loader.workspace = true
 ron.workspace = true
+asefile.workspace = true
 
 [lints]
 workspace = true
