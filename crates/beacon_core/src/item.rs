@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use avian2d::collision::{
     collider::{Collider, Sensor},
     collision_events::CollisionEventsEnabled,
@@ -30,23 +28,6 @@ pub struct ItemUsed {
 pub struct ItemSpawn {
     pub id: String,
     pub count: u16,
-}
-
-#[derive(Resource, Deserialize, Default)]
-#[serde(from = "Vec<ItemDef>")]
-pub struct Items(HashMap<String, ItemDef>);
-
-impl From<Vec<ItemDef>> for Items {
-    fn from(defs: Vec<ItemDef>) -> Self {
-        Self(defs.into_iter().map(|def| (def.id.clone(), def)).collect())
-    }
-}
-
-impl Items {
-    pub fn stack(&self, id: &str, count: u16) -> Option<ItemStack> {
-        let def = self.0.get(id)?.clone();
-        Some(ItemStack { def, count })
-    }
 }
 
 #[derive(Deserialize, Clone, Debug, Default, PartialEq, Eq, Reflect)]

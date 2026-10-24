@@ -1,7 +1,8 @@
 use avian2d::collision::collision_events::CollisionStart;
+use beacon_assets::ItemRegistry;
 use beacon_core::{
     inventory::Inventory,
-    item::{GroundItem, GroundItemTouched, ItemSpawn, Items},
+    item::{GroundItem, GroundItemTouched, ItemSpawn},
     player::Player,
 };
 use beacon_scene::ground_item::ground_item_scene;
@@ -24,7 +25,7 @@ fn spawn_ground_item(
     event: On<Add, ItemSpawn>,
     mut commands: Commands,
     spawns: Query<&ItemSpawn>,
-    items: Res<Items>,
+    items: Res<ItemRegistry>,
 ) {
     let Ok(spawn) = spawns.get(event.entity) else {
         return;

@@ -1,4 +1,5 @@
-use beacon_core::{item::Items, state::GameState};
+use beacon_assets::ItemRegistry;
+use beacon_core::state::GameState;
 use beacon_engine::hitbox::Hit;
 use beacon_scene::ground_item::ground_item_scene;
 use bevy_app::prelude::*;
@@ -31,7 +32,7 @@ fn on_tree_hit(event: On<Hit>, mut trees: Query<&mut Tree>) {
 
 fn check_tree_health(
     mut commands: Commands,
-    items: Res<Items>,
+    items: Res<ItemRegistry>,
     query: Query<(Entity, &Tree, &GlobalTransform), Changed<Tree>>,
 ) {
     for (entity, tree, tree_transform) in query {

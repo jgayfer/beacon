@@ -1,4 +1,4 @@
-use beacon_assets::ItemImages;
+use beacon_assets::ItemRegistry;
 use beacon_core::{
     inventory::{Inventory, SelectedSlot},
     player::Player,
@@ -59,12 +59,12 @@ fn update_hotbar(
     inventory: Single<&Inventory, (With<Player>, Changed<Inventory>)>,
     mut slots: Query<(&HotbarSlot, &mut ImageNode)>,
     mut counts: Query<(&HotbarCount, &mut Text)>,
-    images: Res<ItemImages>,
+    items: Res<ItemRegistry>,
 ) {
     for (slot, mut image) in &mut slots {
         image.image = inventory
             .get(slot.0)
-            .and_then(|stack| images.get(&stack.def.id))
+            .and_then(|stack| items.image(&stack.def.id))
             .unwrap_or(TRANSPARENT_IMAGE_HANDLE);
     }
     for (count, mut text) in &mut counts {

@@ -1,4 +1,4 @@
-use beacon_core::item::{ItemDef, Items};
+use beacon_core::item::{ItemDef, ItemStack};
 use bevy::{
     asset::{AssetLoader, AsyncReadExt, LoadContext, io::Reader},
     platform::collections::HashMap,
@@ -7,16 +7,16 @@ use bevy::{
 use bevy_asset_loader::prelude::*;
 
 #[derive(Asset, TypePath)]
-pub(crate) struct ItemsAsset {
-    items: Items,
+pub struct ItemManifest {
+    items: HashMap<String, ItemDef>,
     images: HashMap<String, Handle<Image>>,
 }
 
 #[derive(TypePath)]
-pub(crate) struct ItemsLoader;
+pub struct ItemManifestLoader;
 
-impl AssetLoader for ItemsLoader {
-    type Asset = ItemsAsset;
+impl AssetLoader for ItemManifestLoader {
+    type Asset = ItemManifest;
     type Settings = ();
     type Error = BevyError;
 
@@ -25,21 +25,24 @@ impl AssetLoader for ItemsLoader {
         reader: &mut dyn Reader,
         _: &(),
         load_context: &mut LoadContext<'_>,
-    ) -> Result<ItemsAsset, BevyError> {
+    ) -> Result<ItemManifest, BevyError> {
         let mut src = String::new();
         reader.read_to_string(&mut src).await?;
-        let defs: Vec<ItemDef> = ron::from_str(&src)?;
-        let images = defs
+
+        let items = ron::from_str::<Vec<ItemDef>>(&src)?
+            .into_iter()
+            .map(|def| (def.id.clone(), def))
+            .collect::<HashMap<_, _>>();
+
+        let images = items
             .iter()
-            .map(|def| {
-                let path = format!("items/{}.aseprite", def.id);
-                (def.id.clone(), load_context.load(path))
+            .map(|(item_id, _)| {
+                let path = format!("items/{}.aseprite", item_id);
+                (item_id.clone(), load_context.load(path))
             })
             .collect();
-        Ok(ItemsAsset {
-            items: defs.into(),
-            images,
-        })
+
+        Ok(ItemManifest { items, images })
     }
 
     fn extensions(&self) -> &[&str] {
@@ -48,28 +51,35 @@ impl AssetLoader for ItemsLoader {
 }
 
 #[derive(AssetCollection, Resource)]
-pub(crate) struct ItemAssets {
+pub struct ItemAssets {
     #[asset(path = "items.ron")]
-    items: Handle<ItemsAsset>,
+    manifest: Handle<ItemManifest>,
 }
 
 #[derive(Resource)]
-pub struct ItemImages(HashMap<String, Handle<Image>>);
+pub struct ItemRegistry {
+    items: HashMap<String, ItemDef>,
+    images: HashMap<String, Handle<Image>>,
+}
 
-impl ItemImages {
-    pub fn get(&self, id: &str) -> Option<Handle<Image>> {
-        self.0.get(id).cloned()
+impl ItemRegistry {
+    pub fn stack(&self, id: &str, count: u16) -> Option<ItemStack> {
+        let def = self.items.get(id)?.clone();
+        Some(ItemStack { def, count })
+    }
+
+    pub fn image(&self, id: &str) -> Option<Handle<Image>> {
+        self.images.get(id).cloned()
     }
 }
 
-pub(crate) fn insert_items(
+pub fn insert_item_registry(
     mut commands: Commands,
     item_assets: Res<ItemAssets>,
-    mut assets: ResMut<Assets<ItemsAsset>>,
+    mut manifests: ResMut<Assets<ItemManifest>>,
 ) {
-    let ItemsAsset { items, images } = assets
-        .remove(&item_assets.items)
+    let ItemManifest { items, images } = manifests
+        .remove(&item_assets.manifest)
         .expect("items.ron is loaded by the loading state");
-    commands.insert_resource(items);
-    commands.insert_resource(ItemImages(images));
+    commands.insert_resource(ItemRegistry { items, images });
 }
