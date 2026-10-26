@@ -92,9 +92,6 @@ fn item_spawn(ctx: &EntityInstanceContext) -> impl Scene + use<> {
 
 pub fn map_scene() -> impl Scene {
     bsn! {
-        template(|ctx| Ok(LdtkProjectHandle::from(ctx.resource::<AssetServer>().load("map.ldtk"))))
-        LevelSet
-        Transform
-        Visibility
+        LdtkProjectHandle { handle: "map.ldtk" }
     }
 }
