@@ -1,42 +1,21 @@
-use avian2d::{collision::collision_events::CollisionStart, physics_transform::Position};
+use avian2d::collision::collision_events::CollisionStart;
 use beacon_core::{
-    door::{Door, DoorEntered, DoorExit},
+    door::{Door, DoorEntered},
     player::Player,
 };
 use bevy_app::{App, Plugin};
 use bevy_ecs::{
     observer::On,
-    query::{With, Without},
+    query::With,
     system::{Commands, Query},
 };
-use bevy_transform::components::GlobalTransform;
 
 pub struct DoorPlugin;
 
 impl Plugin for DoorPlugin {
     fn build(&self, app: &mut App) {
-        app.add_observer(detect_door_contact)
-            .add_observer(on_door_entered);
+        app.add_observer(detect_door_contact);
     }
-}
-
-fn on_door_entered(
-    event: On<DoorEntered>,
-    doors: Query<&Door>,
-    exits: Query<&GlobalTransform, With<DoorExit>>,
-    mut target_positions: Query<&mut Position, Without<Door>>,
-) {
-    let Some(exit) = doors.get(event.door).ok().and_then(|door| door.exit) else {
-        return;
-    };
-
-    let (Ok(exit_transform), Ok(mut position)) =
-        (exits.get(exit), target_positions.get_mut(event.target))
-    else {
-        return;
-    };
-
-    position.0 = exit_transform.translation().truncate();
 }
 
 fn detect_door_contact(

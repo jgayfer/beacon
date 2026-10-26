@@ -14,9 +14,7 @@ pub struct DoorEntered {
 #[derive(Component, Default, Clone, Reflect)]
 #[reflect(Component)]
 #[require(CollisionEventsEnabled, Collider = Collider::rectangle(TILE, TILE))]
-pub struct Door {
-    pub exit: Option<Entity>,
-}
+pub struct Door;
 
 #[derive(Component, Default, Clone, Reflect)]
 #[reflect(Component)]

@@ -19,12 +19,6 @@ pub struct LevelPlugin;
 impl Plugin for LevelPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins((LdtkPlugin, DoorPlugin))
-            .insert_resource(LdtkSettings {
-                level_spawn_behavior: LevelSpawnBehavior::UseWorldTranslation {
-                    load_level_neighbors: true,
-                },
-                ..default()
-            })
             .insert_resource(LevelSelection::Identifier("clearing".to_owned()))
             .add_systems(Update, (add_tile_flag_markers, add_colliders).chain())
             .register_ldtk_entity_scene("player", worldly_player_scene)

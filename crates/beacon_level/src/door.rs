@@ -1,4 +1,5 @@
-use beacon_core::door::{Door, DoorExit};
+use avian2d::physics_transform::Position;
+use beacon_core::door::{Door, DoorEntered, DoorExit};
 use bevy::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
 
@@ -10,45 +11,87 @@ pub struct DoorPlugin;
 
 impl Plugin for DoorPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, resolve_door_exits)
-            .register_ldtk_entity_scene(DOOR, unresolved_door)
+        app.add_observer(on_door_entered)
+            .add_systems(
+                Update,
+                move_to_pending_exit.run_if(resource_exists::<PendingExit>),
+            )
+            .register_ldtk_entity_scene(DOOR, door)
             .register_ldtk_entity_scene(DOOR_EXIT, DoorExit);
     }
 }
 
 #[derive(Component, Clone, Default)]
-struct DoorDestinationIid(String);
+struct DoorTarget {
+    level: LevelIid,
+    exit: EntityIid,
+}
 
-fn unresolved_door(ctx: &EntityInstanceContext) -> impl Scene + use<> {
-    let door_destination_iid = ctx
+#[derive(Resource)]
+struct PendingExit {
+    target: Entity,
+    exit: EntityIid,
+}
+
+fn door(ctx: &EntityInstanceContext) -> impl Scene + use<> {
+    let door_target = ctx
         .entity_instance
-        .field_instances
-        .iter()
-        .find(|f| f.identifier == EXIT_FIELD)
-        .and_then(|f| match &f.value {
-            FieldValue::EntityRef(Some(r)) => Some(r.entity_iid.clone()),
-            _ => None,
-        })
-        .map(|iid| bsn! { DoorDestinationIid(iid) });
+        .get_entity_ref_field(EXIT_FIELD)
+        .ok()
+        .map(|exit| {
+            let level = LevelIid::new(exit.level_iid.clone());
+            let exit = EntityIid::new(exit.entity_iid.clone());
+            bsn! { DoorTarget { level, exit } }
+        });
 
     bsn! {
         Door
-        @door_destination_iid
+        @door_target
     }
 }
 
-fn resolve_door_exits(
+fn on_door_entered(
+    event: On<DoorEntered>,
+    targets: Query<&DoorTarget>,
+    mut level_selection: ResMut<LevelSelection>,
     mut commands: Commands,
-    mut pending: Query<(Entity, &mut Door, &DoorDestinationIid)>,
-    iids: Query<(Entity, &EntityIid)>,
 ) {
-    for (entity, mut door, dest) in &mut pending {
-        if let Some(target) = iids
-            .iter()
-            .find_map(|(exit, iid)| (iid.as_str() == dest.0).then_some(exit))
-        {
-            door.exit = Some(target);
-            commands.entity(entity).remove::<DoorDestinationIid>();
-        }
+    let Ok(target) = targets.get(event.door) else {
+        return;
+    };
+
+    *level_selection = LevelSelection::Iid(target.level.clone());
+
+    commands.insert_resource(PendingExit {
+        target: event.target,
+        exit: target.exit.clone(),
+    });
+}
+
+fn move_to_pending_exit(
+    mut commands: Commands,
+    mut level_events: MessageReader<LevelEvent>,
+    pending: Res<PendingExit>,
+    exits: Query<(&EntityIid, &GlobalTransform), With<DoorExit>>,
+    mut positions: Query<&mut Position>,
+) {
+    if !level_events
+        .read()
+        .any(|event| matches!(event, LevelEvent::Transformed(_)))
+    {
+        return;
     }
+
+    let Some(exit_transform) = exits
+        .iter()
+        .find_map(|(iid, transform)| (*iid == pending.exit).then_some(transform))
+    else {
+        return;
+    };
+
+    if let Ok(mut position) = positions.get_mut(pending.target) {
+        position.0 = exit_transform.translation().truncate();
+    }
+
+    commands.remove_resource::<PendingExit>();
 }
