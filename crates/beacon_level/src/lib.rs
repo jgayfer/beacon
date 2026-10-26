@@ -63,7 +63,7 @@ fn add_colliders(mut commands: Commands, solids: Query<Entity, Added<tile::Solid
 
 fn worldly_player_scene() -> impl Scene {
     bsn! {
-        player_scene()
+        @player_scene()
         Worldly
     }
 }

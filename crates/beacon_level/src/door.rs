@@ -33,7 +33,7 @@ fn unresolved_door(ctx: &EntityInstanceContext) -> impl Scene + use<> {
 
     bsn! {
         Door
-        door_destination_iid
+        @door_destination_iid
     }
 }
 

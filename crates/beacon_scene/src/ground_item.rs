@@ -17,7 +17,7 @@ pub fn ground_item_scene(stack: ItemStack) -> impl Scene {
 }
 
 fn insert_ground_item_sprite(
-    event: On<Add, GroundItem>,
+    event: On<Add<GroundItem>>,
     mut commands: Commands,
     ground_items: Query<&GroundItem>,
     items: Res<ItemRegistry>,

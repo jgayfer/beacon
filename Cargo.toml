@@ -7,7 +7,6 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace.lints.clippy]
-# Bevy queries trip this constantly.
 type_complexity = "allow"
 
 [workspace.dependencies]
@@ -19,30 +18,29 @@ beacon_game = { path = "crates/beacon_game" }
 beacon_level = { path = "crates/beacon_level" }
 beacon_scene = { path = "crates/beacon_scene" }
 
-bevy = { version = "0.19", features = ["dynamic_linking", "file_watcher"] }
-bevy_ecs_ldtk = { git = "https://github.com/Trouv/bevy_ecs_ldtk", branch="main", features = ["scene"] }
-avian2d = "0.7"
-bevy_aseprite_ultra = { git = "https://github.com/Lommix/bevy_aseprite_ultra", branch = "master" }
+bevy = { version = "0.20", features = ["dynamic_linking", "file_watcher"] }
+bevy_ecs_ldtk = { version = "0.16", features = ["scene"] }
+avian2d = "0.8"
+bevy_aseprite_ultra = "0.10"
 asefile = "0.3.8"
-bevy-inspector-egui = "0.37"
-bevy_replique = "0.2"
+bevy-inspector-egui = "0.38"
+bevy_replique = "0.3"
 ron = "0.12"
 serde = { version = "1", features = ["derive"] }
-bevy_asset_loader = "0.27"
+bevy_asset_loader = "0.28"
 
-# Bevy sub-crates, for crates that should only see part of the engine
-bevy_app = "0.19"
-bevy_asset = "0.19"
-bevy_camera = "0.19"
-bevy_ecs = "0.19"
-bevy_input = "0.19"
-bevy_log = "0.19"
-bevy_math = "0.19"
-bevy_reflect = "0.19"
-bevy_scene = "0.19"
-bevy_state = "0.19"
-bevy_time = "0.19"
-bevy_transform = "0.19"
+bevy_app = "0.20"
+bevy_asset = "0.20"
+bevy_camera = "0.20"
+bevy_ecs = "0.20"
+bevy_input = "0.20"
+bevy_log = "0.20"
+bevy_math = "0.20"
+bevy_reflect = "0.20"
+bevy_scene = "0.20"
+bevy_state = "0.20"
+bevy_time = "0.20"
+bevy_transform = "0.20"
 
 [profile.dev]
 opt-level = 1

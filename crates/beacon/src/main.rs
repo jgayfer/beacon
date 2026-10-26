@@ -27,7 +27,15 @@ fn main() {
 }
 
 fn scene() -> impl SceneList {
-    bsn_list![camera(), map_scene(), hotbar_scene(), dialogue_box_scene()]
+    bsn_list! {
+        @camera()
+        --
+        @map_scene()
+        --
+        @hotbar_scene()
+        --
+        @dialogue_box_scene()
+    }
 }
 
 fn camera() -> impl Scene {

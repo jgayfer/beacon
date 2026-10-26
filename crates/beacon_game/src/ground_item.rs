@@ -22,7 +22,7 @@ impl Plugin for GroundItemPlugin {
 }
 
 fn spawn_ground_item(
-    event: On<Add, ItemSpawn>,
+    event: On<Add<ItemSpawn>>,
     mut commands: Commands,
     spawns: Query<&ItemSpawn>,
     items: Res<ItemRegistry>,
@@ -36,7 +36,7 @@ fn spawn_ground_item(
     };
     commands
         .entity(event.entity)
-        .queue_spawn_related_scenes::<Children>(bsn_list![ground_item_scene(stack)]);
+        .queue_spawn_related_scenes::<Children>(bsn_list! {@ground_item_scene(stack)});
 }
 
 fn detect_ground_item_contact(

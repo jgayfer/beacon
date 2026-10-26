@@ -40,7 +40,7 @@ fn check_tree_health(
             let wood = items.stack("wood", 48).expect("items.ron defines wood");
             commands.entity(entity).despawn();
             commands.spawn_scene(bsn! {
-                ground_item_scene(wood)
+                @ground_item_scene(wood)
                 Transform { translation: {tree_transform.translation()} }
             });
         }
