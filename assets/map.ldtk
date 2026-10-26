@@ -11,7 +11,7 @@
 	"iid": "470cd2e0-96d0-11f1-93b9-973158077998",
 	"jsonVersion": "1.5.4",
 	"appBuildId": 497951,
-	"nextUid": 25,
+	"nextUid": 27,
 	"identifierStyle": "Lowercase",
 	"toc": [],
 	"worldLayout": "Free",
@@ -551,13 +551,13 @@
 			"spacing": 0,
 			"padding": 0,
 			"tags": [],
-			"tagsSourceEnumUid": null,
-			"enumTags": [],
+			"tagsSourceEnumUid": 25,
+			"enumTags": [{ "enumValueId": "solid", "tileIds": [6] }],
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": { "opaqueTiles": "1111111111111111", "averageColors": "f7a3f793f883f793f793f883f873f883f7a3f793f767f793f6b3f7a3f883f7a3" }
 		}
-	], "enums": [], "externalEnums": [], "levelFields": [] },
+	], "enums": [{ "identifier": "tile_flags", "uid": 25, "values": [{ "id": "solid", "tileRect": null, "color": 14957380 }], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] }], "externalEnums": [], "levelFields": [] },
 	"levels": [
 		{
 			"identifier": "clearing",
@@ -886,15 +886,22 @@
 					"seed": 48972,
 					"overrideTilesetUid": null,
 					"gridTiles": [
-						{ "px": [368,112], "src": [32,16], "f": 0, "t": 6, "d": [394], "a": 1 },
-						{ "px": [384,112], "src": [32,16], "f": 0, "t": 6, "d": [395], "a": 1 },
-						{ "px": [400,112], "src": [32,16], "f": 0, "t": 6, "d": [396], "a": 1 },
-						{ "px": [368,128], "src": [32,16], "f": 0, "t": 6, "d": [447], "a": 1 },
-						{ "px": [384,128], "src": [32,16], "f": 0, "t": 6, "d": [448], "a": 1 },
-						{ "px": [400,128], "src": [32,16], "f": 0, "t": 6, "d": [449], "a": 1 },
-						{ "px": [368,144], "src": [32,16], "f": 0, "t": 6, "d": [500], "a": 1 },
-						{ "px": [384,144], "src": [32,16], "f": 0, "t": 6, "d": [501], "a": 1 },
-						{ "px": [400,144], "src": [32,16], "f": 0, "t": 6, "d": [502], "a": 1 }
+						{ "px": [352,160], "src": [32,16], "f": 0, "t": 6, "d": [552], "a": 1 },
+						{ "px": [368,160], "src": [32,16], "f": 0, "t": 6, "d": [553], "a": 1 },
+						{ "px": [384,160], "src": [32,16], "f": 0, "t": 6, "d": [554], "a": 1 },
+						{ "px": [400,160], "src": [32,16], "f": 0, "t": 6, "d": [555], "a": 1 },
+						{ "px": [416,160], "src": [32,16], "f": 0, "t": 6, "d": [556], "a": 1 },
+						{ "px": [352,176], "src": [32,16], "f": 0, "t": 6, "d": [605], "a": 1 },
+						{ "px": [416,176], "src": [32,16], "f": 0, "t": 6, "d": [609], "a": 1 },
+						{ "px": [352,192], "src": [32,16], "f": 0, "t": 6, "d": [658], "a": 1 },
+						{ "px": [416,192], "src": [32,16], "f": 0, "t": 6, "d": [662], "a": 1 },
+						{ "px": [352,208], "src": [32,16], "f": 0, "t": 6, "d": [711], "a": 1 },
+						{ "px": [416,208], "src": [32,16], "f": 0, "t": 6, "d": [715], "a": 1 },
+						{ "px": [352,224], "src": [32,16], "f": 0, "t": 6, "d": [764], "a": 1 },
+						{ "px": [368,224], "src": [32,16], "f": 0, "t": 6, "d": [765], "a": 1 },
+						{ "px": [384,224], "src": [32,16], "f": 0, "t": 6, "d": [766], "a": 1 },
+						{ "px": [400,224], "src": [32,16], "f": 0, "t": 6, "d": [767], "a": 1 },
+						{ "px": [416,224], "src": [32,16], "f": 0, "t": 6, "d": [768], "a": 1 }
 					],
 					"entityInstances": []
 				}
