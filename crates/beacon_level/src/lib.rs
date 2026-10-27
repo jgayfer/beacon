@@ -4,12 +4,10 @@ use avian2d::{collision::collider::Collider, dynamics::rigid_body::RigidBody};
 use beacon_core::{
     TILE,
     item::ItemSpawn,
+    player::PlayerSpawn,
     tile::{self, Solid},
 };
-use beacon_scene::{
-    balefire::balefire_scene, flame_sprite::flame_sprite_scene, player::player_scene,
-    tree::tree_scene,
-};
+use beacon_scene::{balefire::balefire_scene, flame_sprite::flame_sprite_scene, tree::tree_scene};
 use bevy::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
 use door::DoorPlugin;
@@ -21,7 +19,7 @@ impl Plugin for LevelPlugin {
         app.add_plugins((LdtkPlugin, DoorPlugin))
             .insert_resource(LevelSelection::Identifier("clearing".to_owned()))
             .add_systems(Update, (add_tile_flag_markers, add_colliders).chain())
-            .register_ldtk_entity_scene("player", worldly_player_scene)
+            .register_ldtk_entity_scene("player_spawn", PlayerSpawn)
             .register_ldtk_entity_scene("tree", tree_scene)
             .register_ldtk_entity_scene("item_spawn", item_spawn)
             .register_ldtk_entity_scene("flame_sprite", flame_sprite_scene)
@@ -52,13 +50,6 @@ fn add_colliders(mut commands: Commands, solids: Query<Entity, Added<tile::Solid
         commands
             .entity(entity)
             .insert((Collider::rectangle(TILE, TILE), RigidBody::Static));
-    }
-}
-
-fn worldly_player_scene() -> impl Scene {
-    bsn! {
-        @player_scene()
-        Worldly
     }
 }
 

@@ -39,3 +39,7 @@ pub enum Action {
     Idle,
     Walking,
 }
+
+#[derive(Component, Clone, Default, Reflect)]
+#[reflect(Component)]
+pub struct PlayerSpawn;

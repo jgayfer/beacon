@@ -4,14 +4,16 @@ use beacon_core::{
     interaction::{Interaction, InteractionZone},
     inventory::{Inventory, SelectedSlot},
     item::{ItemKind, ItemUsed},
-    player::{Action, Facing, Player},
+    player::{Action, Facing, Player, PlayerSpawn},
 };
 use beacon_dialogue::in_conversation;
 use beacon_engine::hitbox::Hitbox;
+use beacon_scene::player::player_scene;
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 use bevy_input::prelude::*;
 use bevy_math::prelude::*;
+use bevy_scene::{CommandsSceneExt, bsn};
 use bevy_time::prelude::*;
 use bevy_transform::prelude::*;
 
@@ -24,6 +26,7 @@ impl Plugin for PlayerPlugin {
         app.add_systems(
             Update,
             (
+                spawn_player,
                 (move_player, interact, use_item).run_if(not(in_conversation)),
                 (halt_player, continue_dialogue).run_if(in_conversation),
             ),
@@ -149,4 +152,19 @@ fn interact(
         player,
         item: inventory.get(selected.0).cloned(),
     });
+}
+
+fn spawn_player(
+    mut commands: Commands,
+    player: Query<&Player>,
+    player_spawns: Query<&Transform, With<PlayerSpawn>>,
+) {
+    if player.is_empty()
+        && let Some(transform) = player_spawns.iter().next() {
+            let player_transform = *transform;
+            commands.spawn_scene(bsn! {
+                @player_scene()
+                player_transform
+            });
+        }
 }
