@@ -12,6 +12,7 @@ use bevy_aseprite_ultra::prelude::AsepriteUltraPlugin;
 use dialogue_box::DialogueBoxPlugin;
 use hotbar::HotbarPlugin;
 use player::PlayerScenePlugin;
+use tree::TreeScenePlugin;
 
 pub struct ScenesPlugin;
 
@@ -20,6 +21,7 @@ impl Plugin for ScenesPlugin {
         app.add_plugins((
             AsepriteUltraPlugin,
             PlayerScenePlugin,
+            TreeScenePlugin,
             HotbarPlugin,
             BalefireScenePlugin,
             DialogueBoxPlugin,

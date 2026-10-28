@@ -1,5 +1,6 @@
 use beacon_core::item::ItemId;
 use bevy::prelude::*;
+use bevy_aseprite_ultra::prelude::*;
 use serde::Deserialize;
 
 use super::{ManifestEntry, Registry};
@@ -15,6 +16,7 @@ pub struct TreeDef {
 
 impl ManifestEntry for TreeDef {
     const DIR: &'static str = "trees";
+    type Sprite = Aseprite;
 
     fn id(&self) -> &str {
         &self.id

@@ -2,7 +2,7 @@ mod balefire;
 mod door;
 mod flame_sprite;
 mod ground_item;
-mod health;
+mod harvest;
 mod inventory;
 mod player;
 
@@ -12,7 +12,7 @@ use beacon_dialogue::DialoguePlugin;
 use bevy_app::prelude::*;
 pub use flame_sprite::FlameSpritePlugin;
 pub use ground_item::GroundItemPlugin;
-pub use health::HealthPlugin;
+pub use harvest::HarvestPlugin;
 pub use inventory::InventoryPlugin;
 pub use player::PlayerPlugin;
 
@@ -24,7 +24,7 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<Progression>().add_plugins((
             PlayerPlugin,
-            HealthPlugin,
+            HarvestPlugin,
             GroundItemPlugin,
             InventoryPlugin,
             BalefirePlugin,

@@ -1,7 +1,29 @@
 use avian2d::prelude::*;
 use beacon_assets::{ItemRegistry, TreeDef, TreeRegistry};
-use beacon_core::{health::Health, item::Drops, tree::Tree};
-use bevy::{image::TRANSPARENT_IMAGE_HANDLE, prelude::*};
+use beacon_core::{
+    harvest::{Harvestable, Harvested},
+    item::Drops,
+    tree::Tree,
+};
+use bevy::prelude::*;
+use bevy_aseprite_ultra::prelude::*;
+
+const TREE_STANDING: &str = "Standing";
+const TREE_CHOPPED: &str = "Chopped";
+
+pub struct TreeScenePlugin;
+
+impl Plugin for TreeScenePlugin {
+    fn build(&self, app: &mut App) {
+        app.add_observer(show_stump);
+    }
+}
+
+fn show_stump(event: On<Add<Harvested>>, mut trees: Query<&mut AseAnimation, With<Tree>>) {
+    if let Ok(mut animation) = trees.get_mut(event.entity) {
+        animation.animation.play_loop(TREE_CHOPPED);
+    }
+}
 
 pub fn tree_scene(def: TreeDef) -> impl Scene {
     let id = def.id.clone();
@@ -11,14 +33,18 @@ pub fn tree_scene(def: TreeDef) -> impl Scene {
 
     bsn! {
         Tree
-        Health(health)
+        Harvestable(health)
         collider
+        Sprite
         template(move |ctx| {
-            let image = ctx
+            let aseprite = ctx
                 .resource::<TreeRegistry>()
-                .image(&id)
-                .unwrap_or(TRANSPARENT_IMAGE_HANDLE);
-            Ok(Sprite::from_image(image))
+                .sprite(&id)
+                .unwrap_or_default();
+            Ok(AseAnimation {
+                aseprite,
+                animation: Animation::tag(TREE_STANDING),
+            })
         })
         template(move |ctx| {
             let items = ctx.resource::<ItemRegistry>();

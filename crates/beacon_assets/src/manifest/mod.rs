@@ -17,6 +17,7 @@ pub use tree::{TreeDef, TreeRegistry};
 
 pub trait ManifestEntry: DeserializeOwned + TypePath + Clone + Send + Sync + 'static {
     const DIR: &'static str;
+    type Sprite: Asset;
 
     fn id(&self) -> &str;
 
@@ -28,7 +29,7 @@ pub trait ManifestEntry: DeserializeOwned + TypePath + Clone + Send + Sync + 'st
 #[derive(Asset, TypePath)]
 pub struct Manifest<T: ManifestEntry> {
     entries: HashMap<String, T>,
-    images: HashMap<String, Handle<Image>>,
+    sprites: HashMap<String, Handle<T::Sprite>>,
 }
 
 #[derive(TypePath)]
@@ -59,7 +60,7 @@ impl<T: ManifestEntry> AssetLoader for ManifestLoader<T> {
             .map(|entry| (entry.id().to_owned(), entry))
             .collect::<HashMap<_, _>>();
 
-        let images = entries
+        let sprites = entries
             .keys()
             .map(|id| {
                 let path = format!("{}/{id}.aseprite", T::DIR);
@@ -67,7 +68,7 @@ impl<T: ManifestEntry> AssetLoader for ManifestLoader<T> {
             })
             .collect();
 
-        Ok(Manifest { entries, images })
+        Ok(Manifest { entries, sprites })
     }
 
     fn extensions(&self) -> &[&str] {
@@ -78,7 +79,7 @@ impl<T: ManifestEntry> AssetLoader for ManifestLoader<T> {
 #[derive(Resource)]
 pub struct Registry<T: ManifestEntry> {
     entries: HashMap<String, T>,
-    images: HashMap<String, Handle<Image>>,
+    sprites: HashMap<String, Handle<T::Sprite>>,
 }
 
 impl<T: ManifestEntry> Registry<T> {
@@ -86,8 +87,8 @@ impl<T: ManifestEntry> Registry<T> {
         self.entries.get(id)
     }
 
-    pub fn image(&self, id: &str) -> Option<Handle<Image>> {
-        self.images.get(id).cloned()
+    pub fn sprite(&self, id: &str) -> Option<Handle<T::Sprite>> {
+        self.sprites.get(id).cloned()
     }
 }
 
@@ -156,6 +157,6 @@ fn rebuild_on_reload<T: ManifestEntry>(
 fn registry_from<T: ManifestEntry>(manifest: &Manifest<T>) -> Registry<T> {
     Registry {
         entries: manifest.entries.clone(),
-        images: manifest.images.clone(),
+        sprites: manifest.sprites.clone(),
     }
 }

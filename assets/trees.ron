@@ -4,6 +4,6 @@
         id: "arbutus",
         health: 3,
         collider_radius: 8.0,
-        drop: Some("wood"),
+        drop: "wood",
     ),
 ]

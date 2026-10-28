@@ -6,6 +6,7 @@ use super::{ManifestEntry, Registry};
 
 impl ManifestEntry for ItemDef {
     const DIR: &'static str = "items";
+    type Sprite = Image;
 
     fn id(&self) -> &str {
         self.id.get()
@@ -21,6 +22,6 @@ impl ItemRegistry {
     }
 
     pub fn item_image(&self, id: &ItemId) -> Option<Handle<Image>> {
-        self.image(id.get())
+        self.sprite(id.get())
     }
 }

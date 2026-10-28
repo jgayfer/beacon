@@ -544,6 +544,7 @@ dependencies = [
  "asefile",
  "beacon_core",
  "bevy",
+ "bevy_aseprite_ultra",
  "bevy_asset_loader",
  "ron",
  "serde",
