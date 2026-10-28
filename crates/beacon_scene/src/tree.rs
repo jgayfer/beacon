@@ -1,11 +1,12 @@
 use avian2d::prelude::*;
 use beacon_assets::{ItemRegistry, TreeDef, TreeRegistry};
 use beacon_core::{
+    TILE,
     harvest::{Harvestable, Harvested},
     item::Drops,
     tree::Tree,
 };
-use bevy::prelude::*;
+use bevy::{prelude::*, sprite::Anchor};
 use bevy_aseprite_ultra::prelude::*;
 
 const TREE_STANDING: &str = "Standing";
@@ -28,7 +29,11 @@ fn show_stump(event: On<Add<Harvested>>, mut trees: Query<&mut AseAnimation, Wit
 pub fn tree_scene(def: TreeDef) -> impl Scene {
     let id = def.id.clone();
     let health = def.health;
-    let collider = Collider::circle(def.collider_radius);
+    let collider = Collider::compound(vec![(
+        Vec2::Y * TILE / 2.0,
+        Rotation::IDENTITY,
+        Collider::circle(def.collider_radius),
+    )]);
     let drop = def.drop;
 
     bsn! {
@@ -36,6 +41,7 @@ pub fn tree_scene(def: TreeDef) -> impl Scene {
         Harvestable(health)
         collider
         Sprite
+        Anchor::BOTTOM_CENTER
         template(move |ctx| {
             let aseprite = ctx
                 .resource::<TreeRegistry>()

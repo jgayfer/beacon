@@ -3,7 +3,7 @@
     (
         id: "arbutus",
         health: 3,
-        collider_radius: 8.0,
+        collider_radius: 6.0,
         drop: "wood",
     ),
 ]
