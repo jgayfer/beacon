@@ -546,6 +546,7 @@ dependencies = [
  "bevy",
  "bevy_asset_loader",
  "ron",
+ "serde",
 ]
 
 [[package]]
@@ -614,6 +615,7 @@ name = "beacon_level"
 version = "0.1.0"
 dependencies = [
  "avian2d",
+ "beacon_assets",
  "beacon_core",
  "beacon_scene",
  "bevy",
@@ -624,6 +626,7 @@ dependencies = [
 name = "beacon_scene"
 version = "0.1.0"
 dependencies = [
+ "avian2d",
  "beacon_assets",
  "beacon_core",
  "bevy",

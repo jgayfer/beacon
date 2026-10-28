@@ -34,7 +34,7 @@ fn on_interaction(
     if event
         .item
         .as_ref()
-        .is_none_or(|stack| stack.def.id != "wood")
+        .is_none_or(|stack| stack.def.id != *"wood")
     {
         return;
     }

@@ -1,11 +1,11 @@
 mod aseprite;
-mod item;
+mod manifest;
 
-use beacon_core::state::GameState;
+use beacon_core::{item::ItemDef, state::GameState};
 use bevy::prelude::*;
 use bevy_asset_loader::prelude::*;
-pub use item::ItemRegistry;
-use item::{ItemAssets, ItemManifest, ItemManifestLoader, insert_item_registry};
+use manifest::RegisterManifest;
+pub use manifest::{ItemRegistry, Registry, TreeDef, TreeRegistry};
 
 use crate::aseprite::AsepriteImageLoader;
 
@@ -13,15 +13,12 @@ pub struct AssetsPlugin;
 
 impl Plugin for AssetsPlugin {
     fn build(&self, app: &mut App) {
-        app.init_asset::<ItemManifest>()
-            .register_asset_loader(AsepriteImageLoader)
-            .register_asset_loader(ItemManifestLoader)
+        app.register_asset_loader(AsepriteImageLoader)
             .init_state::<GameState>()
             .add_loading_state(
-                LoadingState::new(GameState::Loading)
-                    .continue_to_state(GameState::Playing)
-                    .load_collection::<ItemAssets>(),
+                LoadingState::new(GameState::Loading).continue_to_state(GameState::Playing),
             )
-            .add_systems(OnExit(GameState::Loading), insert_item_registry);
+            .register_manifest::<ItemDef>()
+            .register_manifest::<TreeDef>();
     }
 }

@@ -1,6 +1,7 @@
 pub mod balefire;
 pub mod dialogue;
 pub mod door;
+pub mod health;
 pub mod interaction;
 pub mod inventory;
 pub mod item;

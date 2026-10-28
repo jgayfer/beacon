@@ -9,7 +9,7 @@ pub fn ground_item_scene(stack: ItemStack) -> impl Scene {
         template(move |ctx| {
             let image = ctx
                 .resource::<ItemRegistry>()
-                .image(&item_id)
+                .item_image(&item_id)
                 .unwrap_or(TRANSPARENT_IMAGE_HANDLE);
             Ok(Sprite::from_image(image))
         })

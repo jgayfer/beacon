@@ -1,26 +1,27 @@
 mod door;
+mod tree;
 
 use avian2d::{collision::collider::Collider, dynamics::rigid_body::RigidBody};
 use beacon_core::{
     TILE,
-    item::ItemSpawn,
+    item::{ItemId, ItemSpawn},
     player::PlayerSpawn,
     tile::{self, Solid},
 };
-use beacon_scene::{balefire::balefire_scene, flame_sprite::flame_sprite_scene, tree::tree_scene};
+use beacon_scene::{balefire::balefire_scene, flame_sprite::flame_sprite_scene};
 use bevy::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
 use door::DoorPlugin;
+use tree::TreePlugin;
 
 pub struct LevelPlugin;
 
 impl Plugin for LevelPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins((LdtkPlugin, DoorPlugin))
+        app.add_plugins((LdtkPlugin, DoorPlugin, TreePlugin))
             .insert_resource(LevelSelection::Identifier("clearing".to_owned()))
             .add_systems(Update, (add_tile_flag_markers, add_colliders).chain())
             .register_ldtk_entity_scene("player_spawn", PlayerSpawn)
-            .register_ldtk_entity_scene("tree", tree_scene)
             .register_ldtk_entity_scene("item_spawn", item_spawn)
             .register_ldtk_entity_scene("flame_sprite", flame_sprite_scene)
             .register_ldtk_entity_scene("balefire", balefire_scene);
@@ -54,11 +55,11 @@ fn add_colliders(mut commands: Commands, solids: Query<Entity, Added<tile::Solid
 }
 
 fn item_spawn(ctx: &EntityInstanceContext) -> impl Scene + use<> {
-    let id = ctx
-        .entity_instance
-        .get_string_field("item_id")
-        .expect("item_spawn entity's string 'item_id' field is present.")
-        .clone();
+    let id = ItemId::new(
+        ctx.entity_instance
+            .get_string_field("item_id")
+            .expect("item_spawn entity's string 'item_id' field is present."),
+    );
 
     let count: u16 = (*ctx
         .entity_instance

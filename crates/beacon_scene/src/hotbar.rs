@@ -64,7 +64,7 @@ fn update_hotbar(
     for (slot, mut image) in &mut slots {
         image.image = inventory
             .get(slot.0)
-            .and_then(|stack| items.image(&stack.def.id))
+            .and_then(|stack| items.item_image(&stack.def.id))
             .unwrap_or(TRANSPARENT_IMAGE_HANDLE);
     }
     for (count, mut text) in &mut counts {

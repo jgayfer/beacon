@@ -24,15 +24,39 @@ pub struct ItemUsed {
 
 #[derive(Component, Clone, Default, Reflect)]
 #[reflect(Component)]
+pub struct Drops(pub Vec<ItemStack>);
+
+#[derive(Component, Clone, Default, Reflect)]
+#[reflect(Component)]
 #[require(Visibility)]
 pub struct ItemSpawn {
-    pub id: String,
+    pub id: ItemId,
     pub count: u16,
+}
+
+#[derive(Deserialize, Clone, Debug, Default, PartialEq, Eq, Hash, Reflect)]
+#[serde(transparent)]
+pub struct ItemId(String);
+
+impl ItemId {
+    pub fn new(id: impl Into<String>) -> Self {
+        Self(id.into())
+    }
+
+    pub fn get(&self) -> &str {
+        &self.0
+    }
+}
+
+impl PartialEq<str> for ItemId {
+    fn eq(&self, other: &str) -> bool {
+        self.0 == other
+    }
 }
 
 #[derive(Deserialize, Clone, Debug, Default, PartialEq, Eq, Reflect)]
 pub struct ItemDef {
-    pub id: String,
+    pub id: ItemId,
     pub max_stack: u16,
     pub kind: ItemKind,
 }
