@@ -28,7 +28,7 @@ fn spawn_tree(
     }
 
     let Some(def) = trees.get(&instance.identifier) else {
-        warn!("trees.ron doesn't define {:?}", instance.identifier);
+        warn!("trees/manifest.ron doesn't define {:?}", instance.identifier);
         return;
     };
 

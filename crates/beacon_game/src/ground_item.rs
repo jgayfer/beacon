@@ -31,7 +31,7 @@ fn spawn_ground_item(
         return;
     };
     let Some(stack) = items.stack(&spawn.id, spawn.count) else {
-        warn!("items.ron doesn't define {:?}", spawn.id);
+        warn!("items/manifest.ron doesn't define {:?}", spawn.id);
         return;
     };
     commands

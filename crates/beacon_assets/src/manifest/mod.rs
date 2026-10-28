@@ -22,7 +22,7 @@ pub trait ManifestEntry: DeserializeOwned + TypePath + Clone + Send + Sync + 'st
     fn id(&self) -> &str;
 
     fn path() -> String {
-        format!("{}.ron", Self::DIR)
+        format!("{}/manifest.ron", Self::DIR)
     }
 }
 

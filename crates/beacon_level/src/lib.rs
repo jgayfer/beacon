@@ -78,6 +78,6 @@ fn item_spawn(ctx: &EntityInstanceContext) -> impl Scene + use<> {
 
 pub fn map_scene() -> impl Scene {
     bsn! {
-        LdtkProjectHandle { handle: "map.ldtk" }
+        LdtkProjectHandle { handle: "world/map.ldtk" }
     }
 }
