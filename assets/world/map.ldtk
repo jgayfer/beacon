@@ -660,7 +660,7 @@
 						},
 						{
 							"__identifier": "door",
-							"__grid": [24,2],
+							"__grid": [24,0],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 9, "x": 336, "y": 256, "w": 16, "h": 16 },
@@ -669,7 +669,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 14,
-							"px": [384,32],
+							"px": [384,0],
 							"fieldInstances": [{ "__identifier": "exit", "__type": "EntityRef", "__value": {
 								"entityIid": "0c423e40-bde0-11f1-a0be-616a12724850",
 								"layerIid": "a1c3fba1-bde0-11f1-a0be-6b598f0f5203",
@@ -680,11 +680,11 @@
 								"params": ["0c423e40-bde0-11f1-a0be-616a12724850"]
 							}] }],
 							"__worldX": 752,
-							"__worldY": -288
+							"__worldY": -320
 						},
 						{
 							"__identifier": "door_exit",
-							"__grid": [24,3],
+							"__grid": [24,1],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 9, "x": 336, "y": 240, "w": 16, "h": 16 },
@@ -693,10 +693,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 17,
-							"px": [384,48],
+							"px": [384,16],
 							"fieldInstances": [],
 							"__worldX": 752,
-							"__worldY": -272
+							"__worldY": -304
 						},
 						{
 							"__identifier": "arbutus",
@@ -926,7 +926,7 @@
 					"entityInstances": [
 						{
 							"__identifier": "door_exit",
-							"__grid": [7,11],
+							"__grid": [7,13],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 9, "x": 336, "y": 240, "w": 16, "h": 16 },
@@ -935,14 +935,14 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 17,
-							"px": [112,176],
+							"px": [112,208],
 							"fieldInstances": [],
 							"__worldX": 752,
-							"__worldY": -416
+							"__worldY": -384
 						},
 						{
 							"__identifier": "door",
-							"__grid": [7,12],
+							"__grid": [7,14],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": { "tilesetUid": 9, "x": 336, "y": 256, "w": 16, "h": 16 },
@@ -951,7 +951,7 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 14,
-							"px": [112,192],
+							"px": [112,224],
 							"fieldInstances": [{ "__identifier": "exit", "__type": "EntityRef", "__value": {
 								"entityIid": "15d235f0-bde0-11f1-a0be-9f449f69c6c4",
 								"layerIid": "4e162b40-bde0-11f1-a0be-79ec95689763",
@@ -962,7 +962,7 @@
 								"params": ["15d235f0-bde0-11f1-a0be-9f449f69c6c4"]
 							}] }],
 							"__worldX": 752,
-							"__worldY": -400
+							"__worldY": -368
 						},
 						{
 							"__identifier": "balefire",
