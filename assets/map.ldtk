@@ -10,8 +10,8 @@
 	},
 	"iid": "470cd2e0-96d0-11f1-93b9-973158077998",
 	"jsonVersion": "1.5.4",
-	"appBuildId": 497951,
-	"nextUid": 28,
+	"appBuildId": 497792,
+	"nextUid": 30,
 	"identifierStyle": "Lowercase",
 	"toc": [],
 	"worldLayout": "Free",
@@ -476,6 +476,41 @@
 					"tilesetUid": null
 				}
 			]
+		},
+		{
+			"identifier": "oak",
+			"uid": 28,
+			"tags": ["tree"],
+			"exportToToc": false,
+			"allowOutOfBounds": false,
+			"doc": null,
+			"width": 48,
+			"height": 48,
+			"resizableX": false,
+			"resizableY": false,
+			"minWidth": null,
+			"maxWidth": null,
+			"minHeight": null,
+			"maxHeight": null,
+			"keepAspectRatio": false,
+			"tileOpacity": 1,
+			"fillOpacity": 0.08,
+			"lineOpacity": 0,
+			"hollow": false,
+			"color": "#EAD4AA",
+			"renderMode": "Tile",
+			"showName": true,
+			"tilesetId": 29,
+			"tileRenderMode": "FitInside",
+			"tileRect": { "tilesetUid": 29, "x": 0, "y": 0, "w": 48, "h": 48 },
+			"uiTileRect": null,
+			"nineSliceBorders": [],
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": []
 		}
 	], "tilesets": [
 		{
@@ -520,14 +555,14 @@
 			"cachedPixelData": { "opaqueTiles": "1111111111111111", "averageColors": "f7a3f793f883f793f793f883f873f883f7a3f793f767f793f6b3f7a3f883f7a3" }
 		},
 		{
-			"__cWid": 1,
-			"__cHei": 2,
+			"__cWid": 2,
+			"__cHei": 4,
 			"identifier": "arbutus",
 			"uid": 27,
 			"relPath": "trees/arbutus.aseprite",
 			"embedAtlas": null,
-			"pxWid": 16,
-			"pxHei": 32,
+			"pxWid": 32,
+			"pxHei": 64,
 			"tileGridSize": 16,
 			"spacing": 0,
 			"padding": 0,
@@ -536,7 +571,29 @@
 			"enumTags": [],
 			"customData": [],
 			"savedSelections": [],
-			"cachedPixelData": { "opaqueTiles": "00", "averageColors": "97544733" }
+			"cachedPixelData": { "opaqueTiles": "00000000", "averageColors": "97540000473315220000000000000000" }
+		},
+		{
+			"__cWid": 6,
+			"__cHei": 6,
+			"identifier": "oak",
+			"uid": 29,
+			"relPath": "trees/oak.aseprite",
+			"embedAtlas": null,
+			"pxWid": 96,
+			"pxHei": 96,
+			"tileGridSize": 16,
+			"spacing": 0,
+			"padding": 0,
+			"tags": ["tree"],
+			"tagsSourceEnumUid": null,
+			"enumTags": [],
+			"customData": [],
+			"savedSelections": [],
+			"cachedPixelData": {
+				"opaqueTiles": "000000010000000000000000000000000000",
+				"averageColors": "6463b4635463000000000000c462f462c462000000000000035185430351000036430000000000000000000000000000000000000000000000000000000000000000000000000000"
+			}
 		}
 	], "enums": [{ "identifier": "tile_flags", "uid": 25, "values": [{ "id": "solid", "tileRect": null, "color": 14957380 }], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null, "tags": [] }], "externalEnums": [], "levelFields": [] },
 	"levels": [
@@ -758,6 +815,22 @@
 							],
 							"__worldX": 688,
 							"__worldY": -224
+						},
+						{
+							"__identifier": "oak",
+							"__grid": [26,5],
+							"__pivot": [0,0],
+							"__tags": ["tree"],
+							"__tile": { "tilesetUid": 29, "x": 0, "y": 0, "w": 48, "h": 48 },
+							"__smartColor": "#EAD4AA",
+							"iid": "1a928b90-bde0-11f1-818d-b710315fe276",
+							"width": 48,
+							"height": 48,
+							"defUid": 28,
+							"px": [416,80],
+							"fieldInstances": [],
+							"__worldX": 784,
+							"__worldY": -240
 						}
 					]
 				},
