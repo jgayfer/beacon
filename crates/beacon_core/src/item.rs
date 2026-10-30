@@ -2,8 +2,9 @@ use avian2d::collision::{
     collider::{Collider, Sensor},
     collision_events::CollisionEventsEnabled,
 };
-use bevy_camera::visibility::Visibility;
+use beacon_engine::manifest::ManifestEntry;
 use bevy_ecs::prelude::*;
+use bevy_image::Image;
 use bevy_reflect::prelude::*;
 use bevy_transform::prelude::*;
 use serde::Deserialize;
@@ -12,27 +13,9 @@ use serde::Deserialize;
 #[require(Transform, Collider::circle(8.0), Sensor, CollisionEventsEnabled)]
 pub struct GroundItem(pub ItemStack);
 
-#[derive(EntityEvent)]
-pub struct GroundItemTouched(pub Entity);
-
-#[derive(EntityEvent)]
-pub struct ItemUsed {
-    #[event_target]
-    pub player: Entity,
-    pub item: ItemStack,
-}
-
 #[derive(Component, Clone, Default, Reflect)]
 #[reflect(Component)]
 pub struct Drops(pub Vec<ItemStack>);
-
-#[derive(Component, Clone, Default, Reflect)]
-#[reflect(Component)]
-#[require(Visibility)]
-pub struct ItemSpawn {
-    pub id: ItemId,
-    pub count: u16,
-}
 
 #[derive(Deserialize, Clone, Debug, Default, PartialEq, Eq, Hash, Reflect)]
 #[serde(transparent)]
@@ -59,6 +42,24 @@ pub struct ItemDef {
     pub id: ItemId,
     pub max_stack: u16,
     pub kind: ItemKind,
+}
+
+impl ItemDef {
+    pub fn stack(&self, count: u16) -> ItemStack {
+        ItemStack {
+            def: self.clone(),
+            count,
+        }
+    }
+}
+
+impl ManifestEntry for ItemDef {
+    const DIR: &'static str = "items";
+    type Sprite = Image;
+
+    fn id(&self) -> &str {
+        self.id.get()
+    }
 }
 
 #[derive(Deserialize, Clone, Debug, Default, PartialEq, Eq, Reflect)]

@@ -1,6 +1,15 @@
 use avian2d::prelude::*;
 use bevy::prelude::*;
 
+pub struct HitboxPlugin;
+
+impl Plugin for HitboxPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(Update, tick_hitboxes)
+            .add_observer(detect_hitbox_collision);
+    }
+}
+
 #[derive(Component, Default, Clone)]
 #[require(Sensor, CollisionEventsEnabled)]
 pub struct Hitbox {
@@ -12,15 +21,6 @@ pub struct Hit {
     #[event_target]
     pub target: Entity,
     pub hitbox: Entity,
-}
-
-pub struct HitboxPlugin;
-
-impl Plugin for HitboxPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(Update, tick_hitboxes)
-            .add_observer(detect_hitbox_collision);
-    }
 }
 
 fn detect_hitbox_collision(

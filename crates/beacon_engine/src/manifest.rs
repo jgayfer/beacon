@@ -1,19 +1,13 @@
-mod item;
-mod tree;
-
 use std::marker::PhantomData;
 
-use beacon_core::state::GameState;
 use bevy::{
     asset::{AssetLoader, AsyncReadExt, LoadContext, io::Reader},
     platform::collections::HashMap,
     prelude::*,
+    state::state::FreelyMutableState,
 };
 use bevy_asset_loader::prelude::*;
 use serde::de::DeserializeOwned;
-
-pub use item::ItemRegistry;
-pub use tree::{TreeDef, TreeRegistry};
 
 pub trait ManifestEntry: DeserializeOwned + TypePath + Clone + Send + Sync + 'static {
     const DIR: &'static str;
@@ -117,15 +111,21 @@ impl<T: ManifestEntry> AssetCollection for ManifestHandle<T> {
 }
 
 pub trait RegisterManifest {
-    fn register_manifest<T: ManifestEntry>(&mut self) -> &mut Self;
+    fn register_manifest<T: ManifestEntry>(
+        &mut self,
+        loading: impl FreelyMutableState,
+    ) -> &mut Self;
 }
 
 impl RegisterManifest for App {
-    fn register_manifest<T: ManifestEntry>(&mut self) -> &mut Self {
+    fn register_manifest<T: ManifestEntry>(
+        &mut self,
+        loading: impl FreelyMutableState,
+    ) -> &mut Self {
         self.init_asset::<Manifest<T>>()
             .register_asset_loader(ManifestLoader::<T>::default())
             .configure_loading_state(
-                LoadingStateConfig::new(GameState::Loading)
+                LoadingStateConfig::new(loading)
                     .load_collection::<ManifestHandle<T>>()
                     .finally_init_resource::<Registry<T>>(),
             )

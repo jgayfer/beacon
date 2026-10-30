@@ -1,38 +1,65 @@
 use avian2d::prelude::*;
 use beacon_core::{
-    dialogue::DialogueContinued,
+    dialogue::{DialogueContinued, in_conversation},
     interaction::{Interaction, InteractionZone},
     inventory::{Inventory, SelectedSlot},
-    item::{ItemKind, ItemUsed},
-    player::{Action, Facing, Player, PlayerSpawn},
+    item::{ItemKind, ItemStack},
+    player::Player,
 };
-use beacon_dialogue::in_conversation;
 use beacon_engine::hitbox::Hitbox;
-use beacon_scene::player::player_scene;
-use bevy_app::prelude::*;
-use bevy_ecs::prelude::*;
-use bevy_input::prelude::*;
-use bevy_math::prelude::*;
-use bevy_scene::{CommandsSceneExt, bsn};
-use bevy_time::prelude::*;
-use bevy_transform::prelude::*;
+use bevy::prelude::*;
+use bevy_aseprite_ultra::prelude::*;
+use bevy_ecs_ldtk::prelude::*;
 
 const SPEED: f32 = 100.0;
+const SOLDIER_IDLE: &str = "Idle";
+const SOLDIER_WALK: &str = "Walk";
 
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(
-            Update,
-            (
-                spawn_player,
-                (move_player, interact, use_item).run_if(not(in_conversation)),
-                (halt_player, continue_dialogue).run_if(in_conversation),
-            ),
-        )
-        .add_observer(spawn_tool_hitbox);
+        app.register_required_components::<Player, Facing>()
+            .register_required_components::<Player, Action>()
+            .register_ldtk_entity_scene("player_spawn", PlayerSpawn)
+            .add_systems(
+                Update,
+                (
+                    spawn_player,
+                    animate_player,
+                    (move_player, interact, use_item).run_if(not(in_conversation)),
+                    (halt_player, continue_dialogue).run_if(in_conversation),
+                ),
+            )
+            .add_observer(spawn_tool_hitbox);
     }
+}
+
+#[derive(Component, Clone, Default, Copy, PartialEq, Reflect)]
+#[reflect(Component)]
+enum Facing {
+    Left,
+    #[default]
+    Right,
+}
+
+#[derive(Component, Clone, Default, Copy, PartialEq, Reflect)]
+#[reflect(Component)]
+enum Action {
+    #[default]
+    Idle,
+    Walking,
+}
+
+#[derive(Component, Clone, Default, Reflect)]
+#[reflect(Component)]
+struct PlayerSpawn;
+
+#[derive(EntityEvent)]
+struct ItemUsed {
+    #[event_target]
+    player: Entity,
+    item: ItemStack,
 }
 
 fn move_player(
@@ -160,11 +187,44 @@ fn spawn_player(
     player_spawns: Query<&Transform, With<PlayerSpawn>>,
 ) {
     if player.is_empty()
-        && let Some(transform) = player_spawns.iter().next() {
-            let player_transform = *transform;
-            commands.spawn_scene(bsn! {
-                @player_scene()
-                player_transform
-            });
+        && let Some(transform) = player_spawns.iter().next()
+    {
+        let player_transform = *transform;
+        commands.spawn_scene(bsn! {
+            @player_scene()
+            player_transform
+        });
+    }
+}
+
+fn player_scene() -> impl Scene {
+    bsn! {
+        #Player
+        Player
+        Sprite
+        AseAnimation {
+            aseprite: "characters/soldier.aseprite",
+            animation: Animation::tag(SOLDIER_IDLE),
         }
+    }
+}
+
+fn animate_player(
+    mut q: Query<
+        (&Facing, &Action, &mut AseAnimation, &mut Sprite),
+        (With<Player>, Or<(Changed<Facing>, Changed<Action>)>),
+    >,
+) {
+    for (facing, action, mut animation, mut sprite) in &mut q {
+        let animation_tag = match action {
+            Action::Idle => SOLDIER_IDLE,
+            Action::Walking => SOLDIER_WALK,
+        };
+
+        if animation.animation.tag.as_deref() != Some(animation_tag) {
+            animation.animation.play_loop(animation_tag);
+        }
+
+        sprite.flip_x = matches!(facing, Facing::Left);
+    }
 }

@@ -1,12 +1,10 @@
 use beacon_core::{
     harvest::{Harvestable, Harvested},
-    item::Drops,
+    item::{Drops, GroundItem},
 };
 use beacon_engine::hitbox::Hit;
-use beacon_scene::ground_item::ground_item_scene;
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
-use bevy_scene::prelude::*;
 use bevy_transform::prelude::*;
 
 pub struct HarvestPlugin;
@@ -38,11 +36,9 @@ fn on_hit(
         .insert(Harvested);
 
     for stack in drops.map(|drops| drops.0.as_slice()).unwrap_or_default() {
-        let stack = stack.clone();
-
-        commands.spawn_scene(bsn! {
-            @ground_item_scene(stack)
-            Transform { translation: {transform.translation()} }
-        });
+        commands.spawn((
+            GroundItem(stack.clone()),
+            Transform::from_translation(transform.translation()),
+        ));
     }
 }

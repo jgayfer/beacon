@@ -6,8 +6,8 @@ edition.workspace = true
 [dependencies]
 avian2d.workspace = true
 beacon_engine.workspace = true
-bevy_camera.workspace = true
 bevy_ecs.workspace = true
+bevy_image.workspace = true
 bevy_math.workspace = true
 bevy_reflect.workspace = true
 bevy_state.workspace = true

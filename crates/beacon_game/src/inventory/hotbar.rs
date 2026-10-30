@@ -1,15 +1,18 @@
-use beacon_assets::ItemRegistry;
 use beacon_core::{
     inventory::{Inventory, SelectedSlot},
+    item::ItemDef,
     player::Player,
+    state::GameState,
 };
+use beacon_engine::manifest::Registry;
 use bevy::{color::palettes::css::YELLOW, image::TRANSPARENT_IMAGE_HANDLE, prelude::*};
 
 pub struct HotbarPlugin;
 
 impl Plugin for HotbarPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (update_hotbar, highlight_selected));
+        app.add_systems(OnEnter(GameState::Playing), hotbar_scene.spawn())
+            .add_systems(Update, (update_hotbar, highlight_selected));
     }
 }
 
@@ -19,7 +22,7 @@ struct HotbarSlot(usize);
 #[derive(Component, Default, Clone)]
 struct HotbarCount(usize);
 
-pub fn hotbar_scene() -> impl Scene {
+fn hotbar_scene() -> impl Scene {
     bsn! {
         Node {
             position_type: PositionType::Absolute,
@@ -59,12 +62,12 @@ fn update_hotbar(
     inventory: Single<&Inventory, (With<Player>, Changed<Inventory>)>,
     mut slots: Query<(&HotbarSlot, &mut ImageNode)>,
     mut counts: Query<(&HotbarCount, &mut Text)>,
-    items: Res<ItemRegistry>,
+    items: Res<Registry<ItemDef>>,
 ) {
     for (slot, mut image) in &mut slots {
         image.image = inventory
             .get(slot.0)
-            .and_then(|stack| items.item_image(&stack.def.id))
+            .and_then(|stack| items.sprite(stack.def.id.get()))
             .unwrap_or(TRANSPARENT_IMAGE_HANDLE);
     }
     for (count, mut text) in &mut counts {

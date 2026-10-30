@@ -527,27 +527,11 @@ name = "beacon"
 version = "0.1.0"
 dependencies = [
  "avian2d",
- "beacon_assets",
  "beacon_core",
  "beacon_engine",
  "beacon_game",
- "beacon_level",
- "beacon_scene",
  "bevy",
  "bevy-inspector-egui",
-]
-
-[[package]]
-name = "beacon_assets"
-version = "0.1.0"
-dependencies = [
- "asefile",
- "beacon_core",
- "bevy",
- "bevy_aseprite_ultra",
- "bevy_asset_loader",
- "ron",
- "serde",
 ]
 
 [[package]]
@@ -556,26 +540,12 @@ version = "0.1.0"
 dependencies = [
  "avian2d",
  "beacon_engine",
- "bevy_camera",
  "bevy_ecs",
+ "bevy_image",
  "bevy_math",
  "bevy_reflect",
  "bevy_state",
  "bevy_transform",
- "serde",
-]
-
-[[package]]
-name = "beacon_dialogue"
-version = "0.1.0"
-dependencies = [
- "beacon_core",
- "bevy_app",
- "bevy_asset",
- "bevy_ecs",
- "bevy_reflect",
- "bevy_replique",
- "ron",
  "serde",
 ]
 
@@ -583,8 +553,13 @@ dependencies = [
 name = "beacon_engine"
 version = "0.1.0"
 dependencies = [
+ "asefile",
  "avian2d",
  "bevy",
+ "bevy_aseprite_ultra",
+ "bevy_asset_loader",
+ "ron",
+ "serde",
 ]
 
 [[package]]
@@ -592,46 +567,26 @@ name = "beacon_game"
 version = "0.1.0"
 dependencies = [
  "avian2d",
- "beacon_assets",
  "beacon_core",
- "beacon_dialogue",
  "beacon_engine",
- "beacon_scene",
+ "bevy",
  "bevy_app",
+ "bevy_aseprite_ultra",
  "bevy_asset",
+ "bevy_asset_loader",
  "bevy_ecs",
+ "bevy_ecs_ldtk",
  "bevy_input",
  "bevy_log",
  "bevy_math",
  "bevy_reflect",
+ "bevy_replique",
  "bevy_scene",
  "bevy_state",
  "bevy_time",
  "bevy_transform",
+ "ron",
  "serde",
-]
-
-[[package]]
-name = "beacon_level"
-version = "0.1.0"
-dependencies = [
- "avian2d",
- "beacon_assets",
- "beacon_core",
- "beacon_scene",
- "bevy",
- "bevy_ecs_ldtk",
-]
-
-[[package]]
-name = "beacon_scene"
-version = "0.1.0"
-dependencies = [
- "avian2d",
- "beacon_assets",
- "beacon_core",
- "bevy",
- "bevy_aseprite_ultra",
 ]
 
 [[package]]

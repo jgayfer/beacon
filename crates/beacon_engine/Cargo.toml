@@ -6,6 +6,11 @@ edition.workspace = true
 [dependencies]
 avian2d.workspace = true
 bevy.workspace = true
+bevy_aseprite_ultra.workspace = true
+bevy_asset_loader.workspace = true
+asefile.workspace = true
+ron.workspace = true
+serde.workspace = true
 
 [lints]
 workspace = true

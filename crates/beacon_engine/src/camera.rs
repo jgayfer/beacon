@@ -1,8 +1,5 @@
 use bevy::prelude::*;
 
-#[derive(Component, Default, Clone)]
-pub struct CameraTarget;
-
 pub struct CameraFollowPlugin;
 
 impl Plugin for CameraFollowPlugin {
@@ -10,6 +7,9 @@ impl Plugin for CameraFollowPlugin {
         app.add_systems(PostUpdate, follow.before(TransformSystems::Propagate));
     }
 }
+
+#[derive(Component, Default, Clone)]
+pub struct CameraTarget;
 
 fn follow(
     target: Query<&Transform, With<CameraTarget>>,

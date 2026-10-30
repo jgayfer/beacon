@@ -1,11 +1,14 @@
-use beacon_core::dialogue::{DialogueEnded, LineShown};
+use beacon_core::state::GameState;
 use bevy::prelude::*;
+
+use super::{DialogueEnded, LineShown};
 
 pub struct DialogueBoxPlugin;
 
 impl Plugin for DialogueBoxPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, (show_line, hide_on_finish));
+        app.add_systems(OnEnter(GameState::Playing), dialogue_box_scene.spawn())
+            .add_systems(Update, (show_line, hide_on_finish));
     }
 }
 
@@ -15,7 +18,7 @@ struct DialogueBox;
 #[derive(Component, Default, Clone)]
 struct DialogueText;
 
-pub fn dialogue_box_scene() -> impl Scene {
+fn dialogue_box_scene() -> impl Scene {
     bsn! {
         DialogueBox
         Node {

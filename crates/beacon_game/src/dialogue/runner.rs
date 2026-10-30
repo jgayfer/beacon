@@ -1,7 +1,9 @@
-use beacon_core::dialogue::{DialogueContinued, DialogueEnded, LineShown};
+use beacon_core::dialogue::DialogueContinued;
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 use bevy_replique::prelude::*;
+
+use super::{DialogueEnded, LineShown};
 
 pub struct RunnerPlugin;
 

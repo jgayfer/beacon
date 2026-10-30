@@ -1,45 +1,13 @@
-use std::collections::BTreeMap;
-
-use beacon_core::{
-    dialogue::TalkedTo,
-    interaction::Interaction,
-    npc::FlameSprite,
-    progression::{MainStory, Progression, SpriteLevel},
-};
-use beacon_dialogue::{AddNpcDialogue, NpcRoutes, Route};
-use bevy_app::prelude::*;
-use bevy_asset::Asset;
-use bevy_ecs::prelude::*;
-use bevy_reflect::TypePath;
-use serde::Deserialize;
+use beacon_core::{dialogue::TalkedTo, interaction::Interaction, npc::FlameSprite};
+use bevy::prelude::*;
+use bevy_ecs_ldtk::prelude::*;
 
 pub struct FlameSpritePlugin;
 
 impl Plugin for FlameSpritePlugin {
     fn build(&self, app: &mut App) {
-        app.add_npc_dialogue::<FlameSprite, FlameSpriteRoutes>("flame_sprite/routes.ron")
+        app.register_ldtk_entity_scene("flame_sprite", flame_sprite_scene)
             .add_observer(on_interaction);
-    }
-}
-
-#[derive(Asset, TypePath, Deserialize, Debug)]
-struct FlameSpriteRoutes {
-    story: BTreeMap<MainStory, Vec<Route>>,
-    chatter: BTreeMap<SpriteLevel, Vec<Route>>,
-}
-
-impl NpcRoutes for FlameSpriteRoutes {
-    fn pick(&self, progression: &Progression, last: Option<&Route>) -> Option<&Route> {
-        let routes = self
-            .story
-            .get(&progression.main_story)
-            .or_else(|| self.chatter.get(&progression.sprite_level))?;
-
-        let next = last
-            .and_then(|last| routes.iter().position(|route| route == last))
-            .map_or(0, |i| (i + 1) % routes.len());
-
-        routes.get(next)
     }
 }
 
@@ -52,5 +20,14 @@ fn on_interaction(
         commands.trigger(TalkedTo {
             npc: event.interactable,
         });
+    }
+}
+
+fn flame_sprite_scene() -> impl Scene {
+    bsn! {
+        FlameSprite
+        Sprite {
+            image: "characters/flame_sprite.aseprite",
+        }
     }
 }

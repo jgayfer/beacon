@@ -4,12 +4,9 @@ version.workspace = true
 edition.workspace = true
 
 [dependencies]
-beacon_assets.workspace = true
 beacon_core.workspace = true
 beacon_engine.workspace = true
 beacon_game.workspace = true
-beacon_level.workspace = true
-beacon_scene.workspace = true
 bevy.workspace = true
 avian2d.workspace = true
 bevy-inspector-egui.workspace = true

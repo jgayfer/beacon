@@ -16,30 +16,8 @@ const INVENTORY_SIZE: usize = 9;
     CollidingEntities,
     LockedAxes::ROTATION_LOCKED,
     LinearVelocity,
-    Facing,
-    Action,
     CameraTarget,
     Inventory = Inventory::new(INVENTORY_SIZE),
     SelectedSlot,
 )]
 pub struct Player;
-
-#[derive(Component, Clone, Default, Copy, PartialEq, Reflect)]
-#[reflect(Component)]
-pub enum Facing {
-    Left,
-    #[default]
-    Right,
-}
-
-#[derive(Component, Clone, Default, Copy, PartialEq, Reflect)]
-#[reflect(Component)]
-pub enum Action {
-    #[default]
-    Idle,
-    Walking,
-}
-
-#[derive(Component, Clone, Default, Reflect)]
-#[reflect(Component)]
-pub struct PlayerSpawn;

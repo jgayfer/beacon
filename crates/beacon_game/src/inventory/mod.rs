@@ -1,13 +1,15 @@
+mod hotbar;
+
 use beacon_core::{inventory::SelectedSlot, player::Player};
-use bevy_app::prelude::*;
-use bevy_ecs::prelude::*;
-use bevy_input::prelude::*;
+use bevy::prelude::*;
+use hotbar::HotbarPlugin;
 
 pub struct InventoryPlugin;
 
 impl Plugin for InventoryPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, select_slot);
+        app.add_plugins(HotbarPlugin)
+            .add_systems(Update, select_slot);
     }
 }
 
