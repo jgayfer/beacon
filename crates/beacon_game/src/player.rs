@@ -194,7 +194,7 @@ fn player_scene() -> impl Scene {
         Player
         Sprite
         AseAnimation {
-            aseprite: "characters/soldier.aseprite",
+            aseprite: "player/sprite.aseprite",
             animation: Animation::tag(SOLDIER_IDLE),
         }
     }
