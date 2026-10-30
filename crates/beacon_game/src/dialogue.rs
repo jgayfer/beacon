@@ -15,7 +15,6 @@ impl Plugin for DialoguePlugin {
             .init_resource::<CurrentLine>()
             .add_dialogue_command_named("update_main_story", update_main_story)
             .add_dialogue_function_named("story_is", story_is)
-            .add_dialogue_function_named("story_after", story_after)
             .add_observer(start_dialogue)
             .add_systems(OnEnter(GameState::Playing), dialogue_box_scene.spawn())
             .add_systems(Update, (show_line, hide_on_finish))
@@ -43,9 +42,7 @@ fn start_dialogue(
         return;
     }
 
-    let runner = commands
-        .spawn(DialogueRunner::new(dialogue.0.clone()))
-        .id();
+    let runner = commands.spawn(DialogueRunner::new(dialogue.0.clone())).id();
     start.write(StartDialogue {
         runner,
         node: "talk".into(),
@@ -102,10 +99,6 @@ fn update_main_story(In((Step(step),)): In<(Step,)>, mut progression: ResMut<Pro
 
 fn story_is(In((Step(step),)): In<(Step,)>, progression: Res<Progression>) -> bool {
     progression.main_story == step
-}
-
-fn story_after(In((Step(step),)): In<(Step,)>, progression: Res<Progression>) -> bool {
-    progression.main_story > step
 }
 
 #[derive(Component, Default, Clone)]

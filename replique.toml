@@ -2,7 +2,6 @@ speakers = ["Flame Sprite"]
 
 [functions]
 story_is = 1
-story_after = 1
 
 [commands]
 update_main_story = 1
