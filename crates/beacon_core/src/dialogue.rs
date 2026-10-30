@@ -1,7 +1,6 @@
-use bevy_ecs::prelude::*;
+use bevy_asset::Handle;
+use bevy_ecs::{prelude::*, template::FromTemplate};
+use bevy_replique::prelude::*;
 
-#[derive(EntityEvent, Clone, Debug)]
-pub struct TalkedTo {
-    #[event_target]
-    pub npc: Entity,
-}
+#[derive(Component, Clone, FromTemplate)]
+pub struct Dialogue(pub Handle<RepliqueDialogue>);

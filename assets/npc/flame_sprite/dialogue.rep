@@ -1,0 +1,23 @@
+:= talk
+[if story_is("Prologue(Start)")]
+    => first_meeting
+[elif story_is("Prologue(MetSprite)")]
+    => needs_help
+[else]
+    => chatter
+---
+
+:= first_meeting
+Flame Sprite: So cold...
+Flame Sprite: The flame...?
+>> update_main_story("Prologue(MetSprite)")
+---
+
+:= needs_help
+Flame Sprite: Can you help me...?
+Flame Sprite: The flame... Need heat.
+---
+
+:= chatter
+Flame Sprite: You're still here..?
+---

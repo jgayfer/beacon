@@ -1,33 +1,44 @@
-use beacon_core::{dialogue::TalkedTo, interaction::Interaction, npc::FlameSprite};
-use bevy::prelude::*;
+use avian2d::prelude::*;
+use beacon_core::{
+    TILE,
+    dialogue::Dialogue,
+    interaction::{Interactable, attach_interaction_zone},
+};
+use bevy::{
+    ecs::{lifecycle::HookContext, world::DeferredWorld},
+    prelude::*,
+};
 use bevy_ecs_ldtk::prelude::*;
 
 pub struct FlameSpritePlugin;
 
 impl Plugin for FlameSpritePlugin {
     fn build(&self, app: &mut App) {
-        app.register_ldtk_entity_scene("flame_sprite", flame_sprite_scene)
-            .add_observer(on_interaction);
+        app.register_ldtk_entity_scene("flame_sprite", flame_sprite_scene);
     }
 }
 
-fn on_interaction(
-    event: On<Interaction>,
-    flame_sprites: Query<(), With<FlameSprite>>,
-    mut commands: Commands,
-) {
-    if flame_sprites.contains(event.interactable) {
-        commands.trigger(TalkedTo {
-            npc: event.interactable,
-        });
-    }
+#[derive(Component, Clone, Default, Reflect)]
+#[reflect(Component)]
+#[require(Interactable, RigidBody::Static, Collider::circle(TILE / 2.0))]
+#[component(on_add = on_flame_sprite_add)]
+struct FlameSprite;
+
+fn on_flame_sprite_add(mut world: DeferredWorld, ctx: HookContext) {
+    attach_interaction_zone(
+        &mut world,
+        ctx.entity,
+        Collider::circle(TILE * 1.5),
+        Vec2::ZERO,
+    );
 }
 
 fn flame_sprite_scene() -> impl Scene {
     bsn! {
         FlameSprite
+        Dialogue("npc/flame_sprite/dialogue.rep")
         Sprite {
-            image: "characters/flame_sprite.aseprite",
+            image: "npc/flame_sprite/sprite.aseprite",
         }
     }
 }

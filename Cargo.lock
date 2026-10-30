@@ -540,10 +540,12 @@ version = "0.1.0"
 dependencies = [
  "avian2d",
  "beacon_engine",
+ "bevy_asset",
  "bevy_ecs",
  "bevy_image",
  "bevy_math",
  "bevy_reflect",
+ "bevy_replique",
  "bevy_state",
  "bevy_transform",
  "serde",

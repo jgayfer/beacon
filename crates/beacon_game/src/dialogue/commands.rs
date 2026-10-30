@@ -1,18 +1,14 @@
 use beacon_core::progression::{MainStory, Progression};
-use bevy_app::prelude::*;
-use bevy_ecs::prelude::*;
+use bevy::prelude::*;
 use bevy_replique::prelude::*;
 
 pub struct CommandsPlugin;
 
 impl Plugin for CommandsPlugin {
     fn build(&self, app: &mut App) {
-        app.add_dialogue_command_named("update_main_story", update_main_story);
+        app.add_dialogue_command_named("update_main_story", update_main_story)
+            .add_dialogue_function_named("story_is", story_is);
     }
-}
-
-fn update_main_story(In((Step(step),)): In<(Step,)>, mut progression: ResMut<Progression>) {
-    progression.main_story = step;
 }
 
 struct Step(MainStory);
@@ -27,4 +23,12 @@ impl FromValue for Step {
                 got: text,
             })
     }
+}
+
+fn update_main_story(In((Step(step),)): In<(Step,)>, mut progression: ResMut<Progression>) {
+    progression.main_story = step;
+}
+
+fn story_is(In((Step(step),)): In<(Step,)>, progression: Res<Progression>) -> bool {
+    progression.main_story == step
 }
