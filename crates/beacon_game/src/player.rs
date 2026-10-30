@@ -1,6 +1,5 @@
 use avian2d::prelude::*;
 use beacon_core::{
-    dialogue::{DialogueContinued, in_conversation},
     interaction::{Interaction, InteractionZone},
     inventory::{Inventory, SelectedSlot},
     item::{ItemKind, ItemStack},
@@ -10,6 +9,7 @@ use beacon_engine::hitbox::Hitbox;
 use bevy::prelude::*;
 use bevy_aseprite_ultra::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
+use bevy_replique::prelude::*;
 
 const SPEED: f32 = 100.0;
 const SOLDIER_IDLE: &str = "Idle";
@@ -27,8 +27,9 @@ impl Plugin for PlayerPlugin {
                 (
                     spawn_player,
                     animate_player,
-                    (move_player, interact, use_item).run_if(not(in_conversation)),
-                    (halt_player, continue_dialogue).run_if(in_conversation),
+                    (move_player, interact, use_item)
+                        .run_if(not(any_with_component::<DialogueRunner>)),
+                    halt_player.run_if(any_with_component::<DialogueRunner>),
                 ),
             )
             .add_observer(spawn_tool_hitbox);
@@ -141,16 +142,6 @@ fn use_item(
             item: selected_item.clone(),
         });
     }
-}
-
-fn continue_dialogue(
-    keys: Res<ButtonInput<KeyCode>>,
-    mut continued: MessageWriter<DialogueContinued>,
-) {
-    if !keys.just_pressed(KeyCode::Space) {
-        return;
-    }
-    continued.write(DialogueContinued);
 }
 
 fn interact(

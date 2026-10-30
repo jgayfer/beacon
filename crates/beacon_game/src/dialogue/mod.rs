@@ -9,7 +9,6 @@ mod talk;
 
 use beacon_core::npc::FlameSprite;
 use bevy_app::prelude::*;
-use bevy_ecs::prelude::*;
 
 use commands::CommandsPlugin;
 use dialogue_box::DialogueBoxPlugin;
@@ -27,12 +26,3 @@ impl Plugin for DialoguePlugin {
             .add_npc_dialogue::<FlameSprite, FlameSpriteRoutes>();
     }
 }
-
-#[derive(Message, Clone, Debug)]
-struct LineShown {
-    speaker: Option<String>,
-    text: String,
-}
-
-#[derive(Message, Clone, Debug)]
-struct DialogueEnded;
