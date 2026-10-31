@@ -3,12 +3,11 @@ use std::time::Duration;
 use avian2d::prelude::*;
 use beacon_core::{
     TILE,
-    interaction::{Interactable, Interaction, attach_interaction_zone},
+    interaction::{Interactable, Interaction, InteractionZone},
     inventory::{Inventory, SelectedSlot},
 };
 use bevy::{
     color::palettes::css::{GREEN, ORANGE, RED, YELLOW},
-    ecs::{lifecycle::HookContext, world::DeferredWorld},
     prelude::*,
     time::common_conditions::on_timer,
 };
@@ -37,19 +36,9 @@ impl Plugin for BalefirePlugin {
 
 #[derive(Component, Clone, Default, Reflect)]
 #[reflect(Component)]
-#[require(RigidBody::Static, Collider::circle(BALEFIRE_RADIUS), Interactable)]
-#[component(on_add = on_balefire_add)]
+#[require(RigidBody::Static, Interactable)]
 struct Balefire {
     intensity: u8,
-}
-
-fn on_balefire_add(mut world: DeferredWorld, ctx: HookContext) {
-    attach_interaction_zone(
-        &mut world,
-        ctx.entity,
-        Collider::circle(BALEFIRE_DROP_ZONE_RADIUS),
-        Vec2::ZERO,
-    );
 }
 
 #[derive(Component, Default, Clone)]
@@ -58,6 +47,7 @@ struct BalefireLabel;
 fn balefire_scene() -> impl Scene {
     bsn! {
         Balefire
+        Collider::circle(BALEFIRE_RADIUS)
         Mesh2d(asset_value(Circle::new(BALEFIRE_RADIUS)))
         MeshMaterial2d::<ColorMaterial>(asset_value(Color::WHITE))
         Children [
@@ -65,6 +55,9 @@ fn balefire_scene() -> impl Scene {
             Text2d
             TextFont { font_size: FontSize::Px(12.0) }
             Transform::from_xyz(0.0, 0.0, 1.0)
+            --
+            InteractionZone
+            Collider::circle(BALEFIRE_DROP_ZONE_RADIUS)
         ]
     }
 }
