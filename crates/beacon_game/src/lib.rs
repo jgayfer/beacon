@@ -5,7 +5,7 @@ mod door;
 mod flame_sprite;
 mod ground_item;
 mod harvest;
-mod inventory;
+mod hotbar;
 mod player;
 mod tree;
 mod world;
@@ -21,7 +21,7 @@ use door::DoorPlugin;
 use flame_sprite::FlameSpritePlugin;
 use ground_item::GroundItemPlugin;
 use harvest::HarvestPlugin;
-use inventory::InventoryPlugin;
+use hotbar::HotbarPlugin;
 use player::PlayerPlugin;
 use tree::TreePlugin;
 use world::WorldPlugin;
@@ -42,7 +42,7 @@ impl Plugin for GamePlugin {
                 PlayerPlugin,
                 HarvestPlugin,
                 GroundItemPlugin,
-                InventoryPlugin,
+                HotbarPlugin,
                 BalefirePlugin,
                 DoorPlugin,
                 TreePlugin,

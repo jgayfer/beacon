@@ -12,7 +12,7 @@ pub struct HotbarPlugin;
 impl Plugin for HotbarPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(GameState::Playing), hotbar_scene.spawn())
-            .add_systems(Update, (update_hotbar, highlight_selected));
+            .add_systems(Update, (update_hotbar, highlight_selected, select_slot));
     }
 }
 
@@ -88,5 +88,18 @@ fn highlight_selected(
         } else {
             Color::WHITE
         });
+    }
+}
+
+fn select_slot(
+    keys: Res<ButtonInput<KeyCode>>,
+    mut selected: Single<&mut SelectedSlot, With<Player>>,
+) {
+    use KeyCode::*;
+    const DIGITS: [KeyCode; 9] = [
+        Digit1, Digit2, Digit3, Digit4, Digit5, Digit6, Digit7, Digit8, Digit9,
+    ];
+    if let Some(i) = DIGITS.iter().position(|key| keys.just_pressed(*key)) {
+        selected.set_if_neq(SelectedSlot(i));
     }
 }
