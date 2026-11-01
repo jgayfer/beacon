@@ -10,7 +10,7 @@
 	},
 	"iid": "470cd2e0-96d0-11f1-93b9-973158077998",
 	"jsonVersion": "1.5.4",
-	"appBuildId": 497792,
+	"appBuildId": 497951,
 	"nextUid": 30,
 	"identifierStyle": "Lowercase",
 	"toc": [],
@@ -185,8 +185,8 @@
 			"maxCount": 0,
 			"limitScope": "PerLevel",
 			"limitBehavior": "MoveLastOne",
-			"pivotX": 0,
-			"pivotY": 0,
+			"pivotX": 0.5,
+			"pivotY": 1,
 			"fieldDefs": []
 		},
 		{
@@ -508,8 +508,8 @@
 			"maxCount": 0,
 			"limitScope": "PerLevel",
 			"limitBehavior": "MoveLastOne",
-			"pivotX": 0,
-			"pivotY": 0,
+			"pivotX": 0.5,
+			"pivotY": 1,
 			"fieldDefs": []
 		}
 	], "tilesets": [
@@ -700,8 +700,8 @@
 						},
 						{
 							"__identifier": "arbutus",
-							"__grid": [17,4],
-							"__pivot": [0,0],
+							"__grid": [17,3],
+							"__pivot": [0.5,1],
 							"__tags": ["tree"],
 							"__tile": { "tilesetUid": 27, "x": 0, "y": 0, "w": 16, "h": 32 },
 							"__smartColor": "#BE4A2F",
@@ -716,8 +716,8 @@
 						},
 						{
 							"__identifier": "arbutus",
-							"__grid": [18,9],
-							"__pivot": [0,0],
+							"__grid": [18,8],
+							"__pivot": [0.5,1],
 							"__tags": ["tree"],
 							"__tile": { "tilesetUid": 27, "x": 0, "y": 0, "w": 16, "h": 32 },
 							"__smartColor": "#BE4A2F",
@@ -732,24 +732,8 @@
 						},
 						{
 							"__identifier": "arbutus",
-							"__grid": [24,12],
-							"__pivot": [0,0],
-							"__tags": ["tree"],
-							"__tile": { "tilesetUid": 27, "x": 0, "y": 0, "w": 16, "h": 32 },
-							"__smartColor": "#BE4A2F",
-							"iid": "41df9b40-bde0-11f1-a0be-83bff2975d5f",
-							"width": 16,
-							"height": 32,
-							"defUid": 8,
-							"px": [384,192],
-							"fieldInstances": [],
-							"__worldX": 752,
-							"__worldY": -128
-						},
-						{
-							"__identifier": "arbutus",
-							"__grid": [29,10],
-							"__pivot": [0,0],
+							"__grid": [29,9],
+							"__pivot": [0.5,1],
 							"__tags": ["tree"],
 							"__tile": { "tilesetUid": 27, "x": 0, "y": 0, "w": 16, "h": 32 },
 							"__smartColor": "#BE4A2F",
@@ -764,8 +748,8 @@
 						},
 						{
 							"__identifier": "arbutus",
-							"__grid": [31,6],
-							"__pivot": [0,0],
+							"__grid": [31,5],
+							"__pivot": [0.5,1],
 							"__tags": ["tree"],
 							"__tile": { "tilesetUid": 27, "x": 0, "y": 0, "w": 16, "h": 32 },
 							"__smartColor": "#BE4A2F",
@@ -780,8 +764,8 @@
 						},
 						{
 							"__identifier": "arbutus",
-							"__grid": [30,3],
-							"__pivot": [0,0],
+							"__grid": [30,2],
+							"__pivot": [0.5,1],
 							"__tags": ["tree"],
 							"__tile": { "tilesetUid": 27, "x": 0, "y": 0, "w": 16, "h": 32 },
 							"__smartColor": "#BE4A2F",
@@ -819,7 +803,7 @@
 						{
 							"__identifier": "oak",
 							"__grid": [26,5],
-							"__pivot": [0,0],
+							"__pivot": [0.5,1],
 							"__tags": ["tree"],
 							"__tile": { "tilesetUid": 29, "x": 0, "y": 0, "w": 48, "h": 48 },
 							"__smartColor": "#EAD4AA",
@@ -827,10 +811,26 @@
 							"width": 48,
 							"height": 48,
 							"defUid": 28,
-							"px": [416,80],
+							"px": [416,96],
 							"fieldInstances": [],
 							"__worldX": 784,
-							"__worldY": -240
+							"__worldY": -224
+						},
+						{
+							"__identifier": "arbutus",
+							"__grid": [24,13],
+							"__pivot": [0.5,1],
+							"__tags": ["tree"],
+							"__tile": { "tilesetUid": 27, "x": 0, "y": 0, "w": 16, "h": 32 },
+							"__smartColor": "#BE4A2F",
+							"iid": "300d54e0-bde0-11f1-8c83-39c635ae6150",
+							"width": 16,
+							"height": 32,
+							"defUid": 8,
+							"px": [392,224],
+							"fieldInstances": [],
+							"__worldX": 760,
+							"__worldY": -96
 						}
 					]
 				},

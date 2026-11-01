@@ -10,13 +10,29 @@ impl Plugin for WorldPlugin {
         app.add_plugins(LdtkPlugin)
             .insert_resource(LevelSelection::Identifier("clearing".to_owned()))
             .add_systems(OnEnter(GameState::Playing), map_scene.spawn())
-            .add_systems(Update, (add_tile_flag_markers, add_colliders).chain());
+            .add_systems(
+                Update,
+                (
+                    adjust_pivot_transform,
+                    (add_tile_flag_markers, add_colliders).chain(),
+                ),
+            );
     }
 }
 
 /// A tile that has been marked as "solid".
 #[derive(Component, Default, Clone)]
 struct Solid;
+
+fn adjust_pivot_transform(
+    entity_instances: Query<(&EntityInstance, &mut Transform), Added<EntityInstance>>,
+) {
+    for (instance, mut transform) in entity_instances {
+        let size = Vec2::new(instance.width as f32, instance.height as f32);
+        let offset = size * Vec2::new(0.5 - instance.pivot.x, instance.pivot.y - 0.5);
+        transform.translation -= offset.extend(0.0);
+    }
+}
 
 fn add_tile_flag_markers(
     mut commands: Commands,
