@@ -2,7 +2,7 @@ use avian2d::prelude::*;
 use beacon_core::{
     TILE,
     harvest::{Harvestable, Harvested},
-    item::{Drops, ItemDef, ItemId},
+    item::{Drops, ItemId, ItemSpec},
     state::GameState,
 };
 use beacon_engine::manifest::{ManifestEntry, RegisterManifest, Registry};
@@ -35,8 +35,6 @@ struct TreeDef {
     id: String,
     health: usize,
     collider_radius: f32,
-    #[serde(default)]
-    drop: Option<ItemId>,
 }
 
 impl ManifestEntry for TreeDef {
@@ -64,11 +62,11 @@ fn tree_scene(def: TreeDef) -> impl Scene {
         Rotation::IDENTITY,
         Collider::circle(def.collider_radius),
     )]);
-    let drop = def.drop;
 
     bsn! {
         Tree
         Harvestable(health)
+        Drops(vec![ItemSpec { id: ItemId::new("wood"), count: 1}])
         collider
         Sprite
         Anchor::BOTTOM_CENTER
@@ -81,15 +79,6 @@ fn tree_scene(def: TreeDef) -> impl Scene {
                 aseprite,
                 animation: Animation::tag(TREE_STANDING),
             })
-        })
-        template(move |ctx| {
-            let items = ctx.resource::<Registry<ItemDef>>();
-            Ok(Drops(
-                drop.iter()
-                    .filter_map(|id| items.get(id.get()))
-                    .map(|def| def.stack(1))
-                    .collect(),
-            ))
         })
     }
 }

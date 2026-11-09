@@ -15,7 +15,14 @@ pub struct GroundItem(pub ItemStack);
 
 #[derive(Component, Clone, Default, Reflect)]
 #[reflect(Component)]
-pub struct Drops(pub Vec<ItemStack>);
+pub struct Drops(pub Vec<ItemSpec>);
+
+/// A blueprint for an [`ItemStack`].
+#[derive(Clone, Default, Reflect, Debug, Deserialize, PartialEq)]
+pub struct ItemSpec {
+    pub id: ItemId,
+    pub count: u16,
+}
 
 #[derive(Deserialize, Clone, Debug, Default, PartialEq, Eq, Hash, Reflect)]
 #[serde(transparent)]
