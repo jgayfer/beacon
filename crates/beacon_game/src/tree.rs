@@ -5,7 +5,10 @@ use beacon_core::{
     item::{Drops, ItemId, ItemSpec},
     state::GameState,
 };
-use beacon_engine::manifest::{ManifestEntry, RegisterManifest, Registry};
+use beacon_engine::{
+    hitbox::Hurtbox,
+    manifest::{ManifestEntry, RegisterManifest, Registry},
+};
 use bevy::{prelude::*, sprite::Anchor};
 use bevy_aseprite_ultra::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
@@ -80,6 +83,10 @@ fn tree_scene(def: TreeDef) -> impl Scene {
                 animation: Animation::tag(TREE_STANDING),
             })
         })
+        Children [
+            Hurtbox
+            Collider::circle(TILE / 2.0)
+        ]
     }
 }
 

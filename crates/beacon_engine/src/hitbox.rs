@@ -16,6 +16,13 @@ pub struct Hitbox {
     pub timer: Timer,
 }
 
+/// A marker to detect when an entity is hit.
+///
+/// Must be attached as a child of the entity being hit.
+#[derive(Component, Default, Clone)]
+#[require(Sensor, Collider)]
+pub struct Hurtbox;
+
 #[derive(EntityEvent)]
 pub struct Hit {
     #[event_target]
@@ -26,10 +33,13 @@ pub struct Hit {
 fn detect_hitbox_collision(
     event: On<CollisionStart>,
     hitboxes: Query<(), With<Hitbox>>,
+    hurtboxes: Query<&ChildOf, With<Hurtbox>>,
     mut commands: Commands,
 ) {
     let (hitbox, target) = (event.collider1, event.collider2);
-    if hitboxes.contains(hitbox) && !hitboxes.contains(target) {
+    if hitboxes.contains(hitbox)
+        && let Ok(target) = hurtboxes.get(target).map(ChildOf::parent)
+    {
         commands.trigger(Hit { target, hitbox });
     }
 }
