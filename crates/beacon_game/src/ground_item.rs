@@ -1,7 +1,7 @@
 use avian2d::collision::collision_events::CollisionStart;
 use beacon_core::{
     inventory::Inventory,
-    item::{GroundItem, ItemId, ItemRegistry},
+    item::{GroundItem, ItemId, ItemRegistry, ItemSpec},
     player::Player,
 };
 use bevy::prelude::*;
@@ -27,10 +27,7 @@ struct GroundItemTouched(Entity);
 #[derive(Component, Clone, Default, Reflect)]
 #[reflect(Component)]
 #[require(Visibility)]
-struct ItemSpawn {
-    id: ItemId,
-    count: u16,
-}
+struct ItemSpawn(ItemSpec);
 
 fn spawn_ground_item(
     event: On<Add<ItemSpawn>>,
@@ -41,8 +38,8 @@ fn spawn_ground_item(
     let Ok(spawn) = spawns.get(event.entity) else {
         return;
     };
-    let Some(stack) = items.get(&spawn.id).map(|def| def.stack(spawn.count)) else {
-        warn!("Unknown item: {:?}", spawn.id);
+    let Some(stack) = items.get(&spawn.0.id).map(|def| def.stack(spawn.0.count)) else {
+        warn!("Unknown item: {:?}", spawn.0.id);
         return;
     };
     commands.entity(event.entity).with_child(GroundItem(stack));
@@ -110,9 +107,6 @@ fn item_spawn(ctx: &EntityInstanceContext) -> impl Scene + use<> {
     .expect("count is a valid u16");
 
     bsn! {
-        ItemSpawn {
-            id,
-            count,
-        }
+        ItemSpawn(ItemSpec { id, count })
     }
 }
