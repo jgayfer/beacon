@@ -1,11 +1,10 @@
 use avian2d::collision::collision_events::CollisionStart;
 use beacon_core::{
     inventory::Inventory,
-    item::{GroundItem, ItemDef, ItemId},
+    item::{GroundItem, ItemId, ItemRegistry},
     player::Player,
 };
-use beacon_engine::manifest::Registry;
-use bevy::{image::TRANSPARENT_IMAGE_HANDLE, prelude::*};
+use bevy::prelude::*;
 use bevy_ecs_ldtk::prelude::*;
 
 const GROUND_ITEM_SIZE: f32 = 12.0;
@@ -37,13 +36,13 @@ fn spawn_ground_item(
     event: On<Add<ItemSpawn>>,
     mut commands: Commands,
     spawns: Query<&ItemSpawn>,
-    items: Res<Registry<ItemDef>>,
+    items: Res<ItemRegistry>,
 ) {
     let Ok(spawn) = spawns.get(event.entity) else {
         return;
     };
-    let Some(stack) = items.get(spawn.id.get()).map(|def| def.stack(spawn.count)) else {
-        warn!("items/manifest.ron doesn't define {:?}", spawn.id);
+    let Some(stack) = items.get(&spawn.id).map(|def| def.stack(spawn.count)) else {
+        warn!("Unknown item: {:?}", spawn.id);
         return;
     };
     commands.entity(event.entity).with_child(GroundItem(stack));
@@ -85,16 +84,12 @@ fn show_ground_item(
     event: On<Add<GroundItem>>,
     mut commands: Commands,
     ground_items: Query<&GroundItem>,
-    items: Res<Registry<ItemDef>>,
 ) {
     let Ok(ground_item) = ground_items.get(event.entity) else {
         return;
     };
-    let image = items
-        .sprite(ground_item.0.def.id.get())
-        .unwrap_or(TRANSPARENT_IMAGE_HANDLE);
     commands.entity(event.entity).insert(Sprite {
-        image,
+        image: ground_item.0.def.sprite.clone(),
         custom_size: Some(Vec2::splat(GROUND_ITEM_SIZE)),
         ..Default::default()
     });

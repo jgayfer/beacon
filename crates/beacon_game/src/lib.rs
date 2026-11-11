@@ -6,13 +6,13 @@ mod flame_sprite;
 mod ground_item;
 mod harvest;
 mod hotbar;
+mod item;
 mod player;
 mod tree;
 mod world;
 
 use balefire::BalefirePlugin;
-use beacon_core::{item::ItemDef, progression::Progression, state::GameState};
-use beacon_engine::manifest::RegisterManifest;
+use beacon_core::{progression::Progression, state::GameState};
 use bevy::prelude::*;
 use bevy_asset_loader::prelude::*;
 use camera::CameraPlugin;
@@ -22,6 +22,7 @@ use flame_sprite::FlameSpritePlugin;
 use ground_item::GroundItemPlugin;
 use harvest::HarvestPlugin;
 use hotbar::HotbarPlugin;
+use item::ItemPlugin;
 use player::PlayerPlugin;
 use tree::TreePlugin;
 use world::WorldPlugin;
@@ -34,9 +35,9 @@ impl Plugin for GamePlugin {
             .add_loading_state(
                 LoadingState::new(GameState::Loading).continue_to_state(GameState::Playing),
             )
-            .register_manifest::<ItemDef>(GameState::Loading)
             .init_resource::<Progression>()
             .add_plugins((
+                ItemPlugin,
                 CameraPlugin,
                 WorldPlugin,
                 PlayerPlugin,

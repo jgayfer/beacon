@@ -1,7 +1,6 @@
 mod aseprite;
 pub mod camera;
 pub mod hitbox;
-pub mod manifest;
 
 use aseprite::AsepriteImageLoader;
 use avian2d::prelude::*;

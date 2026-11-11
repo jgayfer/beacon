@@ -1,10 +1,8 @@
 use beacon_core::{
     inventory::{Inventory, SelectedSlot},
-    item::ItemDef,
     player::Player,
     state::GameState,
 };
-use beacon_engine::manifest::Registry;
 use bevy::{color::palettes::css::YELLOW, image::TRANSPARENT_IMAGE_HANDLE, prelude::*};
 
 pub struct HotbarPlugin;
@@ -62,13 +60,11 @@ fn update_hotbar(
     inventory: Single<&Inventory, (With<Player>, Changed<Inventory>)>,
     mut slots: Query<(&HotbarSlot, &mut ImageNode)>,
     mut counts: Query<(&HotbarCount, &mut Text)>,
-    items: Res<Registry<ItemDef>>,
 ) {
     for (slot, mut image) in &mut slots {
         image.image = inventory
             .get(slot.0)
-            .and_then(|stack| items.sprite(stack.def.id.get()))
-            .unwrap_or(TRANSPARENT_IMAGE_HANDLE);
+            .map_or(TRANSPARENT_IMAGE_HANDLE, |stack| stack.def.sprite.clone());
     }
     for (count, mut text) in &mut counts {
         text.0 = inventory

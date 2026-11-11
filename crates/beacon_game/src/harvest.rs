@@ -1,8 +1,8 @@
 use beacon_core::{
     harvest::{Harvestable, Harvested},
-    item::{Drops, GroundItem, ItemDef},
+    item::{Drops, GroundItem, ItemRegistry},
 };
-use beacon_engine::{hitbox::Hit, manifest::Registry};
+use beacon_engine::hitbox::Hit;
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 use bevy_log::warn;
@@ -18,7 +18,7 @@ impl Plugin for HarvestPlugin {
 
 fn on_hit(
     event: On<Hit>,
-    items: Res<Registry<ItemDef>>,
+    items: Res<ItemRegistry>,
     mut commands: Commands,
     mut query: Query<(&mut Harvestable, Option<&Drops>, &GlobalTransform)>,
 ) {
@@ -38,8 +38,8 @@ fn on_hit(
         .insert(Harvested);
 
     for item_spec in drops.map(|drops| drops.0.as_slice()).unwrap_or_default() {
-        let Some(item_def) = items.get(item_spec.id.get()) else {
-            warn!("{0} is not in the items manifest", item_spec.id.get());
+        let Some(item_def) = items.get(&item_spec.id) else {
+            warn!("Unknown item: {:?}", item_spec.id);
             continue;
         };
 

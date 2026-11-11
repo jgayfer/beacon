@@ -2,7 +2,7 @@ use avian2d::collision::{
     collider::{Collider, Sensor},
     collision_events::CollisionEventsEnabled,
 };
-use beacon_engine::manifest::ManifestEntry;
+use bevy_asset::{Asset, Handle};
 use bevy_ecs::prelude::*;
 use bevy_image::Image;
 use bevy_reflect::prelude::*;
@@ -49,6 +49,8 @@ pub struct ItemDef {
     pub id: ItemId,
     pub max_stack: u16,
     pub kind: ItemKind,
+    #[serde(skip)]
+    pub sprite: Handle<Image>,
 }
 
 impl ItemDef {
@@ -60,12 +62,13 @@ impl ItemDef {
     }
 }
 
-impl ManifestEntry for ItemDef {
-    const DIR: &'static str = "items";
-    type Sprite = Image;
+#[derive(Asset, Resource, TypePath, Deserialize, Clone)]
+#[serde(transparent)]
+pub struct ItemRegistry(pub Vec<ItemDef>);
 
-    fn id(&self) -> &str {
-        self.id.get()
+impl ItemRegistry {
+    pub fn get(&self, id: &ItemId) -> Option<&ItemDef> {
+        self.0.iter().find(|def| def.id == *id)
     }
 }
 
