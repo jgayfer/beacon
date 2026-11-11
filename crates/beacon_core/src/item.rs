@@ -18,7 +18,7 @@ pub struct GroundItem(pub ItemStack);
 pub struct Drops(pub Vec<ItemSpec>);
 
 /// A blueprint for an [`ItemStack`].
-#[derive(Clone, Default, Reflect, Debug, Deserialize, PartialEq)]
+#[derive(Clone, Default, Reflect, Debug, PartialEq)]
 pub struct ItemSpec {
     pub id: ItemId,
     pub count: u16,
@@ -44,12 +44,11 @@ impl PartialEq<str> for ItemId {
     }
 }
 
-#[derive(Deserialize, Clone, Debug, Default, PartialEq, Eq, Reflect)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Reflect)]
 pub struct ItemDef {
     pub id: ItemId,
     pub max_stack: u16,
     pub kind: ItemKind,
-    #[serde(skip)]
     pub sprite: Handle<Image>,
 }
 
@@ -62,8 +61,7 @@ impl ItemDef {
     }
 }
 
-#[derive(Asset, Resource, TypePath, Deserialize, Clone)]
-#[serde(transparent)]
+#[derive(Asset, Resource, TypePath, Clone)]
 pub struct ItemRegistry(pub Vec<ItemDef>);
 
 impl ItemRegistry {

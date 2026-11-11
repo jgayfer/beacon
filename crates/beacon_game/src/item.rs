@@ -1,9 +1,13 @@
-use beacon_core::{item::ItemRegistry, state::GameState};
+use beacon_core::{
+    item::{ItemDef, ItemId, ItemKind, ItemRegistry},
+    state::GameState,
+};
 use bevy::{
     asset::{AssetLoader, LoadContext, io::Reader},
     prelude::*,
 };
 use bevy_asset_loader::prelude::*;
+use serde::Deserialize;
 
 pub struct ItemPlugin;
 
@@ -24,6 +28,13 @@ struct ItemAssets {
     manifest: Handle<ItemRegistry>,
 }
 
+#[derive(Deserialize)]
+struct ManifestEntry {
+    id: ItemId,
+    max_stack: u16,
+    kind: ItemKind,
+}
+
 #[derive(TypePath)]
 struct ItemRegistryLoader;
 
@@ -40,11 +51,18 @@ impl AssetLoader for ItemRegistryLoader {
     ) -> Result<ItemRegistry, BevyError> {
         let mut bytes = Vec::new();
         reader.read_to_end(&mut bytes).await?;
-        let mut registry: ItemRegistry = ron::de::from_bytes(&bytes)?;
-        for def in &mut registry.0 {
-            def.sprite = ctx.load(format!("items/{}.aseprite", def.id.get()));
-        }
-        Ok(registry)
+        let entries: Vec<ManifestEntry> = ron::de::from_bytes(&bytes)?;
+        Ok(ItemRegistry(
+            entries
+                .into_iter()
+                .map(|entry| ItemDef {
+                    sprite: ctx.load(format!("items/{}.aseprite", entry.id.get())),
+                    id: entry.id,
+                    max_stack: entry.max_stack,
+                    kind: entry.kind,
+                })
+                .collect(),
+        ))
     }
 
     fn extensions(&self) -> &[&str] {
